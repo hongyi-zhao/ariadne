@@ -1,3 +1,9 @@
+percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
+percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
+percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
+percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
+
+
 percol.import_keymap({
     "C-h" : lambda percol: percol.command.delete_backward_char(),
     "C-d" : lambda percol: percol.command.delete_forward_char(),
@@ -22,6 +28,6 @@ percol.import_keymap({
     "C-j" : lambda percol: percol.finish(),
     "C-g" : lambda percol: percol.cancel(),
     "C-d" : lambda percol: percol.command.toggle_date(),
-    "C-m" : lambda percol: percol.command.toggle_command(),
-    "C-p" : lambda percol: percol.command.toggle_execdir(),
-})
+    "C-r" : lambda percol: percol.command.toggle_command(),
+    "C-w" : lambda percol: percol.command.toggle_execdir(),
+})    

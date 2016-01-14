@@ -28,6 +28,23 @@ class SelectorCommand(object):
         else:
             self.select_predecessor()
 
+    def _toggle_fields(self,field):
+        if not field in self.view.fold_fields:
+            self.view.fold_fields = sorted(self.view.fold_fields + [field])
+        else:
+            self.view.fold_fields = [x for x in self.view.fold_fields if not x == field]
+            pass
+
+    def toggle_date(self):
+        self._toggle_fields(0)
+    
+    def toggle_command(self):
+        self._toggle_fields(1)
+    
+    def toggle_execdir(self):
+        self._toggle_fields(2)
+        
+
     def select_previous(self):
         if self.view.results_top_down:
             self.select_predecessor()

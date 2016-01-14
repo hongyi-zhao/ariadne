@@ -14,6 +14,7 @@ class SelectorView(object):
         self.percol  = percol
         self.screen  = percol.screen
         self.display = percol.display
+        self.fold_fields = []
 
     CANDIDATES_LINE_BASIC    = ("on_default", "default")
     CANDIDATES_LINE_SELECTED = ("underline", "on_magenta", "white")
@@ -93,7 +94,7 @@ class SelectorView(object):
     
     def fold_matches(self, old_spans, new_spans, subq, match_info, folded_fields, fold_subq):
         new_match_info = []
-        if len(folded_fields) == 0:
+        if len(folded_fields) == 0 or match_info == [(0,0)]:
             return match_info
 
         for x_offset, subq_len in match_info:
@@ -104,20 +105,17 @@ class SelectorView(object):
             for sp in old_spans:
                 if x_offset >= sp[0] and x_offset+subq_len-1 <= sp[1] and i in folded_fields:
                     new_x_offset = new_spans[i][0]
-                    # new_x_offset = sp[0]
                     shortened_by = 0
                     new_subq_len = len(fold_subq)
                     new_match_info.append((new_x_offset,new_subq_len))
                 elif i in folded_fields and x_offset > sp[1]:
                     shortened_by += sp[1] - sp[0] - len(fold_subq) + 1
-                    # shortened_by += sp[1] - sp[0] - len(fold_subq) + 1
-
                 i += 1
             new_match_info.append((new_x_offset-shortened_by,new_subq_len))
         return new_match_info
 
 
-    def display_result(self, y, result, is_current = False, is_marked = False, fold_fields = None):
+    def display_result(self, y, result, is_current = False, is_marked = False):
         line, find_info, abs_idx = result
 
         if is_current:
@@ -129,33 +127,24 @@ class SelectorView(object):
 
         keyword_style = self.CANDIDATES_LINE_QUERY + line_style
 
-        fold_fields = [0,2]
-        new_line = self.fold_line(line,' <> ',fold_fields)
+        # self.fold_fields = [1,2]
 
-        # debug.log(new_line)
+        new_line = self.fold_line(line,' <> ',self.fold_fields)
+
         self.display_line(y, 0, new_line, style = line_style)
 
         spans = self.get_spans(line, ' <> ')
         new_spans = self.get_spans(new_line, ' <> ')
 
-        # debug.log(find_info)
-
         if find_info is None:
             return
         for (subq, match_info) in find_info:
-            # debug.log ("match info: %s"%match_info)
-            new_match_info = self.fold_matches(spans, new_spans, subq, match_info, fold_fields, '..')
-            debug.log('*********************************************')
-            debug.log(spans)
-            debug.log(new_spans)
-            # debug.log ("new match info: %s"%new_match_info)
+            new_match_info = self.fold_matches(spans, new_spans, subq, match_info, self.fold_fields, '..')
             for x_offset, subq_len in new_match_info:
             # for x_offset, subq_len in match_info:
                 try:
                     x_offset_real = display.screen_len(new_line, beg = 0, end = x_offset)
 
-                    debug.log((new_line,x_offset,x_offset+subq_len,y,x_offset_real))
-                    debug.log(new_line[x_offset:x_offset + subq_len])
                     self.display.add_string(new_line[x_offset:x_offset + subq_len],
                                             pos_y = y,
                                             pos_x = x_offset_real,

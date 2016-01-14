@@ -63,8 +63,8 @@ class SelectorView(object):
         reg = re.compile (sep)
         last_end = 0
         for m in reg.finditer(line):
-            spans.append((last_end,m.start()))
-            last_end = m.start()+len(m.group(0))+1
+            spans.append((last_end,m.start()-1))
+            last_end = m.start()+len(m.group(0))
         spans.append((last_end,len(line)))
 
         return spans
@@ -93,24 +93,26 @@ class SelectorView(object):
     
     def fold_matches(self, old_spans, new_spans, subq, match_info, folded_fields, fold_subq):
         new_match_info = []
+        if len(folded_fields) == 0:
+            return match_info
+
         for x_offset, subq_len in match_info:
             i = 0
             shortened_by = 0
             new_x_offset = x_offset
             new_subq_len = subq_len
             for sp in old_spans:
-                if x_offset > sp[0] and x_offset+subq_len < sp[1] and i in folded_fields:
+                if x_offset >= sp[0] and x_offset+subq_len <= sp[1] and i in folded_fields:
                     new_x_offset = sp[0]
+                    shortened_by = 0
                     new_subq_len = len(fold_subq)
-                    # new_match_info.append((new_x_offset,new_subq_len))
-                elif i in folded_fields:
-                    shortened_by += sp[1] - sp[0]   - len(fold_subq) 
-                    print (shortened_by)
+                    new_match_info.append((new_x_offset,new_subq_len))
+                elif i in folded_fields and x_offset > sp[1]:
+                    shortened_by += sp[1] - sp[0] - len(fold_subq) + 1
 
                 i += 1
             new_match_info.append((new_x_offset-shortened_by,new_subq_len))
         return new_match_info
-
 
 
     def display_result(self, y, result, is_current = False, is_marked = False, fold_fields = None):
@@ -128,13 +130,10 @@ class SelectorView(object):
         fold_fields = [1]
         new_line = self.fold_line(line,' <> ',fold_fields)
 
-        debug.log(new_line)
-
+        # debug.log(new_line)
         self.display_line(y, 0, new_line, style = line_style)
 
-        len_diff = len(line) - len(new_line)
         spans = self.get_spans(line, ' <> ')
-
         new_spans = self.get_spans(new_line, ' <> ')
 
         # debug.log(find_info)
@@ -142,16 +141,31 @@ class SelectorView(object):
         if find_info is None:
             return
         for (subq, match_info) in find_info:
-            debug.log (match_info)
+            # debug.log ("match info: %s"%match_info)
             new_match_info = self.fold_matches(spans, new_spans, subq, match_info, fold_fields, '..')
-            debug.log (new_match_info)
+            debug.log('*********************************************')
+            debug.log(spans)
+            debug.log(new_spans)
+            # debug.log ("new match info: %s"%new_match_info)
             for x_offset, subq_len in new_match_info:
+            # for x_offset, subq_len in match_info:
                 try:
-                    x_offset_real = display.screen_len(line, beg = 0, end = x_offset)
-                    self.display.add_string(line[x_offset:x_offset + subq_len],
+                    x_offset_real = display.screen_len(new_line, beg = 0, end = x_offset)
+
+                    debug.log((new_line,x_offset,x_offset+subq_len,y,x_offset_real))
+                    debug.log(new_line[x_offset:x_offset + subq_len])
+                    self.display.add_string(new_line[x_offset:x_offset + subq_len],
                                             pos_y = y,
                                             pos_x = x_offset_real,
                                             style = keyword_style)
+                    
+                    # debug.log((line,x_offset,x_offset+subq_len,y,x_offset_real))
+                    # debug.log(line[x_offset:x_offset + subq_len])
+                    # x_offset_real = display.screen_len(line, beg = 0, end = x_offset)
+                    # self.display.add_string(line[x_offset:x_offset + subq_len],
+                    #                         pos_y = y,
+                    #                         pos_x = x_offset_real,
+                    #                         style = keyword_style)
                 except curses.error as e:
                     debug.log("addnstr", str(e) + " ({0})".format(y))
 

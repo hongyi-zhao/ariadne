@@ -57,7 +57,63 @@ class SelectorView(object):
             style = self.CANDIDATES_LINE_BASIC
         self.display.add_aligned_string(s, y_offset = y, x_offset = x, style = style, fill = True)
 
-    def display_result(self, y, result, is_current = False, is_marked = False):
+    def get_spans(self, line, sep):
+        spans = []
+        
+        reg = re.compile (sep)
+        last_end = 0
+        for m in reg.finditer(line):
+            spans.append((last_end,m.start()))
+            last_end = m.start()+len(m.group(0))+1
+        spans.append((last_end,len(line)))
+
+        return spans
+        
+
+    def fold_line(self, orig_str, sep, fold_fields):
+        new_line = orig_str
+        if fold_fields:
+            fields = orig_str.split(sep)
+            new_line = ''
+            lst = [x for x in range(len(fields))]
+
+            for x in lst[:-1]:
+                if x in fold_fields:
+                    new_line += '..%s'%sep
+                else:
+                    new_line += fields[x]+sep
+
+            if len(fields)-1 in fold_fields:
+                new_line += '..'
+            else:
+                new_line += fields[-1]
+
+        return new_line
+
+    
+    def fold_matches(self, old_spans, new_spans, subq, match_info, folded_fields, fold_subq):
+        new_match_info = []
+        for x_offset, subq_len in match_info:
+            i = 0
+            shortened_by = 0
+            new_x_offset = x_offset
+            new_subq_len = subq_len
+            for sp in old_spans:
+                if x_offset > sp[0] and x_offset+subq_len < sp[1] and i in folded_fields:
+                    new_x_offset = sp[0]
+                    new_subq_len = len(fold_subq)
+                    # new_match_info.append((new_x_offset,new_subq_len))
+                elif i in folded_fields:
+                    shortened_by += sp[1] - sp[0]   - len(fold_subq) 
+                    print (shortened_by)
+
+                i += 1
+            new_match_info.append((new_x_offset-shortened_by,new_subq_len))
+        return new_match_info
+
+
+
+    def display_result(self, y, result, is_current = False, is_marked = False, fold_fields = None):
         line, find_info, abs_idx = result
 
         if is_current:
@@ -69,12 +125,27 @@ class SelectorView(object):
 
         keyword_style = self.CANDIDATES_LINE_QUERY + line_style
 
-        self.display_line(y, 0, line, style = line_style)
+        fold_fields = [1]
+        new_line = self.fold_line(line,' <> ',fold_fields)
+
+        debug.log(new_line)
+
+        self.display_line(y, 0, new_line, style = line_style)
+
+        len_diff = len(line) - len(new_line)
+        spans = self.get_spans(line, ' <> ')
+
+        new_spans = self.get_spans(new_line, ' <> ')
+
+        # debug.log(find_info)
 
         if find_info is None:
             return
         for (subq, match_info) in find_info:
-            for x_offset, subq_len in match_info:
+            debug.log (match_info)
+            new_match_info = self.fold_matches(spans, new_spans, subq, match_info, fold_fields, '..')
+            debug.log (new_match_info)
+            for x_offset, subq_len in new_match_info:
                 try:
                     x_offset_real = display.screen_len(line, beg = 0, end = x_offset)
                     self.display.add_string(line[x_offset:x_offset + subq_len],

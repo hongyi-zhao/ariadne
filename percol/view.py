@@ -102,13 +102,15 @@ class SelectorView(object):
             new_x_offset = x_offset
             new_subq_len = subq_len
             for sp in old_spans:
-                if x_offset >= sp[0] and x_offset+subq_len <= sp[1] and i in folded_fields:
-                    new_x_offset = sp[0]
+                if x_offset >= sp[0] and x_offset+subq_len-1 <= sp[1] and i in folded_fields:
+                    new_x_offset = new_spans[i][0]
+                    # new_x_offset = sp[0]
                     shortened_by = 0
                     new_subq_len = len(fold_subq)
                     new_match_info.append((new_x_offset,new_subq_len))
                 elif i in folded_fields and x_offset > sp[1]:
                     shortened_by += sp[1] - sp[0] - len(fold_subq) + 1
+                    # shortened_by += sp[1] - sp[0] - len(fold_subq) + 1
 
                 i += 1
             new_match_info.append((new_x_offset-shortened_by,new_subq_len))
@@ -127,7 +129,7 @@ class SelectorView(object):
 
         keyword_style = self.CANDIDATES_LINE_QUERY + line_style
 
-        fold_fields = [1]
+        fold_fields = [0,2]
         new_line = self.fold_line(line,' <> ',fold_fields)
 
         # debug.log(new_line)

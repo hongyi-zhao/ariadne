@@ -30,4 +30,5 @@ percol.import_keymap({
     "C-d" : lambda percol: percol.command.toggle_date(),
     "C-r" : lambda percol: percol.command.toggle_command(),
     "C-w" : lambda percol: percol.command.toggle_execdir(),
+    "C-s" : lambda percol: percol.command.cwd_filter(),
 })    

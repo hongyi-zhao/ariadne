@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import six
+import os
 
 class SelectorCommand(object):
     """
@@ -34,6 +35,9 @@ class SelectorCommand(object):
         else:
             self.view.fold_fields = [x for x in self.view.fold_fields if not x == field]
             pass
+
+    def cwd_filter(self):
+        self.model.query = os.getcwd()
 
     def toggle_date(self):
         self._toggle_fields(0)

@@ -95,6 +95,17 @@ class SelectorModel(object):
                 debug.log("get_selected_results_with_index", e)
         return results
 
+    def get_selected_results_with_index_f(self,field=None,sep=' <> '):
+        results = self.get_marked_results_with_index()
+        if not results:
+            try:
+                index = self.index
+                result = self.results[index] # EAFP (results may be a zero-length list)
+                results.append((result[0], index, result[2]))
+            except Exception as e:
+                debug.log("get_selected_results_with_index", e)
+        return results
+
     # ------------------------------------------------------------ #
     #  Selections
     # ------------------------------------------------------------ #
@@ -124,7 +135,8 @@ class SelectorModel(object):
         if self.marks:
             return [(self.results[index][0], index, self.results[index][2])
                     for index in self.marks if self.get_is_marked(index)]
-        else:
+        else:        
+            debug.log(self.results[self.index])    
             return []
 
     def set_is_marked(self, marked, index = None):

@@ -43,10 +43,10 @@ class SelectorCommand(object):
         self._toggle_fields(0)
     
     def toggle_command(self):
-        self._toggle_fields(1)
+        self._toggle_fields(2)
     
     def toggle_execdir(self):
-        self._toggle_fields(2)
+        self._toggle_fields(1)
         
 
     def select_previous(self):

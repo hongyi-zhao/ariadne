@@ -111,9 +111,10 @@ class Percol(object):
 
     def execute_action(self):
         selected_actions = self.model_action.get_selected_results_with_index()
-
+        
         if selected_actions and self.args_for_action:
             for name, _, act_idx in selected_actions:
+                debug.log(self.args_for_action[0][0])
                 try:
                     action = self.actions[act_idx]
                     if action:

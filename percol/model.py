@@ -136,7 +136,6 @@ class SelectorModel(object):
             return [(self.results[index][0], index, self.results[index][2])
                     for index in self.marks if self.get_is_marked(index)]
         else:        
-            debug.log(self.results[self.index])    
             return []
 
     def set_is_marked(self, marked, index = None):

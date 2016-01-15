@@ -21,6 +21,8 @@ class SelectorView(object):
     CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
     CANDIDATES_LINE_QUERY    = ("yellow", "bold")
     MESSAGE_ERROR            = ("on_red", "white")
+    FIELD_SEP                = ' <> '
+    FOLDED                   = '..'
 
     @property
     def RESULTS_DISPLAY_MAX(self):
@@ -80,12 +82,12 @@ class SelectorView(object):
 
             for x in lst[:-1]:
                 if x in fold_fields:
-                    new_line += '..%s'%sep
+                    new_line += self.FOLDED+sep
                 else:
                     new_line += fields[x]+sep
 
             if len(fields)-1 in fold_fields:
-                new_line += '..'
+                new_line += self.FOLDED
             else:
                 new_line += fields[-1]
 
@@ -129,17 +131,17 @@ class SelectorView(object):
 
         # self.fold_fields = [1,2]
 
-        new_line = self.fold_line(line,' <> ',self.fold_fields)
+        new_line = self.fold_line(line,self.FIELD_SEP,self.fold_fields)
 
         self.display_line(y, 0, new_line, style = line_style)
 
-        spans = self.get_spans(line, ' <> ')
-        new_spans = self.get_spans(new_line, ' <> ')
+        spans = self.get_spans(line, self.FIELD_SEP)
+        new_spans = self.get_spans(new_line, self.FIELD_SEP)
 
         if find_info is None:
             return
         for (subq, match_info) in find_info:
-            new_match_info = self.fold_matches(spans, new_spans, subq, match_info, self.fold_fields, '..')
+            new_match_info = self.fold_matches(spans, new_spans, subq, match_info, self.fold_fields, self.FOLDED)
             for x_offset, subq_len in new_match_info:
             # for x_offset, subq_len in match_info:
                 try:

@@ -263,11 +263,19 @@ class Percol(object):
         # save selected candidates and use them later (in execute_action)
         raise TerminateLoop(self.finish_with_exit_code(value))     # success
 
+    def finish_f(self, value=0, field=None):
+        # save selected candidates and use them later (in execute_action)
+        raise TerminateLoop(self.finish_with_exit_code_f(value,field=field))     # success
+
     def cancel(self):
         raise TerminateLoop(self.cancel_with_exit_code())          # failure
 
     def finish_with_exit_code(self, value):
         self.args_for_action = self.model_candidate.get_selected_results_with_index()
+        return value
+
+    def finish_with_exit_code_f(self, value,field=None):
+        self.args_for_action = self.model_candidate.get_selected_results_with_index_f(field=field)
         return value
 
     def cancel_with_exit_code(self):

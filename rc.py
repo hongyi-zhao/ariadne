@@ -32,4 +32,6 @@ percol.import_keymap({
     "C-r" : lambda percol: percol.command.toggle_command(),
     "C-w" : lambda percol: percol.command.toggle_execdir(),
     "C-l" : lambda percol: percol.command.cwd_filter(),
+    "C-q" : lambda percol: percol.finish_f(field=1),
+    "C-y" : lambda percol: percol.finish_f(field=2),
 })    

@@ -93,6 +93,7 @@ class SelectorModel(object):
                 results.append((result[0], index, result[2]))
             except Exception as e:
                 debug.log("get_selected_results_with_index", e)
+        # debug.log(results)
         return results
 
     def get_selected_results_with_index_f(self,field=None,sep=' <> '):
@@ -104,6 +105,8 @@ class SelectorModel(object):
                 results.append((result[0], index, result[2]))
             except Exception as e:
                 debug.log("get_selected_results_with_index", e)
+        if field is not None:
+            results = [(r[0].split(sep)[field],r[1],r[2]) for r in results]
         return results
 
     # ------------------------------------------------------------ #
@@ -133,6 +136,7 @@ class SelectorModel(object):
 
     def get_marked_results_with_index(self):
         if self.marks:
+            # debug.log([self.results[index][0] for index in self.marks if self.get_is_marked(index)])
             return [(self.results[index][0], index, self.results[index][2])
                     for index in self.marks if self.get_is_marked(index)]
         else:        

@@ -165,9 +165,10 @@ function exists { which $1 &> /dev/null }
 # if percol is installed, use it to search .zsh_log to retrieve old command or the directory in which it was executed
 # modified from https://github.com/mooz/percol#zsh-history-search
 
-function percol_sel_log_history_cwd() {
+function percol_sel_log_history() {
     RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
-    PERCOL="$HOME/.oh-my-zsh/custom/percol/bin/percol"
+    PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"
+    PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
     BUFFER=$(gawk 'BEGIN {FS=" ### "} {\
         ORS=" <> "; \
         split($(NF),a," , "); \
@@ -183,7 +184,7 @@ function percol_sel_log_history_cwd() {
     zle -R -c               # refresh
 }
 
-zle -N percol_sel_log_history_cwd
-bindkey '^W' percol_sel_log_history_cwd
+zle -N percol_sel_log_history
+bindkey '^R' percol_sel_log_history
 
 

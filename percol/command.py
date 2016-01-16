@@ -235,6 +235,10 @@ class SelectorCommand(object):
         self.model.finder.case_insensitive = not self.model.finder.case_insensitive
         self.model.force_search()
 
+    def toggle_recent(self):
+        self.model.finder.recent_commands = not self.model.finder.recent_commands
+        self.model.force_search()
+
     def specify_split_query(self, split_query):
         self.model.finder.split_query = split_query
         self.model.force_search()

@@ -6,13 +6,14 @@ from percol import display, debug
 class SelectorModel(object):
     def __init__(self,
                  percol, collection, finder,
-                 query = None, caret = None, index = None):
+                 query = None, caret = None, index = None, recent = True):
         self.original_finder_class = finder
         self.percol = percol
         self.finder = finder(collection)
         self.setup_results(query)
         self.setup_caret(caret)
         self.setup_index(index)
+        self.recent = recent
 
     # ============================================================ #
     # Pager attributes
@@ -30,9 +31,22 @@ class SelectorModel(object):
     # Initializer
     # ============================================================ #
 
-    def setup_results(self, query):
+    def filter_old(self,sep=' <> '):
+        found_commands = []
+        filtered = []
+
+        for r in self.results:
+            cmd = r[0].split(sep)[2]
+            if not cmd in found_commands:
+                filtered.append(r)
+
+        return filtered
+
+    def setup_results(self, query, recent=False):
         self.query   = self.old_query = query or u""
         self.results = self.finder.get_results(self.query)
+        if recent:
+            self.results = self.filter_old(self.results)
         self.marks   = {}
 
     def setup_caret(self, caret):
@@ -95,6 +109,8 @@ class SelectorModel(object):
                 debug.log("get_selected_results_with_index", e)
         # debug.log(results)
         return results
+
+
 
     def get_selected_results_with_index_f(self,field=None,sep=' <> '):
         results = self.get_marked_results_with_index()

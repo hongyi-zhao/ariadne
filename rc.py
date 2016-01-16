@@ -1,3 +1,4 @@
+# from percol.finder import FinderMultiQueryMigemo, FinderMultiQueryRegex
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
@@ -39,4 +40,5 @@ percol.import_keymap({
     "C-l" : lambda percol: percol.command.cwd_filter(),
     "C-d" : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
+    "M-r" : lambda percol: percol.command.toggle_recent(),
 })    

@@ -3,6 +3,7 @@
 from abc import ABCMeta, abstractmethod
 from percol.lazyarray import LazyArray
 import six
+from percol import debug
 
 # ============================================================ #
 # Finder
@@ -30,8 +31,11 @@ class Finder(object):
 
     invert_match = False
     lazy_finding = True
+    recency_bias = True
     def get_results(self, query, collection = None):
         if self.lazy_finding:
+            # debug.log(LazyArray((result for result in self.find(query, collection)))[0])
+            # debug.log([result for result in self.find(query, collection)])
             return LazyArray((result for result in self.find(query, collection)))
         else:
             return [result for result in self.find(query, collection)]
@@ -81,6 +85,8 @@ class FinderMultiQuery(CachedFinder):
 
     split_query = True
     case_insensitive = True
+    recent_commands = False
+
 
     dummy_res = [["", [(0, 0)]]]
 
@@ -100,6 +106,8 @@ class FinderMultiQuery(CachedFinder):
         if collection is None:
             collection = self.collection
 
+        found_commands = []
+
         for idx, line in enumerate(collection):
             if query_is_empty:
                 res = self.dummy_res
@@ -115,7 +123,14 @@ class FinderMultiQuery(CachedFinder):
                     res = None if res else self.dummy_res
 
             if res:
-                yield line, res, idx
+                command = line.split(' <> ')[-1]
+                if not command in found_commands and self.recent_commands:
+                    found_commands.append(command)
+                # debug.log(len(found_commands))
+                    yield line, res, idx
+                elif not self.recent_commands:
+                    yield line, res, idx
+                
 
     and_search = True
 
@@ -131,6 +146,8 @@ class FinderMultiQuery(CachedFinder):
                     res.append((subq, find_info))
                 elif and_search:
                     return None
+        
+
         return res
 
     @abstractmethod
@@ -166,6 +183,11 @@ class FinderMultiQueryString(FinderMultiQuery):
                 break
             res.append((found, stride))
             start = found + stride
+
+        if self.recency_bias:
+            pass
+            # debug.log('===================================================')
+            # debug.log(res)
 
         return res
 
@@ -277,4 +299,5 @@ class FinderMultiQueryPinyin(FinderMultiQuery):
             return result
         except :
             return None
+
 

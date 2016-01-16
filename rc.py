@@ -6,32 +6,37 @@ percol.view.FIELD_SEP = ' <> '
 percol.view.FOLDED = '…'
 
 percol.import_keymap({
-    "C-h" : lambda percol: percol.command.delete_backward_char(),
-    "C-d" : lambda percol: percol.command.delete_forward_char(),
-    "C-k" : lambda percol: percol.command.kill_end_of_line(),
-    "C-y" : lambda percol: percol.command.yank(),
-    "C-t" : lambda percol: percol.command.transpose_chars(),
-    "C-a" : lambda percol: percol.command.beginning_of_line(),
-    "C-e" : lambda percol: percol.command.end_of_line(),
-    "C-b" : lambda percol: percol.command.backward_char(),
-    "C-f" : lambda percol: percol.command.forward_char(),
-    "M-f" : lambda percol: percol.command.forward_word(),
-    "M-b" : lambda percol: percol.command.backward_word(),
-    "M-d" : lambda percol: percol.command.delete_forward_word(),
-    "M-h" : lambda percol: percol.command.delete_backward_word(),
-    "C-n" : lambda percol: percol.command.select_next(),
-    "C-p" : lambda percol: percol.command.select_previous(),
-    "C-v" : lambda percol: percol.command.select_next_page(),
-    "M-v" : lambda percol: percol.command.select_previous_page(),
-    "M-<" : lambda percol: percol.command.select_top(),
-    "M->" : lambda percol: percol.command.select_bottom(),
-    "C-m" : lambda percol: percol.finish(),
-    "C-j" : lambda percol: percol.finish(),
-    "C-g" : lambda percol: percol.cancel(),
-    "C-d" : lambda percol: percol.command.toggle_date(),
-    "C-r" : lambda percol: percol.command.toggle_command(),
-    "C-w" : lambda percol: percol.command.toggle_execdir(),
+    "C-i"         : lambda percol: percol.switch_model(),
+    # text
+    "C-h"         : lambda percol: percol.command.delete_backward_char(),
+    "<backspace>" : lambda percol: percol.command.delete_backward_char(),
+    "C-w"         : lambda percol: percol.command.delete_backward_word(),
+    "C-u"         : lambda percol: percol.command.clear_query(),
+    "<dc>"        : lambda percol: percol.command.delete_forward_char(),
+    # caret
+    "<left>"      : lambda percol: percol.command.backward_char(),
+    "<right>"     : lambda percol: percol.command.forward_char(),
+    # line
+    "<down>"      : lambda percol: percol.command.select_next(),
+    "<up>"        : lambda percol: percol.command.select_previous(),
+    # page
+    "<npage>"     : lambda percol: percol.command.select_next_page(),
+    "<ppage>"     : lambda percol: percol.command.select_previous_page(),
+    # top / bottom
+    "<home>"      : lambda percol: percol.command.select_top(),
+    "<end>"       : lambda percol: percol.command.select_bottom(),
+    # mark
+    "C-SPC"       : lambda percol: percol.command.toggle_mark_and_next(),
+    # finish
+    "RET"         : lambda percol: percol.finish(), # Is RET never sent? #seems not, doesn't respond to finish_f either - gaw
+    "C-m"         : lambda percol: percol.finish(),
+    "C-j"         : lambda percol: percol.finish(),
+    "C-c"         : lambda percol: percol.cancel(),
+
+    "<f1>" : lambda percol: percol.command.toggle_date(),
+    "<f2>" : lambda percol: percol.command.toggle_execdir(),
+    "<f3>" : lambda percol: percol.command.toggle_command(),
     "C-l" : lambda percol: percol.command.cwd_filter(),
-    "C-q" : lambda percol: percol.finish_f(field=1),
-    "C-y" : lambda percol: percol.finish_f(field=2),
+    "C-d" : lambda percol: percol.finish(field=1),
+    "C-r" : lambda percol: percol.finish(field=2),
 })    

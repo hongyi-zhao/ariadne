@@ -259,11 +259,11 @@ class Percol(object):
     # Finish / Cancel
     # ------------------------------------------------------------ #
 
-    def finish(self, value=0):
-        # save selected candidates and use them later (in execute_action)
-        raise TerminateLoop(self.finish_with_exit_code(value))     # success
+    # def finish(self, value=0):
+    #     # save selected candidates and use them later (in execute_action)
+    #     raise TerminateLoop(self.finish_with_exit_code(value))     # success
 
-    def finish_f(self, value=0, field=None):
+    def finish(self, value=0, field=2):
         # save selected candidates and use them later (in execute_action)
         raise TerminateLoop(self.finish_with_exit_code_f(value,field=field))     # success
 

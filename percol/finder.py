@@ -86,7 +86,7 @@ class FinderMultiQuery(CachedFinder):
     split_query = True
     case_insensitive = True
     recent_commands = False
-
+    sep = None
 
     dummy_res = [["", [(0, 0)]]]
 
@@ -123,7 +123,7 @@ class FinderMultiQuery(CachedFinder):
                     res = None if res else self.dummy_res
 
             if res:
-                command = line.split(' <> ')[-1]
+                command = line.split(self.sep)[-1]
                 if not command in found_commands and self.recent_commands:
                     found_commands.append(command)
                 # debug.log(len(found_commands))

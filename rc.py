@@ -6,6 +6,8 @@ percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.FIELD_SEP = ' <> '
 percol.view.FOLDED = '…'
 
+percol.command.set_field_sep(percol.view.FIELD_SEP)
+
 percol.import_keymap({
     "C-i"         : lambda percol: percol.switch_model(),
     # text

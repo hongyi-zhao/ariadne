@@ -1,10 +1,11 @@
 # ariadne
 
 ariadne enables comprehensive zsh cli history logging combined with interactive searching
-using a modified version of mooz's percol (https://github.com/mooz/percol). The cli
-logging is modified from the the following:
-    - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
-    - https://gist.github.com/jeetsukumaran/2202879)
+using a modified version of Masafumi Oyamada's percol (https://github.com/mooz/percol). 
+The cli logging is modified from the the following:
+
+- http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
+- https://gist.github.com/jeetsukumaran/2202879)
 
 I made this becuase I wanted to be able to search for previous commaands based on path as
 well as the command itself. I tend to use deeply nested and descriptive directory names
@@ -23,7 +24,7 @@ little joy from memorizing the relevant incantations and arcana)
 
 ariadne allows:
 
-1. reverse searching through previous commands and paths where they were run
+1. reverse searching through previous commands and the paths where they were run
 2. extracting either the path or command
 3. quick filtering with current path
 4. filtering of duplicate commands
@@ -34,7 +35,7 @@ ariadne allows:
 
 ### Manual
 
-First, clone ariadne (I keep it in my ~/.oh-my-zsh/custom dir)
+First, clone ariadne (I keep it in my `~/.oh-my-zsh/custom` dir)
 
     $ cd ~/.oh-my-zsh/custom
     $ git https://github.com/gawells/ariadne
@@ -49,13 +50,13 @@ Modify ~/.zshrc to inject ariadne in precmd
 
 ## Usage
 
-Ctrl+R          : Invoke cli search
-F1,F2,F3        : Hide/show date, exec path and command, respectively
-Enter,Ctrl+r    : Extract command(s)
-Ctrl+w          : Extract path(s)
-Ctrl+l          : Filter by current directory
-Alt+r           : Filter out duplicate commands
-Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
+- Ctrl+R          : Invoke cli search
+- F1,F2,F3        : Hide/show date, exec path and command, respectively
+- Enter,Ctrl+r    : Extract command(s)
+- Ctrl+d          : Extract path(s)
+- Ctrl+l          : Filter by current directory
+- Alt+r           : Filter out duplicate commands
+- Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
 
 ## Configuration
 

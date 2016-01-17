@@ -7,7 +7,7 @@ The cli logging is modified from the the following:
 - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
 - https://gist.github.com/jeetsukumaran/2202879)
 
-I made this becuase I wanted to be able to search for previous commaands based on path as
+I made this becuase I wanted to be able to search for previous commands based on path as
 well as the command itself. I tend to use deeply nested and descriptive directory names
 and want to quickly jump to them based on the command. This also makes it easy to copy
 and paste commands in a new project directory based on a similar older project. This is 
@@ -38,7 +38,7 @@ ariadne allows:
 First, clone ariadne (I keep it in my `~/.oh-my-zsh/custom` dir)
 
     $ cd ~/.oh-my-zsh/custom
-    $ git https://github.com/gawells/ariadne
+    $ git clone https://github.com/gawells/ariadne
 
 Modify ~/.zshrc to inject ariadne in precmd
     
@@ -62,7 +62,7 @@ Modify ~/.zshrc to inject ariadne in precmd
 
 Configuration is specified in `rc.py`, currently under `$HOME/.oh-my-zsh/custom/ariadne/`
 
-Here is an example `~/.percol.d/rc.py`.
+Default config:
 
 ```python
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")

@@ -30,7 +30,7 @@ ariadne allows:
 4. filtering of duplicate commands
 5. toggling of date, command, path fields in search output
 
-[animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
+![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
 
 
 ## Installation

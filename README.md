@@ -51,7 +51,9 @@ Modify ~/.zshrc to inject ariadne in precmd
 ## Usage
 
 - Ctrl+R          : Invoke command history search
+
 In ariadne:
+
 - F1,F2,F3        : Hide/show date, execution path and command, respectively
 - Enter,Ctrl+R    : Extract command(s)
 - Ctrl+R          : Extract path(s)

@@ -35,20 +35,31 @@ ariadne allows:
 
 ## Installation
 
-### Manual
+### Manual - zsh
 
-First, clone ariadne (I keep it in my `~/.oh-my-zsh/custom` dir)
+First, clone ariadne (I keep it `~/.oh-my-zsh/custom`)
 
+    $ mkdir -p ~/.oh-my-zsh/custom
     $ cd ~/.oh-my-zsh/custom
     $ git clone https://github.com/gawells/ariadne
 
-Modify ~/.zshrc to inject ariadne in precmd
+Modify `~/.zshrc` to inject ariadne in `precmd`
     
     source ~/.oh-my-zsh/custom/ariadne/ariadne.zsh
     precmd() {
         _ariadne -h -t -u 
     }
 
+### Manual - bash
+
+    $ mkdir -p ~/.config/bash
+    $ cd ~/.config/bash
+    $ git clone https://github.com/gawells/ariadne
+
+Add the following to `~/.bashrc`:
+
+    source $HOME/.config/bash/ariadne/ariadne.sh
+    export PROMPT_COMMAND='_ariadne -h -t -u '
 
 ## Usage
 

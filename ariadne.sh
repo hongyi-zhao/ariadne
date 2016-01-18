@@ -181,9 +181,9 @@ _ariadne() { # was _loghistory :)
 # # modified from https://github.com/mooz/percol#zsh-history-search
 
 function percol_sel_log_history() {
-    RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
-    PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
+    RCFILE="$HOME/config/bash/ariadne/rc.py"
+    PERCOL="$HOME/config/bash/ariadne/bin/percol"
+    PYTHONPATH="$HOME/config/basch/ariadne/percol":$PYTHONPATH
     gawk 'BEGIN {FS=" ### "} {\
         ORS=" <> "; \
         split($(NF),a," , "); \

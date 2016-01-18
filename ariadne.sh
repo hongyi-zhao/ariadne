@@ -184,7 +184,7 @@ function percol_sel_log_history() {
     RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
     PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"
     PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
-    BUFFER=$(gawk 'BEGIN {FS=" ### "} {\
+    gawk 'BEGIN {FS=" ### "} {\
         ORS=" <> "; \
         split($(NF),a," , "); \
         split(a[3],b,"[@:]"); \
@@ -193,12 +193,10 @@ function percol_sel_log_history() {
         print gensub(/ /,"\\\\ ","g",s);  \
         ORS="\n"; \
         print substr($0,0, length($0) -length($NF)-4);
-    }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE )
+    }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
     # | gawk 'BEGIN {FS=" <> "} {print $2}')
-    CURSOR=$#BUFFER         # move cursor
+    # CURSOR=$#BUFFER         # move cursor
     # zle -R -c               # refresh
 }
 
-# # zle -N percol_sel_log_history
-# bind "^R":"percol_sel_log_history"
-# '"^R":"percol_sel_log_history"'
+bind -x '"\C-R": READLINE_LINE=$(percol_sel_log_history) READLINE_POINT='

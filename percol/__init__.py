@@ -268,6 +268,7 @@ class Percol(object):
         raise TerminateLoop(self.finish_with_exit_code_f(value,field=field))     # success
 
     def cancel(self):
+        # pass
         raise TerminateLoop(self.cancel_with_exit_code())          # failure
 
     def finish_with_exit_code(self, value):

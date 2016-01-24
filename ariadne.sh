@@ -181,6 +181,7 @@ _ariadne() { # was _loghistory :)
 # # modified from https://github.com/mooz/percol#zsh-history-search
 
 function percol_sel_log_history() {
+
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
@@ -199,4 +200,4 @@ function percol_sel_log_history() {
     # zle -R -c               # refresh
 }
 
-bind -x '"\C-R": READLINE_LINE=$(percol_sel_log_history) READLINE_POINT='
+bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

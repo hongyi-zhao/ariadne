@@ -1,6 +1,6 @@
 # ariadne
 
-ariadne enables comprehensive zsh cli history logging combined with interactive searching
+Ariadne enables comprehensive zsh cli history logging combined with interactive searching
 using a modified version of Masafumi Oyamada's percol (https://github.com/mooz/percol). 
 The cli logging is modified from the the following:
 
@@ -24,11 +24,11 @@ little joy from memorizing the relevant incantations and arcana)
 
 ariadne allows:
 
-1. reverse searching through previous commands and the paths where they were run
-2. extracting either the path or command
-3. quick filtering with current path
-4. filtering of duplicate commands
-5. toggling of date, command, path fields in search output
+1. Reverse searching through previous commands and the paths where they were run
+2. Extracting either the path or command
+3. Quick filtering with current path
+4. Filtering of duplicate commands
+5. Toggling of date, command, path fields in search output
 
 ![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
 

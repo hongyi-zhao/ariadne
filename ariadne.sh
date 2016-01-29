@@ -106,15 +106,19 @@ _ariadne() { # was _loghistory :)
     # histentrycmd=$(history 1)
 
     # parse it out
-    # expr  match "$histentry" ' *\([0-9]*  \[[0-9]*-[0-9]*-[0-9]* [0-9]*:[0-9]*:[0-9]*\]\)' 
-	histleader=`expr  match "$histentry" ' *\([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
-    histlinenum=`expr match "$histleader" ' *\([0-9]*\)'`
-    datetimestamp=`expr match "$histleader" '.*\( [0-9]*\-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
-    histentrycmd=`expr match "$histentry" ' *[0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\(.*\)'`
+	# histleader=`expr  match "$histentry" : ' *\([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
+    # for some reason need to split it like this, regex inline doesn't work on my mac
+    re=' *([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
+    [[ $histentry =~ $re ]] && histleader=${BASH_REMATCH}
 
-    # [[ $histentry =~ "[0-9]* *[0-9]*-[0-9]*-[0-9]* [0-9]*:[0-9]*" ]] && histleader=$MATCH
-    # [[ $histleader =~ "[0-9]*" ]] && histlinenum=$MATCH
-    # [[ $histleader =~ "[0-9]*-[0-9]*-[0-9]* [0-9]*:[0-9]*" ]] && datetimestamp=$MATCH
+    re=' *([0-9]*)' 
+    [[ $histleader =~ $re ]] && histlinenum=${BASH_REMATCH}
+
+    re='.*( [0-9]*\-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
+    [[ $histleader =~ $re ]] && datetimestamp=${BASH_REMATCH[1]}
+
+    re=' *[0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]* (.*)'
+    [[ $histentry =~ $re ]] && histentrycmd=${BASH_REMATCH[1]}
 
     # protect against relogging previous command
     # if all that was actually entered by the user

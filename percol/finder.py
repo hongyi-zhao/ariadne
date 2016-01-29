@@ -123,7 +123,7 @@ class FinderMultiQuery(CachedFinder):
                     res = None if res else self.dummy_res
 
             if res:
-                command = line.split(self.sep)[-1]
+                command = line.split(FinderMultiQuery.sep)[-1]
                 if not command in found_commands and self.recent_commands:
                     found_commands.append(command)
                 # debug.log(len(found_commands))

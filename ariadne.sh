@@ -112,9 +112,9 @@ _ariadne() { # was _loghistory :)
     [[ $histentry =~ $re ]] && histleader=${BASH_REMATCH}
 
     re=' *([0-9]*)' 
-    [[ $histleader =~ $re ]] && histlinenum=${BASH_REMATCH}
+    [[ $histleader =~ $re ]] && histlinenum=${BASH_REMATCH[1]}
 
-    re='.*( [0-9]*\-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
+    re='.* ([0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
     [[ $histleader =~ $re ]] && datetimestamp=${BASH_REMATCH[1]}
 
     re=' *[0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]* (.*)'

@@ -161,6 +161,7 @@ _ariadne() { # was _loghistory :)
 
     # build the string (if text or extra aren't empty, add them with some decoration)
     # histentrycmd="${datetimestamp} ${text:+[$text] }${tty:+[$tty] }${ip:+[$ip] }${extra:+[$extra] }~~~ ${hostname:+$hostname:}$cwd ~~~ ${histentrycmd# * ~~~ }"
+    # note on ${var+$var} format: empty if unset but expands to var value if set?
     histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , ${username:+$username@}${hostname:+$hostname:}${cwd} ,  ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
     
     # save the entry in a logfile

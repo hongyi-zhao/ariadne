@@ -6,7 +6,7 @@ _ariadne() { # was _loghistory :)
 ## Add something like the following to ~/.zshrc:
 # source ariadne.zsh
 # precmd() {
-#     _ariadne -h -t -u 
+#     _ariadne -h -u 
 # }
 ##
 #

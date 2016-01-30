@@ -2,20 +2,14 @@ _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
 
 # Detailed history log of shell activities, including time stamps, working directory etc.
-#
-## Add something like the following to ~/.zshrc:
-# source ariadne.zsh
-# precmd() {
-#     _ariadne -h -t -u 
-# }
-##
-#
 # Based on 'hcmnt' by Dennis Williamson - 2009-06-05 - updated 2009-06-19
 # (http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history)
 # (https://gist.github.com/jeetsukumaran/2202879)
 #
-# Add this function to your '~/.bashrc':
-#
+## Add something like the following to ~/.bashrc:
+# source $HOME/.config/bash/ariadne/ariadne.sh
+# export PROMPT_COMMAND='_ariadne -h -u '
+##
 # Set the bash variable PROMPT_COMMAND to the name of this function and include
 # these options:
 #
@@ -94,16 +88,11 @@ _ariadne() { # was _loghistory :)
 
     # add the previous command(s) to the history file immediately
     # so that the history file is in sync across multiple shell sessions
-    # fc -AI
     export HISTTIMEFORMAT="%y-%m-%d %T "
     history -a
 
     # grab the most recent command from the command history
-    # histentry=$(fc -i -l -1 -1)
     histentry=$(history 1)
-
-    # histentrycmd=$(fc -l -n -1 -1)
-    # histentrycmd=$(history 1)
 
     # parse it out
 	# histleader=`expr  match "$histentry" : ' *\([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
@@ -173,7 +162,6 @@ _ariadne() { # was _loghistory :)
     # build the string (if text or extra aren't empty, add them with some decoration)
     # histentrycmd="${datetimestamp} ${text:+[$text] }${tty:+[$tty] }${ip:+[$ip] }${extra:+[$extra] }~~~ ${hostname:+$hostname:}$cwd ~~~ ${histentrycmd# * ~~~ }"
     histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , ${username:+$username@}${hostname:+$hostname:}${cwd} ,  ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
-	# echo $histentrycmd    
     
     # save the entry in a logfile
     echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1

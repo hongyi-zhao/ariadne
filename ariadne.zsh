@@ -3,20 +3,13 @@ _ariadne() { # was _loghistory :)
 
 # Detailed history log of shell activities, including time stamps, working directory etc.
 #
-## Add something like the following to ~/.zshrc:
-# source ariadne.zsh
-# precmd() {
-#     _ariadne -h -u 
-# }
-##
 #
 # Based on 'hcmnt' by Dennis Williamson - 2009-06-05 - updated 2009-06-19
 # (http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history)
 # (https://gist.github.com/jeetsukumaran/2202879)
 #
-# Add this function to your '~/.bashrc':
 #
-# Set the bash variable PROMPT_COMMAND to the name of this function and include
+# Call this function in precmd and include
 # these options:
 #
 #     e - add the output of an extra command contained in the histentrycmdextra variable
@@ -28,8 +21,12 @@ _ariadne() { # was _loghistory :)
 #     l - path to the log file (default = $HOME/.bash_log)
 #     ext or a variable
 #
-# See bottom of this function for examples.
-#
+## Add something like the following to ~/.zshrc:
+# source ariadne.zsh
+# precmd() {
+#     _ariadne -h -u 
+# }
+##
 
     local script=$FUNCNAME
     local histentrycmd=
@@ -153,16 +150,18 @@ _ariadne() { # was _loghistory :)
     fi
 
     # build the string (if text or extra aren't empty, add them with some decoration)
-    # histentrycmd="${datetimestamp} ${text:+[$text] }${tty:+[$tty] }${ip:+[$ip] }${extra:+[$extra] }~~~ ${hostname:+$hostname:}$cwd ~~~ ${histentrycmd# * ~~~ }"
-    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , ${username:+$username@}${hostname:+$hostname:}${cwd} ,  ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
+    # note on ${var+$var} format: empty if unset but expands to var value if set?
+    # '###' chosen because it's unlikely to appear in a typical shell command, also 
+    # a bit easier on my eye than '~~~'
+    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , \
+    ${username:+$username@}${hostname:+$hostname:}${cwd} ,  \
+    ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
     
     # save the entry in a logfile
     echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
 
-} # END FUNCTION _loghistory
+} 
 
-function exists { which $1 &> /dev/null }
-# if percol is installed, use it to search .zsh_log to retrieve old command or the directory in which it was executed
 # modified from https://github.com/mooz/percol#zsh-history-search
 
 function percol_sel_log_history() {

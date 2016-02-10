@@ -26,7 +26,7 @@ class SelectorView(object):
 
     @property
     def RESULTS_DISPLAY_MAX(self):
-        return self.display.Y_END - self.display.Y_BEGIN
+        return self.display.Y_END - self.display.Y_BEGIN - len(self.model.stack)
 
     @property
     def model(self):
@@ -53,6 +53,7 @@ class SelectorView(object):
             self.display.erase()
             self.display_results()
             self.display_prompt()
+            self.display_stack()
             self.display.refresh()
 
     def display_line(self, y, x, s, style = None):
@@ -200,6 +201,16 @@ class SelectorView(object):
                       ))
             exception_raw_string = str(e).decode(self.percol.encoding) if six.PY2 else str(e)
             self.display_error_message("Error at line " + str(cand_nth) + ": " + exception_raw_string)
+
+    def display_stack(self):
+        stack_vertical_pos = self.RESULTS_OFFSET_V + self.RESULTS_DISPLAY_MAX
+        result_pos_direction = 1 if self.results_top_down else -1
+
+        for command in self.model.stack:
+            self.display.add_string(command, pos_y = stack_vertical_pos, pos_x = 0)
+            stack_vertical_pos += result_pos_direction
+            pass
+
 
     results_top_down = True
 

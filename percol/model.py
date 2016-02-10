@@ -142,6 +142,9 @@ class SelectorModel(object):
         debug.log("Testing stack")
         debug.log(self.stack)
 
+    def pop_stack(self):
+        self.stack.pop()
+
     # ------------------------------------------------------------ #
     #  Selections
     # ------------------------------------------------------------ #

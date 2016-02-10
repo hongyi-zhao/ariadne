@@ -271,8 +271,6 @@ class SelectorCommand(object):
 
     def fill_stack(self):
         self.model.stack_selected_results_with_index_f(1,self.view.FIELD_SEP)
-        pass
     
     def pop_stack(self):
         self.model.pop_stack()
-        pass

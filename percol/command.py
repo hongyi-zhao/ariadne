@@ -264,3 +264,11 @@ class SelectorCommand(object):
         else:
             self.model.remake_finder(preferred_finder_class)
         self.model.force_search()
+
+    # ------------------------------------------------------------ #
+    # Stack
+    # ------------------------------------------------------------ #
+
+    def fill_stack(self):
+        self.model.stack_selected_results_with_index_f(1,self.view.FIELD_SEP)
+        pass

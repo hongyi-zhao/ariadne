@@ -14,6 +14,7 @@ class SelectorModel(object):
         self.setup_caret(caret)
         self.setup_index(index)
         self.recent = recent
+        self.stack = []
 
     # ============================================================ #
     # Pager attributes
@@ -111,7 +112,6 @@ class SelectorModel(object):
         return results
 
 
-
     def get_selected_results_with_index_f(self,field=None,sep=' <> '):
         results = self.get_marked_results_with_index()
         if not results:
@@ -120,10 +120,27 @@ class SelectorModel(object):
                 result = self.results[index] # EAFP (results may be a zero-length list)
                 results.append((result[0], index, result[2]))
             except Exception as e:
-                debug.log("get_selected_results_with_index", e)
+                debug.log("get_selected_results_with_index_f", e)
         if field is not None:
             results = [(r[0].split(sep)[field],r[1],r[2]) for r in results]
         return results
+
+
+    def stack_selected_results_with_index_f(self,field=1,sep=' <> '):
+        results = self.get_marked_results_with_index()
+        if not results:
+            try:
+                index = self.index
+                result = self.results[index] # EAFP (results may be a zero-length list)
+                results.append((result[0], index, result[2]))
+            except Exception as e:
+                debug.log("stack_selected_results_with_index_f", e)
+        if field is not None:
+            debug.log("Field %s"%field)
+            results = [r[0].split(sep)[2] for r in results]
+        self.stack += results
+        debug.log("Testing stack")
+        debug.log(self.stack)
 
     # ------------------------------------------------------------ #
     #  Selections

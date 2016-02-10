@@ -74,6 +74,9 @@ class SelectorView(object):
         
 
     def fold_line(self, orig_str, sep, fold_fields):
+        '''
+        Fold folded line for specified fields
+        '''
         new_line = orig_str
         if fold_fields:
             fields = orig_str.split(sep)
@@ -95,6 +98,11 @@ class SelectorView(object):
 
     
     def fold_matches(self, old_spans, new_spans, subq, match_info, folded_fields, fold_subq):
+        '''
+        Check if search string is in a folded field and return modified co-ords for 
+        highligting
+        '''
+
         new_match_info = []
         if len(folded_fields) == 0 or match_info == [(0,0)]:
             return match_info

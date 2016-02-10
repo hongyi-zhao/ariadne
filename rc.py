@@ -42,4 +42,5 @@ percol.import_keymap({
     "C-d" : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
     "M-r" : lambda percol: percol.command.toggle_recent(),
+    "C-s" : lambda percol: percol.command.fill_stack(),
 })    

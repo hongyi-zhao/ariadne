@@ -281,3 +281,13 @@ class Percol(object):
 
     def cancel_with_exit_code(self):
         return 1
+
+    def finish_and_save(self):
+        stack = [s+'\n' for s in self.model.stack]
+        outfilename = 'script.sh'
+        debug.log(stack)
+        # outfilename = input("Script file name: ")
+        outfile = open(outfilename,'w')
+        outfile.writelines(stack)
+        outfile.close()
+        raise TerminateLoop(0)

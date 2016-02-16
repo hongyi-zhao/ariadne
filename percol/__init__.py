@@ -283,11 +283,6 @@ class Percol(object):
         return 1
 
     def finish_and_save(self):
-        stack = [s+'\n' for s in self.model.stack]
-        outfilename = 'script.sh'
-        debug.log(stack)
-        # outfilename = input("Script file name: ")
-        outfile = open(outfilename,'w')
-        outfile.writelines(stack)
-        outfile.close()
-        raise TerminateLoop(0)
+        self.view.stack_fname_prompt()
+        # raise TerminateLoop(10)
+        

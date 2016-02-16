@@ -23,10 +23,11 @@ class SelectorView(object):
     MESSAGE_ERROR            = ("on_red", "white")
     FIELD_SEP                = ' <> '
     FOLDED                   = '..'
+    STACKLINE               =  '========= Command Stack ========='
 
     @property
     def RESULTS_DISPLAY_MAX(self):
-        return self.display.Y_END - self.display.Y_BEGIN - len(self.model.stack)
+        return self.display.Y_END - self.display.Y_BEGIN - (len(self.model.stack) + 1)
 
     @property
     def model(self):
@@ -52,8 +53,8 @@ class SelectorView(object):
         with self.percol.global_lock:
             self.display.erase()
             self.display_results()
-            self.display_prompt()
             self.display_stack()
+            self.display_prompt()
             self.display.refresh()
 
     def display_line(self, y, x, s, style = None):
@@ -206,6 +207,8 @@ class SelectorView(object):
         stack_vertical_pos = self.RESULTS_OFFSET_V + self.RESULTS_DISPLAY_MAX
         result_pos_direction = 1 if self.results_top_down else -1
 
+        self.display.add_string(self.STACKLINE,pos_y=stack_vertical_pos)
+        stack_vertical_pos += result_pos_direction
         for command in self.model.stack:
             self.display.add_string(command, pos_y = stack_vertical_pos, pos_x = 0)
             stack_vertical_pos += result_pos_direction
@@ -284,10 +287,22 @@ class SelectorView(object):
         try:
             # move caret
             if self.caret_x >= 0 and self.caret_y >= 0:
-                self.screen.move(self.caret_y,
-                                 self.caret_x + display.screen_len(self.model.query, 0, self.model.caret))
+                self.screen.move(self.caret_y , 
+                                 self.caret_x  + display.screen_len(self.model.query, 0, self.model.caret))
         except curses.error:
             pass
+
+    def stack_fname_prompt(self):
+        oldy = self.caret_y
+        oldx = self.caret_x
+
+        debug.log('caret x %s'%self.caret_x)
+        self.caret_y = self.RESULTS_DISPLAY_MAX + 1
+        self.caret_x = len(self.STACKLINE)
+        
+        self.screen.move(self.caret_y, self.caret_x)
+        # self.screen.move(10, 0)
+
 
     def handle_format_prompt_query(self, matchobj, offset):
         # -1 is from first '%' of %([a-zA-Z%])

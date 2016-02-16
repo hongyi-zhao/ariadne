@@ -136,11 +136,8 @@ class SelectorModel(object):
             except Exception as e:
                 debug.log("stack_selected_results_with_index_f", e)
         if field is not None:
-            debug.log("Field %s"%field)
             results = [r[0].split(sep)[2] for r in results]
         self.stack += results
-        debug.log("Testing stack")
-        debug.log(self.stack)
 
     def pop_stack(self):
         self.stack.pop()

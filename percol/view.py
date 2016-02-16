@@ -301,6 +301,7 @@ class SelectorView(object):
         self.caret_x = len(self.STACKLINE)
         
         self.screen.move(self.caret_y, self.caret_x)
+        self.screen.refresh()
         # self.screen.move(10, 0)
 
 

@@ -15,6 +15,7 @@ class SelectorModel(object):
         self.setup_index(index)
         self.recent = recent
         self.stack = []
+        self.query_mode = True
 
     # ============================================================ #
     # Pager attributes

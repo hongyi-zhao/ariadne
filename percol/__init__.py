@@ -66,6 +66,7 @@ class Percol(object):
                                           finder = action_finder)
         self.model = self.model_candidate
 
+
     def has_no_candidate(self):
         return not self.candidates.has_nth_value(0)
 
@@ -283,6 +284,7 @@ class Percol(object):
         return 1
 
     def finish_and_save(self):
-        self.view.stack_fname_prompt()
+        # self.view.stack_fname_prompt()
+        self.model.query_mode = False
         # raise TerminateLoop(10)
         

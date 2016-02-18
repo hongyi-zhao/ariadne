@@ -55,6 +55,8 @@ class SelectorView(object):
             self.display_results()
             self.display_stack()
             self.display_prompt()
+            if self.model.query_mode == False:
+                self.stack_fname_prompt()
             self.display.refresh()
 
     def display_line(self, y, x, s, style = None):
@@ -296,13 +298,16 @@ class SelectorView(object):
         oldy = self.caret_y
         oldx = self.caret_x
 
-        debug.log('caret x %s'%self.caret_x)
+        # debug.log('caret x %s'%self.caret_x)
         self.caret_y = self.RESULTS_DISPLAY_MAX + 1
         self.caret_x = len(self.STACKLINE)
         
+        c = self.model.caret
+        debug.log("caret: %s"%c)
+        self.model.caret = 10
+        debug.log("caret b1: %s"%c)
         self.screen.move(self.caret_y, self.caret_x)
         self.screen.refresh()
-        # self.screen.move(10, 0)
 
 
     def handle_format_prompt_query(self, matchobj, offset):

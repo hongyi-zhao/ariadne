@@ -2,12 +2,39 @@
 
 import re
 import curses
+import curses.textpad
 import six
 import math
+import cmd
 
 from itertools import islice
 
 from percol import display, debug
+
+class Commands(cmd.Cmd):
+    """Simple command processor example."""
+        
+    def __init__(self):
+        cmd.Cmd.__init__(self)
+        self.prompt = "> "
+        self.intro  = "Welcome to console!"  ## defaults to None
+    
+    def do_greet(self, line):
+        self.write("hello "+line)
+
+    def default(self,line) :
+        self.write("Don't understand '" + line + "'")
+
+    def do_quit(self, line):
+        curses.endwin()
+        return True
+
+    def write(self,text) :
+        screen.clear()
+        textwin.clear()
+        screen.addstr(3,0,text)
+        screen.refresh()
+
 
 class SelectorView(object):
     def __init__(self, percol = None):
@@ -23,7 +50,7 @@ class SelectorView(object):
     MESSAGE_ERROR            = ("on_red", "white")
     FIELD_SEP                = ' <> '
     FOLDED                   = '..'
-    STACKLINE               =  '========= Command Stack ========='
+    STACKLINE                = '========= Command Stack ========='
 
     @property
     def RESULTS_DISPLAY_MAX(self):
@@ -272,7 +299,7 @@ class SelectorView(object):
 
         # when %q is specified, record its position
         if self.last_query_position >= 0:
-            self.caret_x = self.last_query_position + x
+            self.caret_x = self.last_query_position + x 
             self.caret_y = self.PROMPT_OFFSET_V
 
     def display_prompt(self):
@@ -294,20 +321,37 @@ class SelectorView(object):
         except curses.error:
             pass
 
-    def stack_fname_prompt(self):
-        oldy = self.caret_y
-        oldx = self.caret_x
+    def maketextbox(self,h,w,y,x,value="",deco=None,textColorpair=0,decoColorpair=0):
+        # thanks to http://stackoverflow.com/a/5326195/8482 for this
+        nw = curses.newwin(h,w,y,x)
+        txtbox = curses.textpad.Textbox(nw,insert_mode=True)
+        if deco=="frame":
+            self.screen.attron(decoColorpair)
+            curses.textpad.rectangle(self.screen,y-1,x-1,y+h,x+w)
+            self.screen.attroff(decoColorpair)
+        elif deco=="underline":
+            self.screen.hline(y+1,x,underlineChr,w,decoColorpair)
 
-        # debug.log('caret x %s'%self.caret_x)
-        self.caret_y = self.RESULTS_DISPLAY_MAX + 1
-        self.caret_x = len(self.STACKLINE)
-        
-        c = self.model.caret
-        debug.log("caret: %s"%c)
-        self.model.caret = 10
-        debug.log("caret b1: %s"%c)
-        self.screen.move(self.caret_y, self.caret_x)
+        nw.addstr(0,0,value,textColorpair)
+        nw.attron(textColorpair)
         self.screen.refresh()
+        return nw,txtbox
+
+
+    def stack_fname_prompt(self):
+                
+        win_y = self.RESULTS_DISPLAY_MAX + 1
+        win_x = len(self.STACKLINE)
+        
+        curses.noecho()
+        textwin,textbox = self.maketextbox(1,40, win_y,win_x,"")
+        
+        flag = False
+        while not flag :
+            text = textbox.edit()
+            curses.beep()
+            flag = Commands().onecmd(text)
+
 
 
     def handle_format_prompt_query(self, matchobj, offset):

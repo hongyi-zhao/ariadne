@@ -11,31 +11,6 @@ from itertools import islice
 
 from percol import display, debug
 
-class Commands(cmd.Cmd):
-    """Simple command processor example."""
-        
-    def __init__(self):
-        cmd.Cmd.__init__(self)
-        self.prompt = "> "
-        self.intro  = "Welcome to console!"  ## defaults to None
-    
-    def do_greet(self, line):
-        self.write("hello "+line)
-
-    def default(self,line) :
-        self.write("Don't understand '" + line + "'")
-
-    def do_quit(self, line):
-        curses.endwin()
-        return True
-
-    def write(self,text) :
-        screen.clear()
-        textwin.clear()
-        screen.addstr(3,0,text)
-        screen.refresh()
-
-
 class SelectorView(object):
     def __init__(self, percol = None):
         self.percol  = percol
@@ -339,7 +314,6 @@ class SelectorView(object):
 
 
     def stack_fname_prompt(self):
-                
         win_y = self.RESULTS_DISPLAY_MAX + 1
         win_x = len(self.STACKLINE)
         
@@ -347,11 +321,15 @@ class SelectorView(object):
         textwin,textbox = self.maketextbox(1,40, win_y,win_x,"")
         
         flag = False
-        while not flag :
-            text = textbox.edit()
-            curses.beep()
-            flag = Commands().onecmd(text)
-
+        textbox.edit()
+        text = textbox.gather()
+        debug.log("Filename: %s"%text)
+        
+        # self.screen.refresh()
+        # self.display.refresh()
+        # while not flag :
+            # curses.beep()
+            # flag = Commands().onecmd(text)
 
 
     def handle_format_prompt_query(self, matchobj, offset):

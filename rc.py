@@ -32,7 +32,7 @@ percol.import_keymap({
     # finish
     "RET"         : lambda percol: percol.finish(), # Is RET never sent? #seems not, doesn't respond to finish_f either - gaw
     "C-m"         : lambda percol: percol.finish(),
-    "C-j"         : lambda percol: percol.finish(),
+    # "C-j"         : lambda percol: percol.finish(),
     # "C-c"         : lambda percol: percol.cancel(),
 
     "<f1>" : lambda percol: percol.command.toggle_date(),

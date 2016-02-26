@@ -2,7 +2,8 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.FIELD_SEP = ' <> '
+percol.view.FIELD_SEP = ' >< ' #other possiblities: ' ◆ ', ' 🞛  ' etc
+# 
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
 
 percol.command.set_field_sep(percol.view.FIELD_SEP)
@@ -32,7 +33,7 @@ percol.import_keymap({
     # finish
     "RET"         : lambda percol: percol.finish(), # Is RET never sent? #seems not, doesn't respond to finish_f either - gaw
     "C-m"         : lambda percol: percol.finish(),
-    "C-j"         : lambda percol: percol.finish(),
+    # "C-j"         : lambda percol: percol.finish(),
     # "C-c"         : lambda percol: percol.cancel(),
 
     "<f1>" : lambda percol: percol.command.toggle_date(),

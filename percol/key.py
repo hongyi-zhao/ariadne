@@ -2,6 +2,7 @@
 
 import curses, array
 import six
+from percol import debug
 
 SPECIAL_KEYS = {
     curses.KEY_A1        : "<a1>",
@@ -180,7 +181,7 @@ class KeyHandler(object):
         elif ch in SPECIAL_KEYS:
             k = SPECIAL_KEYS[ch]
         elif self.is_ctrl_masked_key(ch):
-            k = self.ctrl_masked_key_to_str(ch)
+            k = self.ctrl_masked_key_to_str(ch)            
         elif ch == KEY_ESCAPE:
             if escaped:
                 k = "ESC"

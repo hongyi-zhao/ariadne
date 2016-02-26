@@ -266,4 +266,12 @@ Maybe all descriptors are redirecred."""))
             else:
                 exit_code = percol.loop()
 
+            if exit_code == 10:
+                stack = [s+'\n' for s in percol.model.stack]
+                # outfilename = input("Script file name: ")
+                # print(outfilename)
+                # outfile = open(outfilename,'w')
+                # outfile.writelines(stack)
+                # outfile.close()
+
         sys.exit(exit_code)

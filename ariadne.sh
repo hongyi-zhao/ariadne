@@ -6,10 +6,6 @@ _ariadne() { # was _loghistory :)
 # (http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history)
 # (https://gist.github.com/jeetsukumaran/2202879)
 #
-## Add something like the following to ~/.bashrc:
-# source $HOME/.config/bash/ariadne/ariadne.sh
-# export PROMPT_COMMAND='_ariadne -h -u '
-##
 # Set the bash variable PROMPT_COMMAND to the name of this function and include
 # these options:
 #
@@ -22,8 +18,10 @@ _ariadne() { # was _loghistory :)
 #     l - path to the log file (default = $HOME/.bash_log)
 #     ext or a variable
 #
-# See bottom of this function for examples.
-#
+## Add something like the following to ~/.bashrc:
+# source $HOME/.config/bash/ariadne/ariadne.sh
+# export PROMPT_COMMAND='_ariadne -h -u '
+##
 
     local script=$FUNCNAME
     local histentrycmd=
@@ -95,7 +93,6 @@ _ariadne() { # was _loghistory :)
     histentry=$(history 1)
 
     # parse it out
-	# histleader=`expr  match "$histentry" : ' *\([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
     # for some reason need to split it like this, regex inline doesn't work on my mac
     re=' *([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
     [[ $histentry =~ $re ]] && histleader=${BASH_REMATCH}
@@ -160,26 +157,39 @@ _ariadne() { # was _loghistory :)
     fi
 
     # build the string (if text or extra aren't empty, add them with some decoration)
-    # histentrycmd="${datetimestamp} ${text:+[$text] }${tty:+[$tty] }${ip:+[$ip] }${extra:+[$extra] }~~~ ${hostname:+$hostname:}$cwd ~~~ ${histentrycmd# * ~~~ }"
     # note on ${var+$var} format: empty if unset but expands to var value if set?
-    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , ${username:+$username@}${hostname:+$hostname:}${cwd} ,  ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
+    # '###' chosen because it's unlikely to appear in a typical shell command, also 
+    # a bit easier on my eye than '~~~'
+    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , \
+    ${username:+$username@}${hostname:+$hostname:}${cwd} ,  \
+    ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
     
     # save the entry in a logfile
     echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
 
-} # END FUNCTION _loghistory
+} 
 
-# function exists { which $1 &> /dev/null }
-# # if percol is installed, use it to search .bash_log to retrieve old command or the directory in which it was executed
-# # modified from https://github.com/mooz/percol#zsh-history-search
+# modified from https://github.com/mooz/percol#zsh-history-search
+
+function get_seperator() {
+    while read i
+    do
+        if [[ $i =~ "FIELD_SEP.+#" ]]; then
+            matching_line=$MATCH
+            [[ $matching_line =~ "'(.+)'" ]] && sep=$match[1] # not $MATCH?
+            print $sep
+            return 0
+        fi
+    done < $1
+}
 
 function percol_sel_log_history() {
-
+    export SEP=$(get_seperator 'rc.py')
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    gawk 'BEGIN {FS=" ### "} {\
-        ORS=" <> "; \
+    gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
+        ORS=sep; \
         split($(NF),a," , "); \
         split(a[3],b,"[@:]"); \
         print a[1];\
@@ -188,9 +198,6 @@ function percol_sel_log_history() {
         ORS="\n"; \
         print substr($0,0, length($0) -length($NF)-4);
     }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
-    # | gawk 'BEGIN {FS=" <> "} {print $2}')
-    # CURSOR=$#BUFFER         # move cursor
-    # zle -R -c               # refresh
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

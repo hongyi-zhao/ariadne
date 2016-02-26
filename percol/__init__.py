@@ -66,6 +66,7 @@ class Percol(object):
                                           finder = action_finder)
         self.model = self.model_candidate
 
+
     def has_no_candidate(self):
         return not self.candidates.has_nth_value(0)
 
@@ -214,7 +215,7 @@ class Percol(object):
         # finish
         "RET"         : lambda percol: percol.finish(), # Is RET never sent?
         "C-m"         : lambda percol: percol.finish(),
-        "C-j"         : lambda percol: percol.finish(),
+        # "C-j"         : lambda percol: percol.finish(),
         "C-c"         : lambda percol: percol.cancel()
     }
 
@@ -251,6 +252,7 @@ class Percol(object):
         k = self.keyhandler.get_key_for(ch)
         if k in self.keymap:
             self.keymap[k](self)
+            debug.log("here again %s, %s"%(ch,k))
         elif self.keyhandler.is_displayable_key(ch):
             self.model.insert_char(ch)
         return k
@@ -283,11 +285,9 @@ class Percol(object):
         return 1
 
     def finish_and_save(self):
-        stack = [s+'\n' for s in self.model.stack]
-        outfilename = 'script.sh'
-        debug.log(stack)
-        # outfilename = input("Script file name: ")
-        outfile = open(outfilename,'w')
-        outfile.writelines(stack)
-        outfile.close()
-        raise TerminateLoop(0)
+        # self.model.query_mode = False # giving up on custom file names for now
+        rerun = open('rerun.sh','w')
+        for line in self.model.stack:
+            rerun.writelines(line+'\n')
+        rerun.close()
+        

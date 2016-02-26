@@ -2,19 +2,9 @@ _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
 
 # Detailed history log of shell activities, including time stamps, working directory etc.
-#
-## Add something like the following to ~/.zshrc:
-# source ariadne.zsh
-# precmd() {
-#     _ariadne -h -t -u 
-# }
-##
-#
 # Based on 'hcmnt' by Dennis Williamson - 2009-06-05 - updated 2009-06-19
 # (http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history)
 # (https://gist.github.com/jeetsukumaran/2202879)
-#
-# Add this function to your '~/.bashrc':
 #
 # Set the bash variable PROMPT_COMMAND to the name of this function and include
 # these options:
@@ -28,8 +18,10 @@ _ariadne() { # was _loghistory :)
 #     l - path to the log file (default = $HOME/.bash_log)
 #     ext or a variable
 #
-# See bottom of this function for examples.
-#
+## Add something like the following to ~/.bashrc:
+# source $HOME/.config/bash/ariadne/ariadne.sh
+# export PROMPT_COMMAND='_ariadne -h -u '
+##
 
     local script=$FUNCNAME
     local histentrycmd=
@@ -94,19 +86,13 @@ _ariadne() { # was _loghistory :)
 
     # add the previous command(s) to the history file immediately
     # so that the history file is in sync across multiple shell sessions
-    # fc -AI
     export HISTTIMEFORMAT="%y-%m-%d %T "
     history -a
 
     # grab the most recent command from the command history
-    # histentry=$(fc -i -l -1 -1)
     histentry=$(history 1)
 
-    # histentrycmd=$(fc -l -n -1 -1)
-    # histentrycmd=$(history 1)
-
     # parse it out
-	# histleader=`expr  match "$histentry" : ' *\([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*\)'`
     # for some reason need to split it like this, regex inline doesn't work on my mac
     re=' *([0-9]* *[0-9]*-[0-9]*-[0-9]* *[0-9]*:[0-9]*:[0-9]*)'
     [[ $histentry =~ $re ]] && histleader=${BASH_REMATCH}
@@ -171,18 +157,19 @@ _ariadne() { # was _loghistory :)
     fi
 
     # build the string (if text or extra aren't empty, add them with some decoration)
-    # histentrycmd="${datetimestamp} ${text:+[$text] }${tty:+[$tty] }${ip:+[$ip] }${extra:+[$extra] }~~~ ${hostname:+$hostname:}$cwd ~~~ ${histentrycmd# * ~~~ }"
-    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , ${username:+$username@}${hostname:+$hostname:}${cwd} ,  ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
-	# echo $histentrycmd    
+    # note on ${var+$var} format: empty if unset but expands to var value if set?
+    # '###' chosen because it's unlikely to appear in a typical shell command, also 
+    # a bit easier on my eye than '~~~'
+    histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , \
+    ${username:+$username@}${hostname:+$hostname:}${cwd} ,  \
+    ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
     
     # save the entry in a logfile
     echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
 
-} # END FUNCTION _loghistory
+} 
 
-# function exists { which $1 &> /dev/null }
-# # if percol is installed, use it to search .bash_log to retrieve old command or the directory in which it was executed
-# # modified from https://github.com/mooz/percol#zsh-history-search
+# modified from https://github.com/mooz/percol#zsh-history-search
 
 function percol_sel_log_history() {
 
@@ -199,9 +186,6 @@ function percol_sel_log_history() {
         ORS="\n"; \
         print substr($0,0, length($0) -length($NF)-4);
     }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
-    # | gawk 'BEGIN {FS=" <> "} {print $2}')
-    # CURSOR=$#BUFFER         # move cursor
-    # zle -R -c               # refresh
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

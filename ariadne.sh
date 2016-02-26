@@ -171,13 +171,25 @@ _ariadne() { # was _loghistory :)
 
 # modified from https://github.com/mooz/percol#zsh-history-search
 
-function percol_sel_log_history() {
+function get_seperator() {
+    while read i
+    do
+        if [[ $i =~ "FIELD_SEP.+#" ]]; then
+            matching_line=$MATCH
+            [[ $matching_line =~ "'(.+)'" ]] && sep=$match[1] # not $MATCH?
+            print $sep
+            return 0
+        fi
+    done < $1
+}
 
+function percol_sel_log_history() {
+    export SEP=$(get_seperator 'rc.py')
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    gawk 'BEGIN {FS=" ### "} {\
-        ORS=" <> "; \
+    gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
+        ORS=sep; \
         split($(NF),a," , "); \
         split(a[3],b,"[@:]"); \
         print a[1];\

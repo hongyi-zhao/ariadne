@@ -167,7 +167,7 @@ _ariadne() { # was _loghistory :)
 function get_seperator() {
     while read i
     do
-        if [[ $i =~ "FIELD_SEP.+#" ]]; then
+        if [[ $i =~ "FIELD_SEP[^#]+#" ]]; then
             matching_line=$MATCH
             [[ $matching_line =~ "'(.+)'" ]] && sep=$match[1] # not $MATCH?
             print $sep
@@ -175,6 +175,7 @@ function get_seperator() {
         fi
     done < $1
 }
+get_seperator 'rc.py'
 
 function percol_sel_log_history() {
     export SEP=$(get_seperator 'rc.py')

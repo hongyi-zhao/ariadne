@@ -16,7 +16,8 @@ little joy from memorizing the relevant incantations and arcana)
 
 - [What's this](#whats-this)
 - [Installation](#installation)
-  - [Manual](#manual)
+  - [Zsh](#zsh)
+  - [Bash](#bash)
 - [Usage](#usage)
 - [Configuration](#configuration)
 
@@ -35,7 +36,7 @@ ariadne allows:
 
 ## Installation
 
-### Manual - zsh
+### Zsh
 
 First, clone ariadne (I keep it `~/.oh-my-zsh/custom`)
 
@@ -50,7 +51,7 @@ Modify `~/.zshrc` to inject ariadne in `precmd`
         _ariadne -h -t -u 
     }
 
-### Manual - bash
+### Bash
 
     $ mkdir -p ~/.config/bash
     $ cd ~/.config/bash
@@ -73,6 +74,9 @@ In ariadne:
 - Ctrl+L          : Filter by current directory
 - Alt+R           : Filter out duplicate commands
 - Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
+- Ctrl+S          : Push command to stack
+- Alt+S           : Pop command from stack
+- Ctrl+T          : Save stack (as 'rerun'sh') and exit
 
 ## Configuration
 

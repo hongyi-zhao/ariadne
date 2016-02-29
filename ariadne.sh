@@ -174,21 +174,23 @@ _ariadne() { # was _loghistory :)
 function get_seperator() {
     while read i
     do
-        if [[ $i =~ "FIELD_SEP.+#" ]]; then
-            matching_line=$MATCH
-            [[ $matching_line =~ "'(.+)'" ]] && sep=$match[1] # not $MATCH?
-            print $sep
+        re='FIELD_SEP[^#]*#?'
+        if [[ $i =~ $re ]]; then
+            matching_line=${BASH_REMATCH[0]}
+            re="'(.+)'"
+            [[ $matching_line =~ $re ]] && SEP=${BASH_REMATCH[1]}
             return 0
         fi
     done < $1
 }
 
 function percol_sel_log_history() {
-    export SEP=$(get_seperator 'rc.py')
+    unset SEP
+    get_seperator 'rc.py'
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
+    gawk -v sep="${SEP}" 'BEGIN {FS=" ### "} {\
         ORS=sep; \
         split($(NF),a," , "); \
         split(a[3],b,"[@:]"); \

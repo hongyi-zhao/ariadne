@@ -23,7 +23,7 @@ class SelectorView(object):
     CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
     CANDIDATES_LINE_QUERY    = ("yellow", "bold")
     MESSAGE_ERROR            = ("on_red", "white")
-    FIELD_SEP                = ' <> '
+    FIELD_SEP                = ' >< '
     FOLDED                   = '..'
     STACKLINE                = '========= Command Stack ========='
 

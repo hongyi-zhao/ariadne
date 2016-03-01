@@ -274,11 +274,11 @@ class Percol(object):
         raise TerminateLoop(self.cancel_with_exit_code())          # failure
 
     def finish_with_exit_code(self, value):
-        self.args_for_action = self.model_candidate.get_selected_results_with_index()
+        self.args_for_action = self.model_candidate.get_selected_results_with_index(sep=self.model.finder.sep)
         return value
 
     def finish_with_exit_code_f(self, value,field=None):
-        self.args_for_action = self.model_candidate.get_selected_results_with_index_f(field=field)
+        self.args_for_action = self.model_candidate.get_selected_results_with_index_f(field=field,sep=self.model.finder.sep)
         return value
 
     def cancel_with_exit_code(self):

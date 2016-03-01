@@ -242,8 +242,8 @@ class SelectorCommand(object):
         self.model.force_search()
 
     def set_field_sep(self,seperator):
-        if self.model.finder.sep:
-            self.model.finder.sep = seperator
+        # if self.model.finder.sep:
+        self.model.finder.sep = seperator
         self.model.force_search()
 
     def specify_split_query(self, split_query):

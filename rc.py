@@ -3,7 +3,7 @@ percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
-# percol.command.set_field_sep(percol.view.FIELD_SEP)
+percol.command.set_field_sep(percol.view.FIELD_SEP)
 percol.view.FOLDED = '…' # not sure how to get '…' working for mac
 
 percol.command.set_field_sep(percol.view.FIELD_SEP)

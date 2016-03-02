@@ -7,7 +7,7 @@ The cli logging is modified from the the following:
 - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
 - https://gist.github.com/jeetsukumaran/2202879)
 
-I made this becuase I wanted to be able to search for previous commands based on path as
+I made this because I wanted to be able to search for previous commands based on path as
 well as the command itself. I tend to use deeply nested and descriptive directory names
 and want to quickly jump to them based on the command. This also makes it easy to copy
 and paste commands in a new project directory based on a similar older project. This is 

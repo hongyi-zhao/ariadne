@@ -141,7 +141,8 @@ class SelectorModel(object):
         self.stack += results
 
     def pop_stack(self):
-        self.stack.pop()
+        if len(self.stack) > 0:
+            self.stack.pop()
 
     # ------------------------------------------------------------ #
     #  Selections

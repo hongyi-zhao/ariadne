@@ -33,22 +33,11 @@ class SelectorModel(object):
     # Initializer
     # ============================================================ #
 
-    def filter_old(self,sep=' <> '):
-        found_commands = []
-        filtered = []
-
-        for r in self.results:
-            cmd = r[0].split(sep)[2]
-            if not cmd in found_commands:
-                filtered.append(r)
-
-        return filtered
-
+    
     def setup_results(self, query, recent=False):
         self.query   = self.old_query = query or u""
         self.results = self.finder.get_results(self.query)
-        if recent:
-            self.results = self.filter_old(self.results)
+    
         self.marks   = {}
 
     def setup_caret(self, caret):

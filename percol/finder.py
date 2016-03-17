@@ -13,6 +13,7 @@ class Finder(object):
     __metaclass__ = ABCMeta
 
     def __init__(self, **args):
+        found_commands = []
         pass
 
     def clone_as(self, new_finder_class):
@@ -31,7 +32,6 @@ class Finder(object):
 
     invert_match = False
     lazy_finding = True
-    recency_bias = True
     def get_results(self, query, collection = None):
         if self.lazy_finding:
             # debug.log(LazyArray((result for result in self.find(query, collection)))[0])
@@ -123,10 +123,11 @@ class FinderMultiQuery(CachedFinder):
                     res = None if res else self.dummy_res
 
             if res:
-                command = line.split(FinderMultiQuery.sep)[-1]
+                command = line.split(self.sep)[-1].strip()
+                # debug.log(len(found_commands))
                 if not command in found_commands and self.recent_commands:
+                    debug.log(command)
                     found_commands.append(command)
-                    # debug.log(len(found_commands))
                     yield line, res, idx
                 elif not self.recent_commands:
                     yield line, res, idx

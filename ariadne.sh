@@ -110,7 +110,7 @@ _ariadne() { # was _loghistory :)
     # if all that was actually entered by the user
     # was a (no-op) blank line
     # echo "${#__PREV_HISTCMD} ${#__PREV_HISTLINE}"
-    if [[ ! -v __PREV_HISTLINE || -z $__PREV_HISTCMD ]]
+    if [[ -z "$__PREV_HISTCMD" ]]
     then
         # new shell; initialize variables for next command
     	# echo "$__PREV_HISTCMD $__PREV_HISTLINE"
@@ -128,7 +128,7 @@ _ariadne() { # was _loghistory :)
         export __PREV_HISTCMD=$histentrycmd
     fi
 
-    if [[ -z $NoneOpt ]]            # are we adding the directory?
+    if [[ -z "$NoneOpt" ]]            # are we adding the directory?
     then
         if [[ ${histentrycmd%% *} == "cd" \
          || ${histentrycmd%% *} == "j"  \
@@ -136,7 +136,7 @@ _ariadne() { # was _loghistory :)
          # modified for autjump (j) and named directories (~), not sure how to deal with autocd
          # Doesn't detect failure to change to restricted directories
         then                             #   so the comment matches other commands "where *were* you when this was done?"
-            if [[ -z $OLDPWD ]]
+            if [[ -z "$OLDPWD" ]]
             then
                 OLDPWD="$HOME"
             fi

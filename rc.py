@@ -1,8 +1,14 @@
+push_stack = "C-s"
+pop_stack = "M-s"
+save_stack = "C-t"
+
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
+percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as rerun.sh:%s ===='\
+	%(push_stack,pop_stack,save_stack)
 percol.command.set_field_sep(percol.view.FIELD_SEP)
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
 
@@ -43,7 +49,7 @@ percol.import_keymap({
     "C-d" : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
     "M-r" : lambda percol: percol.command.toggle_recent(),
-    "C-s" : lambda percol: percol.command.fill_stack(),
-    "M-s" : lambda percol: percol.command.pop_stack(),
-    "C-t" : lambda percol: percol.finish_and_save(),
+    push_stack : lambda percol: percol.command.fill_stack(),
+    pop_stack : lambda percol: percol.command.pop_stack(),
+    save_stack : lambda percol: percol.finish_and_save(),
 })    

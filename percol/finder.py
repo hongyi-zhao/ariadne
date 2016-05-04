@@ -126,7 +126,7 @@ class FinderMultiQuery(CachedFinder):
                 command = line.split(self.sep)[-1].strip()
                 # debug.log(len(found_commands))
                 if not command in found_commands and self.recent_commands:
-                    debug.log(command)
+                    # debug.log(command)
                     found_commands.append(command)
                     yield line, res, idx
                 elif not self.recent_commands:

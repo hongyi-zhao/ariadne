@@ -1,16 +1,39 @@
+
 push_stack = "C-s"
 pop_stack = "M-s"
 save_stack = "C-t"
+filter_dups = "M-r"
+return_dir = "C-d"
+filter_bydir = "C-l"
+hide_field_1 = "<f1>"
+hide_field_2 = "<f2>"
+hide_field_3 = "<f3>"
+
+def pretty_key(key):
+    tmp = key.replace('C-','^')
+    tmp = tmp.replace('M-', '⌥')
+    tmp = tmp.replace('<', '')
+    tmp = tmp.replace('>', '')
+    return tmp
 
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
-percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as rerun.sh:%s ===='\
-	%(push_stack,pop_stack,save_stack)
+percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rerun.sh":%s ===='\
+	%(pretty_key(push_stack),
+        pretty_key(pop_stack),
+        pretty_key(save_stack))
 percol.command.set_field_sep(percol.view.FIELD_SEP)
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
+percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
+    %(  pretty_key(return_dir),
+        pretty_key(filter_bydir),
+        pretty_key(filter_dups),
+        pretty_key(hide_field_1),
+        pretty_key(hide_field_2),
+        pretty_key(hide_field_3))
 
 percol.command.set_field_sep(percol.view.FIELD_SEP)
 
@@ -42,13 +65,13 @@ percol.import_keymap({
     # "C-j"         : lambda percol: percol.finish(),
     # "C-c"         : lambda percol: percol.cancel(),
 
-    "<f1>" : lambda percol: percol.command.toggle_date(),
-    "<f2>" : lambda percol: percol.command.toggle_execdir(),
-    "<f3>" : lambda percol: percol.command.toggle_command(),
-    "C-l" : lambda percol: percol.command.cwd_filter(),
-    "C-d" : lambda percol: percol.finish(field=1),
+    hide_field_1 : lambda percol: percol.command.toggle_date(),
+    hide_field_2 : lambda percol: percol.command.toggle_execdir(),
+    hide_field_3 : lambda percol: percol.command.toggle_command(),
+    filter_bydir : lambda percol: percol.command.cwd_filter(),
+    return_dir : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
-    "M-r" : lambda percol: percol.command.toggle_recent(),
+    filter_dups : lambda percol: percol.command.toggle_recent(),
     push_stack : lambda percol: percol.command.fill_stack(),
     pop_stack : lambda percol: percol.command.pop_stack(),
     save_stack : lambda percol: percol.finish_and_save(),

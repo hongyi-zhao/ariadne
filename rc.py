@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 push_stack = "C-s"
 pop_stack = "M-s"
 save_stack = "C-t"
@@ -11,7 +11,7 @@ hide_field_3 = "<f3>"
 
 def pretty_key(key):
     tmp = key.replace('C-','^')
-    tmp = tmp.replace('M-', '⌥')
+    tmp = tmp.replace('M-', u'⌥') #need to find a better alternative for mono fonts
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
     return tmp

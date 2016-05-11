@@ -62,6 +62,15 @@ Add the following to `~/.bashrc`:
     source $HOME/.config/bash/ariadne/ariadne.sh
     export PROMPT_COMMAND='_ariadne -h -t -u '
 
+### Fish
+    
+Clone into `~/.config/fish/functions`
+    
+    $ cd ~/.config/fish/functions
+    $ git clone https://github.com/gawells/ariadne
+    $ cat ariadne/config.fish >> ../config.fish
+    $ cp ariadne/fish_user_key_bindings.fish .
+
 ## Usage
 
 - Ctrl+R          : Invoke command history search

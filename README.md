@@ -18,6 +18,7 @@ little joy from memorizing the relevant incantations and arcana)
 - [Installation](#installation)
   - [Zsh](#zsh)
   - [Bash](#bash)
+  - [Fish](#Fish)
 - [Usage](#usage)
 - [Configuration](#configuration)
 

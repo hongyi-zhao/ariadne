@@ -17,13 +17,15 @@ def main():
 	logout = open(args.newlogfile,'w')
 
 	for line in logf:
+		line_orig = line
+		line = re.sub(' {1,}, {1,}' , ' , ', line)
 		match =  re.search('\w+@\w+:', line)
 		if match:
 			m = match.group(0)
+			span = match.span(0)			
 			m = m.replace('@', ' , ')
 			m = m.replace(':', ' , ')
-			span = match.span(0)
-			newline = line[0:span[0]-1] + m + line[span[1]+1:]
+			newline = line[0:span[0]] + m + line[span[1]:]
 			logout.write(newline)
 
 	logout.close()

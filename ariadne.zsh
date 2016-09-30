@@ -181,16 +181,17 @@ function percol_sel_log_history() {
     # print $SEP
     RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
     PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
-    BUFFER=$(gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
-        ORS=sep; \
-        split($(NF),a," , "); \
-        print a[1];\
-        s=gensub(/ $/,"","g",a[5]);\
-        print gensub(/ /,"\\\\ ","g",s);  \
-        ORS="\n"; \
-        print substr($0,0, length($0) -length($NF)-4);
-    }' ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE )
+    # PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
+    # BUFFER=$(gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
+    #     ORS=sep; \
+    #     split($(NF),a," , "); \
+    #     print a[1];\
+    #     s=gensub(/ $/,"","g",a[5]);\
+    #     print gensub(/ /,"\\\\ ","g",s);  \
+    #     ORS="\n"; \
+    #     print substr($0,0, length($0) -length($NF)-4);
+    # }' ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE )
+    BUFFER=$(cat  ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE)
     # | gawk 'BEGIN {FS=" <> "} {print $2}')
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh

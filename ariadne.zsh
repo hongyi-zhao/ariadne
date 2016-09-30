@@ -191,8 +191,7 @@ function percol_sel_log_history() {
     #     ORS="\n"; \
     #     print substr($0,0, length($0) -length($NF)-4);
     # }' ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE )
-    BUFFER=$(cat  ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE)
-    # | gawk 'BEGIN {FS=" <> "} {print $2}')
+    BUFFER=$(cat  ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE) # not sure why I can't pass .zsh_log as arg to percol
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh
 }

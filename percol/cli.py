@@ -148,10 +148,10 @@ def read_input(filename, encoding, reverse=False):
         # line = cmd
         meta_data_arr = arr[1].split(',')
         date = meta_data_arr[0]
-        date.rstrip()
+        date=date.strip()
         path = meta_data_arr[4]
-        path.rstrip(' \n\r')
-        path.replace(' ','\\ ')
+        path=path.strip()
+        path.replace(' ','\\\\ ')
         line = date+' <> '+path+' <> '+cmd
         yield ansi.remove_escapes(line.rstrip("\r\n"))
     stream.close()

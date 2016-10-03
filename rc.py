@@ -11,21 +11,22 @@ hide_field_3 = "<f3>"
 
 def pretty_key(key):
     tmp = key.replace('C-','^')
-    tmp = tmp.replace('M-', u'⌥') #need to find a better alternative for mono fonts
+    tmp = tmp.replace('M-', u'⎇ ')# need to find a better alternative for mono fonts
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
     return tmp
 
+FIELD_SEP = ' <*> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
 percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rerun.sh":%s ===='\
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.command.set_field_sep(percol.view.FIELD_SEP)
+# percol.command.set_field_sep(percol.view.FIELD_SEP)
+# percol.command.set_field_sep(' <> ')
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
 percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
     %(  pretty_key(return_dir),
@@ -35,7 +36,7 @@ percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
         pretty_key(hide_field_2),
         pretty_key(hide_field_3))
 
-percol.command.set_field_sep(percol.view.FIELD_SEP)
+# percol.command.set_field_sep(percol.view.FIELD_SEP)
 
 percol.import_keymap({
     "C-i"         : lambda percol: percol.switch_model(),

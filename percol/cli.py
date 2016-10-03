@@ -13,6 +13,7 @@ from percol import tty
 from percol import debug
 from percol import ansi
 
+FIELD_SEP = ' <> '
 INSTRUCTION_TEXT = ansi.markup("""<bold><blue>{logo}</blue></bold>
                                 <on_blue><underline> {version} </underline></on_blue>
 
@@ -118,6 +119,8 @@ def setup_options(parser):
     parser.add_option("--peep", action = "store_true", dest = "peep", default = False,
                       help = "exit immediately with doing nothing to cache module files and speed up start-up time")
 
+    parser.add_option("--seperator", dest='seperator', default=' <> ')
+
 def set_proper_locale(options):
     locale.setlocale(locale.LC_ALL, '')
     output_encoding = locale.getpreferredencoding()
@@ -125,7 +128,7 @@ def set_proper_locale(options):
         output_encoding = options.output_encoding
     return output_encoding
 
-def read_input(filename, encoding, reverse=False):
+def read_input(filename, encoding, reverse=False, seperator=''):
     import codecs
     if filename:
         if six.PY2:
@@ -142,6 +145,9 @@ def read_input(filename, encoding, reverse=False):
         lines = reversed(stream.readlines())
     else:
         lines = stream
+
+    # preprocess lines into "date-time <sep> path <sep> command" for ariadne
+    # previously done with awk in shell scripts, but slows things down a bit
     for line in lines:
         arr = line.split('###')
         cmd = arr[0].rstrip()
@@ -152,8 +158,9 @@ def read_input(filename, encoding, reverse=False):
         path = meta_data_arr[4]
         path=path.strip()
         path.replace(' ','\\\\ ')
-        line = date+' <> '+path+' <> '+cmd
+        line = date+seperator+path+seperator+cmd
         yield ansi.remove_escapes(line.rstrip("\r\n"))
+
     stream.close()
 
 def decide_match_method(options):
@@ -220,7 +227,7 @@ Maybe all descriptors are redirecred."""))
 
         # read input
         try:
-            candidates = read_input(filename, input_encoding, reverse=options.reverse)
+            candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
         except KeyboardInterrupt:
             exit_program("Canceled", show_help = False)
 
@@ -255,11 +262,16 @@ Maybe all descriptors are redirecred."""))
                     encoding = output_encoding) as percol:
             # load run-command file
             load_rc(percol, options.rcfile)
+            # seperator can now be set via command-line
+            if options.seperator is not None:
+                percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
             # override prompts
             if options.prompt is not None:
                 percol.view.__class__.PROMPT = property(lambda self: options.prompt)
             if options.right_prompt is not None:
                 percol.view.__class__.RPROMPT = property(lambda self: options.right_prompt)
+            
+
             # evalutate strings specified by the option argument
             if options.string_to_eval is not None:
                 eval_string(percol, options.string_to_eval, locale.getpreferredencoding())

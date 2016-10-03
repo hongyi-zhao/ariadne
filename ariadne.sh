@@ -198,7 +198,8 @@ function percol_sel_log_history() {
         print gensub(/ /,"\\\\ ","g",s);  \
         ORS="\n"; \
         print substr($0,0, length($0) -length($NF)-4);
-    }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
+    # }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
+    # cat  ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE # not sure why I can't pass .zsh_log as arg to percol
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

@@ -189,8 +189,9 @@ function percol_sel_log_history() {
     get_seperator ${HOME}/.config/bash/ariadne/rc.py
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
+    FIELD_SEP=$(get_seperator "$HOME/.oh-my-zsh/custom/ariadne/rc.py")
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log
+    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator $FIELD_SEP
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

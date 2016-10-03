@@ -190,16 +190,7 @@ function percol_sel_log_history() {
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    gawk -v sep="${SEP}" 'BEGIN {FS=" ### "} {\
-        ORS=sep; \
-        split($(NF),a," , "); \
-        print a[1];\
-        s=gensub(/ $/,"","g",a[5]);\
-        print gensub(/ /,"\\\\ ","g",s);  \
-        ORS="\n"; \
-        print substr($0,0, length($0) -length($NF)-4);
-    # }' ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE 
-    # cat  ~/.bash_log | $PERCOL --reverse --rcfile=$RCFILE # not sure why I can't pass .zsh_log as arg to percol
+    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

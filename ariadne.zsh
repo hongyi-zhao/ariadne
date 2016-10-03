@@ -154,7 +154,7 @@ _ariadne() { # was _loghistory :)
     # '###' chosen because it's unlikely to appear in a typical shell command, also 
     # a bit easier on my eye than '~~~'
     histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , \
-    ${username:+$username@}${hostname:+$hostname:}${cwd} ,  \
+    ${username:+$username} , ${hostname:+$hostname} , ${cwd} ,  \
     ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
     
     # save the entry in a logfile
@@ -181,18 +181,17 @@ function percol_sel_log_history() {
     # print $SEP
     RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
     PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
-    BUFFER=$(gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
-        ORS=sep; \
-        split($(NF),a," , "); \
-        split(a[3],b,"[@:]"); \
-        print a[1];\
-        s=gensub(/ $/,"","g",b[3]);\
-        print gensub(/ /,"\\\\ ","g",s);  \
-        ORS="\n"; \
-        print substr($0,0, length($0) -length($NF)-4);
-    }' ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE )
-    # | gawk 'BEGIN {FS=" <> "} {print $2}')
+    # PYTHONPATH="$HOME/.oh-my-zsh/custom/ariadne/percol":$PYTHONPATH
+    # BUFFER=$(gawk -v sep="$SEP" 'BEGIN {FS=" ### "} {\
+    #     ORS=sep; \
+    #     split($(NF),a," , "); \
+    #     print a[1];\
+    #     s=gensub(/ $/,"","g",a[5]);\
+    #     print gensub(/ /,"\\\\ ","g",s);  \
+    #     ORS="\n"; \
+    #     print substr($0,0, length($0) -length($NF)-4);
+    # }' ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE )
+    BUFFER=$(cat  ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE) # not sure why I can't pass .zsh_log as arg to percol
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh
 }

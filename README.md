@@ -71,6 +71,8 @@ Clone into `~/.config/fish/functions`
     $ git clone https://github.com/gawells/ariadne
     $ cat ariadne/config.fish >> ../config.fish
     $ cp ariadne/fish_user_key_bindings.fish .
+    $ cp ariadne/browse_fish_history.fish .
+    $ cp ariadne/inject_fish_history.fish .
 
 ## Usage
 

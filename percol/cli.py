@@ -143,6 +143,16 @@ def read_input(filename, encoding, reverse=False):
     else:
         lines = stream
     for line in lines:
+        arr = line.split('###')
+        cmd = arr[0].rstrip()
+        # line = cmd
+        meta_data_arr = arr[1].split(',')
+        date = meta_data_arr[0]
+        date=date.strip()
+        path = meta_data_arr[4]
+        path=path.strip()
+        path.replace(' ','\\\\ ')
+        line = date+' <> '+path+' <> '+cmd
         yield ansi.remove_escapes(line.rstrip("\r\n"))
     stream.close()
 

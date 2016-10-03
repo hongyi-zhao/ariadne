@@ -174,11 +174,12 @@ _ariadne() { # was _loghistory :)
 function get_seperator() {
     while read i
     do
-        re='FIELD_SEP[^#]*#?'
-        if [[ $i =~ $re ]]; then
+        re='FIELD_SEP[^#]*#?'        
+        if [[ $i =~ $re ]]; then            
             matching_line=${BASH_REMATCH[0]}
             re="'(.+)'"
             [[ $matching_line =~ $re ]] && SEP=${BASH_REMATCH[1]}
+            echo "$SEP"
             return 0
         fi
     done < $1
@@ -189,9 +190,11 @@ function percol_sel_log_history() {
     get_seperator ${HOME}/.config/bash/ariadne/rc.py
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
-    FIELD_SEP=$(get_seperator "$HOME/.oh-my-zsh/custom/ariadne/rc.py")
+    FIELD_SEP=`get_seperator "$HOME/.config/bash/ariadne/rc.py"`
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator $FIELD_SEP
+    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator "$FIELD_SEP"
 }
+
+get_seperator "$HOME/.config/bash/ariadne/rc.py"
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'

@@ -60,11 +60,24 @@ def install_bash():
   copytree("./bin","%s/bin"%ar_home)
   copytree("./tools","%s/tools"%ar_home)
 
+def install_fish():
+  home = os.path.expanduser('~')
+  ar_home = os.path.expanduser('~/.config/fish/functions')
+  os.makedirs("%s/percol"%ar_home,exist_ok=True)
+  copy("./ariadne.fish","%s"%ar_home)
+  copy("./browse_fish_history.fish","%s"%ar_home)
+  copy("./fish_user_key_bindings.fish","%s"%ar_home)
+  copy("./rc.py","%s/ariadne"%ar_home)
+  copytree("./percol","%s/ariadne/percol"%ar_home)
+  copytree("./bin","%s/ariadne/bin"%ar_home)
+  copytree("./tools","%s/ariadne/tools"%ar_home)
+
 
 def main():
   parser = argparse.ArgumentParser()  
   parser.add_argument("-z","--zsh",action="store_true",default=False,help="Install for zsh")
   parser.add_argument("-b","--bash",action="store_true",default=False,help="Install for bash")
+  parser.add_argument("-f","--fish",action="store_true",default=False,help="Install for fish")
 
   args = parser.parse_args()
 
@@ -73,6 +86,9 @@ def main():
 
   if args.bash:
     install_bash()
+
+  if args.fish:
+    install_fish()
 
 if __name__ == '__main__':
   main()

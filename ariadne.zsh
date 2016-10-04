@@ -190,4 +190,7 @@ function percol_sel_log_history() {
 zle -N percol_sel_log_history
 bindkey '^R' percol_sel_log_history
 
+precmd() {
+    _ariadne -h -t -u 
+}
 

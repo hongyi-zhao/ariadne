@@ -2,12 +2,53 @@
 # -*- coding: utf-8 -*-
 import argparse
 import os
-from shutil import copy
+from shutil import copy,copy2,copystat
+
+class Error(OSError):
+    pass
+
+# modified from shutil to not be stupid about direcotry already existing
+def copytree(src, dst, symlinks=False):
+    names = os.listdir(src)
+    os.makedirs(dst,exist_ok=True)
+    errors = []
+    for name in names:
+        srcname = os.path.join(src, name)
+        dstname = os.path.join(dst, name)
+        try:
+            if symlinks and os.path.islink(srcname):
+                linkto = os.readlink(srcname)
+                os.symlink(linkto, dstname)
+            elif os.path.isdir(srcname):
+                copytree(srcname, dstname, symlinks)
+            else:
+                copy2(srcname, dstname)
+            # XXX What about devices, sockets etc.?
+        except OSError as why:
+            errors.append((srcname, dstname, str(why)))
+        # catch the Error from the recursive copytree so that we can
+        # continue with other files
+        except Error as err:
+            errors.extend(err.args[0])
+    try:
+        copystat(src, dst)
+    except OSError as why:
+        # can't copy file access times on Windows
+        if why.winerror is None:
+            errors.extend((src, dst, str(why)))
+    if errors:
+        raise Error(errors)
 
 def instal_zsh():
-  home=os.path.expanduser('~/.config/zsh')
-  os.makedirs(home,exist_ok=True)
-  copy("./ariadne.zsh","%s"%home)
+  home = os.path.expanduser('~')
+  ar_home = os.path.expanduser('~/.config/zsh/ariadne')
+  os.makedirs("%s/percol"%ar_home,exist_ok=True)
+  copy("./ariadne.zsh","%s"%ar_home)
+  copy("./rc.py","%s"%ar_home)
+  copytree("./percol","%s/percol"%ar_home)
+
+  with open(os.path.expanduser('~/.zshrc')) as f:
+    zshrc=f.readlines()
 
 
 def main():
@@ -23,6 +64,7 @@ if __name__ == '__main__':
   main()
 
 
+#probably don't need this atm - gw
 #!/usr/bin/env python
 
 # from setuptools import setup

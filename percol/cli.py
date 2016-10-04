@@ -150,16 +150,18 @@ def read_input(filename, encoding, reverse=False, seperator=''):
     # previously done with awk in shell scripts, but slows things down a bit
     for line in lines:
         arr = line.split('###')
-        cmd = arr[0].rstrip()
-        # line = cmd
-        meta_data_arr = arr[1].split(',')
-        date = meta_data_arr[0]
-        date=date.strip()
-        path = meta_data_arr[4]
-        path=path.strip()
-        path.replace(' ','\\\\ ')
-        line = date+seperator+path+seperator+cmd
-        yield ansi.remove_escapes(line.rstrip("\r\n"))
+        # check for malformed entry
+        if len(arr) == 2:
+            cmd = arr[0].rstrip()
+            meta_data_arr = arr[1].split(',')
+            if len(meta_data_arr) > 0:
+                date = meta_data_arr[0]
+                date=date.strip()
+                path = meta_data_arr[4]
+                path=path.strip()
+                path.replace(' ','\\\\ ')
+                line = date+seperator+path+seperator+cmd
+                yield ansi.remove_escapes(line.rstrip("\r\n"))
 
     stream.close()
 

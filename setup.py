@@ -39,26 +39,40 @@ def copytree(src, dst, symlinks=False):
     if errors:
         raise Error(errors)
 
-def instal_zsh():
+def install_zsh():
   home = os.path.expanduser('~')
   ar_home = os.path.expanduser('~/.config/zsh/ariadne')
   os.makedirs("%s/percol"%ar_home,exist_ok=True)
   copy("./ariadne.zsh","%s"%ar_home)
   copy("./rc.py","%s"%ar_home)
   copytree("./percol","%s/percol"%ar_home)
+  copytree("./bin","%s/bin"%ar_home)
+  copytree("./tools","%s/tools"%ar_home)
 
-  with open(os.path.expanduser('~/.zshrc')) as f:
-    zshrc=f.readlines()
+
+def install_bash():
+  home = os.path.expanduser('~')
+  ar_home = os.path.expanduser('~/.config/bash/ariadne')
+  os.makedirs("%s/percol"%ar_home,exist_ok=True)
+  copy("./ariadne.sh","%s"%ar_home)
+  copy("./rc.py","%s"%ar_home)
+  copytree("./percol","%s/percol"%ar_home)
+  copytree("./bin","%s/bin"%ar_home)
+  copytree("./tools","%s/tools"%ar_home)
 
 
 def main():
   parser = argparse.ArgumentParser()  
   parser.add_argument("-z","--zsh",action="store_true",default=False,help="Install for zsh")
+  parser.add_argument("-b","--bash",action="store_true",default=False,help="Install for bash")
 
   args = parser.parse_args()
 
   if args.zsh:
-    instal_zsh()
+    install_zsh()
+
+  if args.bash:
+    install_bash()
 
 if __name__ == '__main__':
   main()

@@ -195,6 +195,5 @@ function percol_sel_log_history() {
     $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator="$FIELD_SEP"
 }
 
-get_seperator "$HOME/.config/bash/ariadne/rc.py"
-
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+export PROMPT_COMMAND='_ariadne -h -u '

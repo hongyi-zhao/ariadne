@@ -178,9 +178,9 @@ function get_seperator() {
 
 function percol_sel_log_history() {
     export SEP="$(get_seperator ${HOME}/.oh-my-zsh/custom/ariadne/rc.py)"
-    RCFILE="$HOME/.oh-my-zsh/custom/ariadne/rc.py"
-    PERCOL="$HOME/.oh-my-zsh/custom/ariadne/bin/percol"    
-    FIELD_SEP=$(get_seperator "$HOME/.oh-my-zsh/custom/ariadne/rc.py")
+    RCFILE="$HOME/.config/zsh/ariadne/rc.py"
+    PERCOL="$HOME/.config/zsh/ariadne/bin/percol"    
+    FIELD_SEP=$(get_seperator "$HOME/.config/zsh/ariadne/rc.py")
     # not sure why I can't pass .zsh_log as arg to percol
     BUFFER=$(cat ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE --seperator=$FIELD_SEP) 
     CURSOR=$#BUFFER         # move cursor

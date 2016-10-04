@@ -1,3 +1,10 @@
+- [Installation](#installation)
+  - [Zsh](#zsh)
+  - [Bash](#bash)
+  - [Fish](#fish)
+- [Key bindings](#keybindigs)
+- [Configuration](#configuration)
+
 # ariadne
 
 Ariadne enables comprehensive zsh CLI history logging combined with interactive searching using a modified version of Masafumi Oyamada's interactive grep tool percol (https://github.com/mooz/percol). The CLI logging is modified from the the following scripts:
@@ -5,71 +12,46 @@ Ariadne enables comprehensive zsh CLI history logging combined with interactive 
 - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
 - https://gist.github.com/jeetsukumaran/2202879)
 
-Hitting Ctrl+R brings up a command line history that can be search by date, path and command. Either the selected command or path can be inserted at the prompt. The output can be filtered by current path and duplicate commands. Commands can also be stacked and saved to a file for later scripting.
+With this you can:
+
+1. Reverse search through previous commands and the paths where they were run
+2. Extract either the path or command
+3. Filtering by current path
+4. Filter out duplicate commands
+5. Hide/show date, command, path fields in search output
+6. Stack previous commands and save to a script (rerun.sh)
 
 This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world (and who derive little joy from memorizing the relevant incantations and arcana)
 
-- [What's this](#whats-this)
-- [Installation](#installation)
-  - [Zsh](#zsh)
-  - [Bash](#bash)
-  - [Fish](#fish)
-- [Usage](#usage)
-- [Configuration](#configuration)
-
-## What's this
-
-ariadne allows:
-
-1. Reverse searching through previous commands and the paths where they were run
-2. Extracting either the path or command
-3. Quick filtering with current path
-4. Filtering of duplicate commands
-5. Toggling of date, command, path fields in search output
-
 ![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
 
-
 ## Installation
-
+    $ git clone https://github.com/gawells/ariadne
+    $ cd ariadne
+    
 ### Zsh
 
-First, clone ariadne (I keep it `~/.oh-my-zsh/custom`)
+    $ ./setup.py -z
 
-    $ mkdir -p ~/.oh-my-zsh/custom
-    $ cd ~/.oh-my-zsh/custom
-    $ git clone https://github.com/gawells/ariadne
+Add the following to `~/.zshrc` 
 
-Modify `~/.zshrc` to inject ariadne in `precmd`
+    source ~/.config/zsh/ariadne/ariadne.zsh
     
-    source ~/.oh-my-zsh/custom/ariadne/ariadne.zsh
-    precmd() {
-        _ariadne -h -t -u 
-    }
-
 ### Bash
+    
+    $ ./setup.py -b
 
-    $ mkdir -p ~/.config/bash
-    $ cd ~/.config/bash
-    $ git clone https://github.com/gawells/ariadne
-
-Add the following to `~/.bashrc`:
+Add the following to `~/.bashrc`
 
     source $HOME/.config/bash/ariadne/ariadne.sh
-    export PROMPT_COMMAND='_ariadne -h -t -u '
-
+    
 ### Fish
     
-Clone into `~/.config/fish/functions`
+    $ ./setup.py -f
     
-    $ cd ~/.config/fish/functions
-    $ git clone https://github.com/gawells/ariadne
-    $ cat ariadne/config.fish >> ../config.fish
-    $ cp ariadne/fish_user_key_bindings.fish .
-    $ cp ariadne/browse_fish_history.fish .
-    $ cp ariadne/inject_fish_history.fish .
+Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 
-## Usage
+## Key bindings
 
 - Ctrl+R          : Invoke command history search
 
@@ -90,7 +72,6 @@ In ariadne:
 Configuration is specified in `rc.py`, currently under `$HOME/.oh-my-zsh/custom/ariadne/`
 
 Default config:
-
 ```python
 # -*- coding: utf-8 -*-
 push_stack = "C-s"
@@ -105,21 +86,20 @@ hide_field_3 = "<f3>"
 
 def pretty_key(key):
     tmp = key.replace('C-','^')
-    tmp = tmp.replace('M-', u'⌥') #need to find a better alternative for mono fonts
+    tmp = tmp.replace('M-', u'⎇ ')# need to find a better alternative for mono fonts
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
     return tmp
 
+FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.FIELD_SEP = ' <> ' #other possiblities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
 percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rerun.sh":%s ===='\
-    %(pretty_key(push_stack),
+	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.command.set_field_sep(percol.view.FIELD_SEP)
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
 percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
     %(  pretty_key(return_dir),
@@ -128,8 +108,6 @@ percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
         pretty_key(hide_field_1),
         pretty_key(hide_field_2),
         pretty_key(hide_field_3))
-
-percol.command.set_field_sep(percol.view.FIELD_SEP)
 
 percol.import_keymap({
     "C-i"         : lambda percol: percol.switch_model(),

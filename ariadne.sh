@@ -192,7 +192,7 @@ function percol_sel_log_history() {
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     FIELD_SEP=`get_seperator "$HOME/.config/bash/ariadne/rc.py"`
     PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
-    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator "$FIELD_SEP"
+    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator="$FIELD_SEP"
 }
 
 get_seperator "$HOME/.config/bash/ariadne/rc.py"

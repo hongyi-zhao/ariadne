@@ -1,18 +1,13 @@
 # ariadne
 
-Ariadne enables comprehensive zsh cli history logging combined with interactive searching
-using a modified version of Masafumi Oyamada's percol (https://github.com/mooz/percol). 
-The cli logging is modified from the the following:
+Ariadne enables comprehensive zsh CLI history logging combined with interactive searching using a modified version of Masafumi Oyamada's interactive grep tool percol (https://github.com/mooz/percol). The CLI logging is modified from the the following scripts:
 
 - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
 - https://gist.github.com/jeetsukumaran/2202879)
 
-I made this because I wanted to be able to search for previous commands based on path as
-well as the command itself. I tend to use deeply nested and descriptive directory names
-and want to quickly jump to them based on the command. This also makes it easy to copy
-and paste commands in a new project directory based on a similar older project. This is 
-hopefully handy for those running scientific software in the unix world (and who derive 
-little joy from memorizing the relevant incantations and arcana)
+Hitting Ctrl+R brings up a command line history that can be search by date, path and command. Either the selected command or path can be inserted at the prompt. The output can be filtered by current path and duplicate commands. Commands can also be stacked and saved to a file for later scripting.
+
+This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world (and who derive little joy from memorizing the relevant incantations and arcana)
 
 - [What's this](#whats-this)
 - [Installation](#installation)

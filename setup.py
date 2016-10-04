@@ -1,26 +1,53 @@
+#!/bin/env python3
+# -*- coding: utf-8 -*-
+import argparse
+import os
+from shutil import copy
+
+def instal_zsh():
+  home=os.path.expanduser('~/.config/zsh')
+  os.makedirs(home,exist_ok=True)
+  copy("./ariadne.zsh","%s"%home)
+
+
+def main():
+  parser = argparse.ArgumentParser()  
+  parser.add_argument("-z","--zsh",action="store_true",default=False,help="Install for zsh")
+
+  args = parser.parse_args()
+
+  if args.zsh:
+    instal_zsh()
+
+if __name__ == '__main__':
+  main()
+
+
 #!/usr/bin/env python
 
-from setuptools import setup
+# from setuptools import setup
 
-exec(open("percol/info.py").read())
+# exec(open("percol/info.py").read())
 
-setup(name             = "percol",
-      version          = __version__,
-      author           = "mooz",
-      author_email     = "stillpedant@gmail.com",
-      url              = "https://github.com/mooz/percol",
-      description      = "Adds flavor of interactive filtering to the traditional pipe concept of shell",
-      long_description = __doc__,
-      packages         = ["percol"],
-      scripts          = ["bin/percol"],
-      classifiers      = ["Environment :: Console :: Curses",
-                          "License :: OSI Approved :: MIT License",
-                          "Operating System :: POSIX",
-                          "Programming Language :: Python",
-                          "Topic :: Text Processing :: Filters",
-                          "Topic :: Text Editors :: Emacs",
-                          "Topic :: Utilities"],
-      keywords         = "anything.el unite.vim dmenu shell pipe filter curses",
-      license          = "MIT",
-      install_requires = ["six >= 1.7.3", "cmigemo >= 0.1.5"]
-      )
+# setup(name             = "percol",
+#       version          = __version__,
+#       author           = "mooz",
+#       author_email     = "stillpedant@gmail.com",
+#       url              = "https://github.com/mooz/percol",
+#       description      = "Adds flavor of interactive filtering to the traditional pipe concept of shell",
+#       long_description = __doc__,
+#       packages         = ["percol"],
+#       scripts          = ["bin/percol"],
+#       classifiers      = ["Environment :: Console :: Curses",
+#                           "License :: OSI Approved :: MIT License",
+#                           "Operating System :: POSIX",
+#                           "Programming Language :: Python",
+#                           "Topic :: Text Processing :: Filters",
+#                           "Topic :: Text Editors :: Emacs",
+#                           "Topic :: Utilities"],
+#       keywords         = "anything.el unite.vim dmenu shell pipe filter curses",
+#       license          = "MIT",
+#       install_requires = ["six >= 1.7.3", "cmigemo >= 0.1.5"]
+#       )
+
+

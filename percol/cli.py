@@ -12,6 +12,7 @@ from percol import Percol
 from percol import tty
 from percol import debug
 from percol import ansi
+from percol import command
 
 FIELD_SEP = ' <> '
 INSTRUCTION_TEXT = ansi.markup("""<bold><blue>{logo}</blue></bold>
@@ -267,6 +268,7 @@ Maybe all descriptors are redirecred."""))
             # seperator can now be set via command-line
             if options.seperator is not None:
                 percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
+                percol.command.set_field_sep(options.seperator)
             # override prompts
             if options.prompt is not None:
                 percol.view.__class__.PROMPT = property(lambda self: options.prompt)

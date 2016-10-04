@@ -25,8 +25,6 @@ percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rer
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-# percol.command.set_field_sep(percol.view.FIELD_SEP)
-# percol.command.set_field_sep(' <> ')
 percol.view.FOLDED = '..' # not sure how to get '…' working for mac
 percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
     %(  pretty_key(return_dir),
@@ -35,8 +33,6 @@ percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
         pretty_key(hide_field_1),
         pretty_key(hide_field_2),
         pretty_key(hide_field_3))
-
-# percol.command.set_field_sep(percol.view.FIELD_SEP)
 
 percol.import_keymap({
     "C-i"         : lambda percol: percol.switch_model(),

@@ -241,11 +241,10 @@ class SelectorCommand(object):
         self.model.finder.recent_commands = not self.model.finder.recent_commands
         self.model.force_search()
 
-    # def set_field_sep(self,seperator):
-        # pass
+    def set_field_sep(self,seperator):
         # if self.model.finder.sep:
-        # self.model.finder.sep = seperator
-        # self.model.force_search()
+        self.model.finder.sep = seperator
+        self.model.force_search()
 
     def specify_split_query(self, split_query):
         self.model.finder.split_query = split_query

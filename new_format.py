@@ -19,7 +19,7 @@ def main():
 	for line in logf:
 		line_orig = line
 		line = re.sub(' {1,}, {1,}' , ' , ', line)
-		match =  re.search('\w+@\w+:', line)
+		match =  re.search('\w+@[\w\.]+:', line)
 		if match:
 			m = match.group(0)
 			span = match.span(0)			

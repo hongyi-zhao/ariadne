@@ -25,7 +25,7 @@ def main():
 		newline = line
 
 		# split user@host:path into comma delimited format
-		match =  re.search('\w+@\w+:', line)
+		match =  re.search('\w+@[\w\.]+:', line)
 		if match:
 			m = match.group(0)
 			span = match.span(0)			

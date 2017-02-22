@@ -177,7 +177,7 @@ function get_seperator() {
 }
 
 function percol_sel_log_history() {
-    export SEP="$(get_seperator ${HOME}/.config/zsh/ariadne/ariadne/rc.py)"
+    export SEP="$(get_seperator ${HOME}/.config/zsh/ariadne/rc.py)"
     RCFILE="$HOME/.config/zsh/ariadne/rc.py"
     PERCOL="$HOME/.config/zsh/ariadne/bin/percol"    
     FIELD_SEP=$(get_seperator "$HOME/.config/zsh/ariadne/rc.py")

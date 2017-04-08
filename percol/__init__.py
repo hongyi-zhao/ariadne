@@ -252,7 +252,6 @@ class Percol(object):
         k = self.keyhandler.get_key_for(ch)
         if k in self.keymap:
             self.keymap[k](self)
-            debug.log("here again %s, %s"%(ch,k))
         elif self.keyhandler.is_displayable_key(ch):
             self.model.insert_char(ch)
         return k

@@ -187,7 +187,6 @@ function get_seperator() {
 
 function percol_sel_log_history() {
     unset SEP
-    get_seperator ${HOME}/.config/bash/ariadne/rc.py
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
     FIELD_SEP=`get_seperator "$HOME/.config/bash/ariadne/rc.py"`

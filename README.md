@@ -7,7 +7,7 @@
 
 # ariadne
 
-Ariadne enables comprehensive CLI shell history logging combined with interactive searching using a modified version of Masafumi Oyamada's interactive grep tool percol (https://github.com/mooz/percol). The CLI logging is modified from the the following scripts:
+Ariadne enables comprehensive CLI shell history logging, combined with interactive searching, using a modified version of Masafumi Oyamada's interactive grep tool: percol (https://github.com/mooz/percol). The CLI logging is modified from the following scripts:
 
 - http://stackoverflow.com/questions/945288/saving-current-directory-to-bash-history
 - https://gist.github.com/jeetsukumaran/2202879)

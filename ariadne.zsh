@@ -155,7 +155,7 @@ _ariadne() { # was _loghistory :)
     # a bit easier on my eye than '~~~'
     histentrycmd="${histentrycmd} ### ${datetimestamp} , ${histlinenum} , \
     ${username:+$username} , ${hostname:+$hostname} , ${cwd} ,  \
-    ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+[$extra] }"
+    ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+$extra }"
     
     # save the entry in a logfile
     echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
@@ -191,6 +191,7 @@ zle -N percol_sel_log_history
 bindkey '^R' percol_sel_log_history
 
 precmd() {
-    _ariadne -h -t -u 
+    export ar_result=$?
+    _ariadne -h -t -u -e 'print $ar_result'
 }
 

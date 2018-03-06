@@ -1,3 +1,5 @@
+# PROMPT_COMMAND="echo $?"
+
 _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
 
@@ -194,5 +196,13 @@ function percol_sel_log_history() {
     $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log --seperator="$FIELD_SEP"
 }
 
+function pre_command() {
+    result_ar=$?
+    _ariadne -h -u -e 'echo -n $ar_result'
+}
+
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
-export PROMPT_COMMAND='_ariadne -h -u '
+export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result" '
+
+# export PROMPT_COMMAND='RET=$?; echo; if [ $RET != 0 ] ; then echo "rc: $RET"; fi;'
+# export PROMPT_COMMAND=pre_command

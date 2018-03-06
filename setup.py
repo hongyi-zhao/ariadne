@@ -63,7 +63,7 @@ def install_bash():
 def install_fish():
   home = os.path.expanduser('~')
   ar_home = os.path.expanduser('~/.config/fish/functions')
-  os.makedirs("%s/percol"%ar_home,exist_ok=True)
+  os.makedirs("%s/ariadne"%ar_home,exist_ok=True)
   copy("./ariadne.fish","%s"%ar_home)
   copy("./browse_fish_history.fish","%s"%ar_home)
   copy("./fish_user_key_bindings.fish","%s"%ar_home)

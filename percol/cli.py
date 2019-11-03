@@ -161,7 +161,7 @@ def read_input(filename, encoding, reverse=False, seperator=''):
         # check for malformed entry
         if len(arr) == 2:
             cmd = arr[0].rstrip()
-            meta_data_arr = arr[1].split(',')
+            meta_data_arr = arr[1].strip().split(',')
             if len(meta_data_arr) > 0:
                 date = meta_data_arr[0]
                 date=date.strip()
@@ -170,7 +170,7 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 path.replace(' ','\\\\ ')
                 out_line = date+seperator+path+seperator+cmd
                 out_line = ansi.remove_escapes(out_line.rstrip("\r\n"))
-                tup = (out_line,arr[-1])
+                tup = (out_line,meta_data_arr[-1])
                 
                 yield tup
 

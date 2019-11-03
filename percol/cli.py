@@ -129,6 +129,12 @@ def set_proper_locale(options):
         output_encoding = options.output_encoding
     return output_encoding
 
+def join_tuple(tup):
+    result = ''
+    for t in tup:
+        result = result+str(t)+','
+    return result
+
 def read_input(filename, encoding, reverse=False, seperator=''):
     import codecs
     if filename:
@@ -149,6 +155,7 @@ def read_input(filename, encoding, reverse=False, seperator=''):
 
     # preprocess lines into "date-time <sep> path <sep> command" for ariadne
     # previously done with awk in shell scripts, but slows things down a bit
+    outfile = open('/tmp/ar_log.txt','w')
     for line in lines:
         arr = line.split('###')
         # check for malformed entry
@@ -161,8 +168,13 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 path = meta_data_arr[4]
                 path=path.strip()
                 path.replace(' ','\\\\ ')
-                line = date+seperator+path+seperator+cmd
-                yield ansi.remove_escapes(line.rstrip("\r\n"))
+                out_line = date+seperator+path+seperator+cmd
+                out_line = ansi.remove_escapes(out_line.rstrip("\r\n"))
+                tup = (out_line,arr[-1])
+                
+                yield tup
+
+    outfile.close()
 
     stream.close()
 
@@ -231,6 +243,7 @@ Maybe all descriptors are redirecred."""))
         # read input
         try:
             candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
+            # candidates,exit_codes = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
         except KeyboardInterrupt:
             exit_program("Canceled", show_help = False)
 

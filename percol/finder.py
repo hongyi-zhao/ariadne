@@ -113,9 +113,9 @@ class FinderMultiQuery(CachedFinder):
                 res = self.dummy_res
             else:
                 if self.case_insensitive:
-                    line_to_match = line.lower()
+                    line_to_match = line[0].lower()
                 else:
-                    line_to_match = line
+                    line_to_match = line[0]
                 res = self.find_queries(queries, line_to_match)
                 # When invert_match is enabled (via "-v" option),
                 # select non matching line
@@ -123,14 +123,14 @@ class FinderMultiQuery(CachedFinder):
                     res = None if res else self.dummy_res
 
             if res:
-                command = line.split(self.sep)[-1].strip()
+                command = line[0].split(self.sep)[-1].strip()
                 # debug.log(len(found_commands))
                 if not command in found_commands and self.recent_commands:
                     # debug.log(command)
                     found_commands.append(command)
-                    yield line, res, idx
+                    yield line[0], res, idx
                 elif not self.recent_commands:
-                    yield line, res, idx
+                    yield line[0], res, idx
                 
 
     and_search = True
@@ -142,7 +142,7 @@ class FinderMultiQuery(CachedFinder):
 
         for subq in sub_queries:
             if subq:
-                find_info = self.find_query(subq, line)
+                find_info = self.find_query(subq, line[0])
                 if find_info:
                     res.append((subq, find_info))
                 elif and_search:

@@ -3,6 +3,7 @@ push_stack = "C-s"
 pop_stack = "M-s"
 save_stack = "C-t"
 filter_dups = "M-r"
+filter_exit0 = "M-t"
 return_dir = "C-d"
 filter_bydir = "C-l"
 hide_field_1 = "<f1>"
@@ -69,6 +70,7 @@ percol.import_keymap({
     return_dir : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
     filter_dups : lambda percol: percol.command.toggle_recent(),
+    filter_exit0 : lambda percol: percol.command.toggle_exit0(),
     push_stack : lambda percol: percol.command.fill_stack(),
     pop_stack : lambda percol: percol.command.pop_stack(),
     save_stack : lambda percol: percol.finish_and_save(),

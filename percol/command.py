@@ -240,6 +240,10 @@ class SelectorCommand(object):
     def toggle_recent(self):
         self.model.finder.recent_commands = not self.model.finder.recent_commands
         self.model.force_search()
+    
+    def toggle_exit0(self):
+        self.model.finder.exit0 = not self.model.finder.exit0
+        self.model.force_search()
 
     def set_field_sep(self,seperator):
         # if self.model.finder.sep:

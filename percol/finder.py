@@ -86,6 +86,7 @@ class FinderMultiQuery(CachedFinder):
     split_query = True
     case_insensitive = True
     recent_commands = False
+    exit0 = True
     sep = None
 
     dummy_res = [["", [(0, 0)]]]
@@ -129,10 +130,17 @@ class FinderMultiQuery(CachedFinder):
                     # debug.log(command)
                     found_commands.append(command)
                     # if line[1] == 0: # if exit code 0
-                    yield line[0], res, idx 
+                    # yield line[0], res, idx 
+                    if line[1] == ' 0' and self.exit0: # if exit code 0
+                        yield line[0], res, idx
+                    elif not self.exit0:
+                        yield line[0], res, idx
+                
                 elif not self.recent_commands:
-                    # if line[1] == ' 0': # if exit code 0
-                    yield line[0], res, idx
+                    if line[1] == ' 0' and self.exit0: # if exit code 0
+                        yield line[0], res, idx
+                    elif not self.exit0:
+                        yield line[0], res, idx
                 
 
     and_search = True

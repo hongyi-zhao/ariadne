@@ -104,6 +104,7 @@ class SelectorModel(object):
 
 	def get_selected_results_with_index_f(self,field=None,sep=' <> '):
 		results = self.get_marked_results_with_index()
+		# debug.log(results)
 		if not results:
 			try:
 				index = self.index

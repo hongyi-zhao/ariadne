@@ -111,7 +111,6 @@ class FinderMultiQuery(CachedFinder):
 
         for idx, line in enumerate(collection):
             # debug.log(line)
-            # debug.log(idx)
             if query_is_empty:
                 res = self.dummy_res
             else:
@@ -129,16 +128,16 @@ class FinderMultiQuery(CachedFinder):
                 command = line[0].split(self.sep)[-1].strip()
                 # debug.log(len(found_commands))
                 if not command in found_commands and self.recent_commands:
-                    found_commands.append(command)
-                    if (line[1] == ' 0' and self.exit0) or not self.exit0: # if exit code 0
-                        yield line[0], res, idx
-                    yield line[0], res, idx # why do I need this twice?
-                
+                    if (line[1] == ' 0' and self.exit0) or (line[1] != ' 0' and not self.exit0): # if exit code 0
+                        found_commands.append(command)
+                        debug.log((line[0],res,idx))
+                        yield line[0], res, idx # why do I need this twice?
+                        
                 elif not self.recent_commands:
-                    if (line[1] == ' 0' and self.exit0) or not self.exit0: # if exit code 0
-                        yield line[0], res, idx
+                    # if (line[1] == ' 0' and self.exit0) or (line[1] != ' 0' and not self.exit0): # if exit code 0
+                    debug.log((line[0],res,idx))
                     yield line[0], res, idx
-            
+        
 
     and_search = True
 

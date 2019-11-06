@@ -86,7 +86,7 @@ class FinderMultiQuery(CachedFinder):
     split_query = True
     case_insensitive = True
     recent_commands = False
-    exit0 = True
+    exit0 = False
     sep = None
 
     dummy_res = [["", [(0, 0)]]]
@@ -126,17 +126,15 @@ class FinderMultiQuery(CachedFinder):
 
             if res:
                 command = line[0].split(self.sep)[-1].strip()
-                # debug.log(len(found_commands))
                 if not command in found_commands and self.recent_commands:
-                    if (line[1] == ' 0' and self.exit0) or (line[1] != ' 0' and not self.exit0): # if exit code 0
+                    if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
                         found_commands.append(command)
-                        debug.log((line[0],res,idx))
-                        yield line[0], res, idx # why do I need this twice?
-                        
+                        yield line[0], res, idx 
+                    
                 elif not self.recent_commands:
-                    # if (line[1] == ' 0' and self.exit0) or (line[1] != ' 0' and not self.exit0): # if exit code 0
-                    debug.log((line[0],res,idx))
-                    yield line[0], res, idx
+                    if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
+                    # debug.log((line[0],res,idx))
+                        yield line[0], res, idx
         
 
     and_search = True

@@ -170,9 +170,10 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 path.replace(' ','\\\\ ')
                 out_line = date+seperator+path+seperator+cmd
                 out_line = ansi.remove_escapes(out_line.rstrip("\r\n"))
-                tup = (out_line,meta_data_arr[-1])
+                tup = (out_line,int(meta_data_arr[-1]))
                 
                 yield tup
+                debug.log(tup)
 
     outfile.close()
 

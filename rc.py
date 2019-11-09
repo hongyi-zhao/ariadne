@@ -10,14 +10,14 @@ hide_field_1 = "<f1>"
 hide_field_2 = "<f2>"
 hide_field_3 = "<f3>"
 
-def pretty_key(key):
+def pretty_key(key): # modify for cleaner display in the console
     tmp = key.replace('C-','^')
-    tmp = tmp.replace('M-', u'⎇ ')# need to find a better alternative for mono fonts
+    # tmp = tmp.replace('M-', u'⎇ ')# need to find a better alternative for mono fonts
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
     return tmp
 
-FIELD_SEP = '║' #other possibilities: ' ◆ ', ' 🞛  ', ∷ᛞᛥ∯⌘ etc
+FIELD_SEP = '║' 
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
@@ -26,11 +26,12 @@ percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rer
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.view.FOLDED = '..' # not sure how to get '…' working for mac
-percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Show/Hide:%s,%s,%s'\
+percol.view.FOLDED = '…' # not sure how to get '…' working for mac
+percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Exit0:%s Show/Hide:%s,%s,%s'\
     %(  pretty_key(return_dir),
         pretty_key(filter_bydir),
         pretty_key(filter_dups),
+        pretty_key(filter_exit0),
         pretty_key(hide_field_1),
         pretty_key(hide_field_2),
         pretty_key(hide_field_3))

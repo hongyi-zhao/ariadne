@@ -166,15 +166,15 @@ class SelectorView(object):
                                             pos_x = x_offset_real,
                                             style = keyword_style)
                     
-                    # debug.log((line,x_offset,x_offset+subq_len,y,x_offset_real))
-                    # debug.log(line[x_offset:x_offset + subq_len])
-                    # x_offset_real = display.screen_len(line, beg = 0, end = x_offset)
-                    # self.display.add_string(line[x_offset:x_offset + subq_len],
-                    #                         pos_y = y,
-                    #                         pos_x = x_offset_real,
-                    #                         style = keyword_style)
                 except curses.error as e:
                     debug.log("addnstr", str(e) + " ({0})".format(y))
+
+                for n in new_spans:
+                    self.display.add_string(new_line[n[0]-1:n[0]],
+                                            pos_y = y,
+                                            pos_x = n[0]-1,
+                                            style = ("blue", "bold") + line_style)
+                        
 
     def display_error_message(self, message):
         self.display_line(self.RESULTS_OFFSET_V, 0, message, style=self.MESSAGE_ERROR)

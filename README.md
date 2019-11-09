@@ -70,7 +70,7 @@ In ariadne:
 
 ## Configuration
 
-Configuration is specified in `rc.py`, currently under `$HOME/.oh-my-zsh/custom/ariadne/`
+Configuration is specified in `rc.py`, currently under `$HOME/.config/<bash/zsh>/ariadne/`
 
 Default config:
 ```python

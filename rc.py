@@ -22,11 +22,11 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
 percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = '==== Command Stack == push:%s == pop:%s == save as "rerun.sh":%s ===='\
+percol.view.STACKLINE = 'v════v Command Stack ══ push:%s ══ pop:%s ══ save as "rerun.sh":%s v════v'\
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.view.FOLDED = '…' # not sure how to get '…' working for mac
+percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow"
 percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Exit0:%s Show/Hide:%s,%s,%s'\
     %(  pretty_key(return_dir),
         pretty_key(filter_bydir),

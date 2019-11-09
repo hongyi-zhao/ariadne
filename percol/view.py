@@ -133,7 +133,7 @@ class SelectorView(object):
 
     def display_result(self, y, result, is_current = False, is_marked = False):
         line, find_info, abs_idx, exit_status = result
-        if exit_status == 0:
+        if exit_status == 0: # set separator colour depending on exit status
             bar_colour = "blue"
         else:
             bar_colour = "red"
@@ -173,10 +173,10 @@ class SelectorView(object):
                 except curses.error as e:
                     debug.log("addnstr", str(e) + " ({0})".format(y))
 
-                for n in new_spans:
-                    self.display.add_string(new_line[n[0]-1:n[0]],
+                for n in new_spans: # colour separator blue or red depending on exit status
+                    self.display.add_string(new_line[n[0]-len(self.FIELD_SEP):n[0]],
                                             pos_y = y,
-                                            pos_x = n[0]-1,
+                                            pos_x = n[0]-len(self.FIELD_SEP),
                                             style = (bar_colour, "bold") + line_style)
                         
 

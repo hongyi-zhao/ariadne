@@ -114,7 +114,7 @@ class SelectorModel(object):
 				debug.log("get_selected_results_with_index_f", e)
 		
 		if field is not None:
-			if field == 1:
+			if field == 1: # put quotes around directories
 				pass
 				newresults = []
 				for r in results:

@@ -132,7 +132,11 @@ class SelectorView(object):
 
 
     def display_result(self, y, result, is_current = False, is_marked = False):
-        line, find_info, abs_idx = result
+        line, find_info, abs_idx, exit_status = result
+        if exit_status == 0:
+            bar_colour = "blue"
+        else:
+            bar_colour = "red"
 
         if is_current:
             line_style = self.CANDIDATES_LINE_SELECTED
@@ -173,7 +177,7 @@ class SelectorView(object):
                     self.display.add_string(new_line[n[0]-1:n[0]],
                                             pos_y = y,
                                             pos_x = n[0]-1,
-                                            style = ("blue", "bold") + line_style)
+                                            style = (bar_colour, "bold") + line_style)
                         
 
     def display_error_message(self, message):

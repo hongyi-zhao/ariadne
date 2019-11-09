@@ -129,12 +129,12 @@ class FinderMultiQuery(CachedFinder):
                 if not command in found_commands and self.recent_commands:
                     if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
                         found_commands.append(command)
-                        yield line[0], res, idx 
+                        yield line[0], res, idx, line[1] 
                     
                 elif not self.recent_commands:
                     if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
                     # debug.log((line[0],res,idx))
-                        yield line[0], res, idx
+                        yield line[0], res, idx, line[1]
         
 
     and_search = True

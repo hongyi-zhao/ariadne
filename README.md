@@ -60,7 +60,8 @@ In ariadne:
 
 - F1,F2,F3        : Hide/show date, execution path and command, respectively
 - Enter,Ctrl+R    : Extract command(s)
-- Ctrl+R          : Extract path(s)
+- Ctrl+D          : Extract path(s)
+- Ctrl+B          : Extract path and commad, seperated by ';'
 - Ctrl+L          : Filter by current directory
 - Alt+R           : Toggle filter for duplicate commands
 - Alt+T           : Toggle filter commands with exit staus 0

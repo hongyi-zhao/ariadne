@@ -22,7 +22,7 @@ With this you can:
 6. Hide/show date, command, path fields in search output
 7. Stack previous commands and save to a script (rerun.sh)
 
-This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world (_and who derive little joy from memorizing the relevant incantations and arcana_)
+This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world _(and who derive little joy from memorizing the relevant incantations and arcana)_
 
 ![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
 

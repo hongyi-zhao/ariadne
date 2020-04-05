@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
 import sys
 import os
 import locale
 import six
+import re
 
 from optparse import OptionParser
 
@@ -155,7 +155,6 @@ def read_input(filename, encoding, reverse=False, seperator=''):
 
     # preprocess lines into "date-time <sep> path <sep> command" for ariadne
     # previously done with awk in shell scripts, but slows things down a bit
-    outfile = open('/tmp/ar_log.txt','w')
     for line in lines:
         arr = line.split('###')
         # check for malformed entry
@@ -170,12 +169,18 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 path.replace(' ','\\\\ ')
                 out_line = date+seperator+path+seperator+cmd
                 out_line = ansi.remove_escapes(out_line.rstrip("\r\n"))
-                tup = (out_line,int(meta_data_arr[-1]))
+                
+                # exit status = -999 if non-int string or empty
+                try: 
+                    exit_status = int(meta_data_arr[-1])
+                except ValueError:
+                    exit_status = -999
+                
+                tup = (out_line,exit_status)
                 
                 yield tup
                 debug.log(tup)
 
-    outfile.close()
 
     stream.close()
 

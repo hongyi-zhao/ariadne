@@ -102,6 +102,13 @@ class SelectorModel(object):
 		return results
 
 
+	def quote_path(self,path): # put quotes around paths with spaces
+		withquotes = path
+		if path.find(' '):
+			withquotes = "\""+path+"\""
+		return withquotes
+
+
 	def get_selected_results_with_index_f(self,field=None,sep=' <> '):
 		results = self.get_marked_results_with_index()
 		# debug.log(results)
@@ -115,14 +122,19 @@ class SelectorModel(object):
 		
 		if field is not None:
 			if field == 1: # put quotes around directories
-				pass
 				newresults = []
 				for r in results:
-					path = r[0].split(sep)[1]
-					if path.find(' '):
-						withquotes = "\""+path+"\""
-					newresults.append((withquotes,[1],r[2]))
-					debug.log("Modified path %s"%withquotes)
+					path = self.quote_path(r[0].split(sep)[1])
+					newresults.append((path,[1],r[2]))
+					debug.log("Modified path %s"%path)
+				results = newresults
+			elif field == -1: #chdir and run command
+				newresults = []
+				for r in results:
+					path = self.quote_path(r[0].split(sep)[1])
+					command = r[0].split(sep)[2]
+					newresults.append((path+'; '+command,[1],r[2]))
+					debug.log("Modified path %s"%path)
 				results = newresults
 			else:
 				results = [(r[0].split(sep)[field],r[1],r[2]) for r in results]

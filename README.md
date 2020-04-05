@@ -22,7 +22,7 @@ With this you can:
 6. Hide/show date, command, path fields in search output
 7. Stack previous commands and save to a script (rerun.sh)
 
-This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world (and who derive little joy from memorizing the relevant incantations and arcana)
+This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world _(and who derive little joy from memorizing the relevant incantations and arcana)_
 
 ![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
 
@@ -60,7 +60,8 @@ In ariadne:
 
 - F1,F2,F3        : Hide/show date, execution path and command, respectively
 - Enter,Ctrl+R    : Extract command(s)
-- Ctrl+R          : Extract path(s)
+- Ctrl+D          : Extract path(s)
+- Ctrl+B          : Extract path and commad, seperated by ';'
 - Ctrl+L          : Filter by current directory
 - Alt+R           : Toggle filter for duplicate commands
 - Alt+T           : Toggle filter commands with exit status 0
@@ -71,7 +72,7 @@ In ariadne:
 
 ## Configuration
 
-Configuration is specified in `rc.py`, currently under `$HOME/.oh-my-zsh/custom/ariadne/`
+Configuration is specified in `rc.py`, currently under `$HOME/.config/<bash/zsh>/ariadne/`
 
 Default config:
 ```python

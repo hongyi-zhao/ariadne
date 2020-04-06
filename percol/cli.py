@@ -249,13 +249,16 @@ Maybe all descriptors are redirecred."""))
         # read input
 
         # TODO: make sure works without rc file specified
-        with open(options.rcfile) as f:
-            for line in f:
-                if re.search('^FIELD_SEP\s+=\s+',line):
-                    r = re.search('\'(?P<sep>.+?)\'',line)
-                    FIELD_SEP = r.group('sep')
-                    # debug.log(FIELD_SEP+'xxx')
-                    break
+        if options.seperator is not None:
+            FIELD_SEP = options.seperator
+        else:
+            with open(options.rcfile) as f:
+                for line in f:
+                    if re.search('^FIELD_SEP\s+=\s+',line):
+                        r = re.search('\'(?P<sep>.+?)\'',line)
+                        FIELD_SEP = r.group('sep')
+                        # debug.log(FIELD_SEP+'xxx')
+                        break
 
         try:
             candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=FIELD_SEP)
@@ -296,11 +299,10 @@ Maybe all descriptors are redirecred."""))
             load_rc(percol, options.rcfile)
             # seperator can now be set via command-line
             if options.seperator is not None:
-                pass
-                # percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
-                # percol.command.set_field_sep(options.seperator)
-            else:
-                options.seperator = '║'
+                percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
+                percol.command.set_field_sep(options.seperator)
+            # else:
+                # options.seperator = '║'
                 # options.seperator = percol.view.FIELD_SEP
             # override prompts
             if options.prompt is not None:

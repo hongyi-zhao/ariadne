@@ -31,13 +31,14 @@ _ariadne() { # was _loghistory :)
     local extra=
     local text=
     local logfile="$HOME/.bash_log"
+    local masterlog
     local hostname=
     local histentry=
     local histleader=
     local datetimestamp=
     local histlinenum=
     local username=
-    local options=":hyunte:l:"
+    local options=":hyunte:l:m:"
     local option=
     OPTIND=1
     local usage="Usage: $script [-h] [-y] [-u] [-n|-t] [-e] [text] [-l logfile]"
@@ -74,6 +75,7 @@ _ariadne() { # was _loghistory :)
                 fi;;
             e ) ExtraOpt=1;histentrycmdextra=$OPTARG;;        # include histentrycmdextra
             l ) logfile=$OPTARG;;
+            m ) masterlog=$OPTARG;;
             : ) echo "$script: missing filename: -$OPTARG."
                 echo $usage
                 return 1;;
@@ -167,8 +169,13 @@ _ariadne() { # was _loghistory :)
     ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+$extra }"
     
     # save the entry in a logfile
-    echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
+    echo "$histentrycmd" >> $logfile || (echo "$script: file error." ; return 1;)
 
+    # save in master log file
+    if [[ -n ${masterlog} ]]
+    then
+        echo "$histentrycmd" >> $masterlog || (echo "$script: file error." ; return 1)
+    fi
 } 
 
 # modified from https://github.com/mooz/percol#zsh-history-search
@@ -187,7 +194,8 @@ function pre_command() {
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
-export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result" '
+# export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
+export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
 
 # export PROMPT_COMMAND='RET=$?; echo; if [ $RET != 0 ] ; then echo "rc: $RET"; fi;'
 # export PROMPT_COMMAND=pre_command

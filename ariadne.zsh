@@ -34,16 +34,17 @@ _ariadne() { # was _loghistory :)
     local extra=
     local text=
     local logfile="$HOME/.zsh_log"
+    local masterlog= #combined logfile for multiple pcs
     local hostname=
     local histentry=
     local histleader=
     local datetimestamp=
     local histlinenum=
     local username=
-    local options=":hyunte:l:"
+    local options=":hyunte:l:m:"
     local option=
     OPTIND=1
-    local usage="Usage: $script [-h] [-y] [-u] [-n|-t] [-e] [text] [-l logfile]"
+    local usage="Usage: $script [-h] [-y] [-u] [-n|-t] [-e] [text] [-l logfile] [-m masterlog]"
 
     local ExtraOpt=
     local NoneOpt=
@@ -77,6 +78,7 @@ _ariadne() { # was _loghistory :)
                 fi;;
             e ) ExtraOpt=1;histentrycmdextra=$OPTARG;;        # include histentrycmdextra
             l ) logfile=$OPTARG;;
+            m ) masterlog=$OPTARG;;
             : ) echo "$script: missing filename: -$OPTARG."
                 echo $usage
                 return 1;;
@@ -158,8 +160,12 @@ _ariadne() { # was _loghistory :)
     ${tty:+[$tty] } , ${ip:+[$ip] } , ${extra:+$extra }"
     
     # save the entry in a logfile
-    echo "$histentrycmd" >> $logfile || echo "$script: file error." ; return 1
+    echo "$histentrycmd" >> $logfile || (echo "$script: file error." ; return 1)
 
+    # save in master log file
+    if [[ -n $masterlog ]] then
+        echo "$histentrycmd" >> $masterlog || (echo "$script: file error." ; return 1)
+    fi
 } 
 
 function percol_sel_log_history() {
@@ -176,6 +182,8 @@ bindkey '^R' percol_sel_log_history
 
 precmd() {
     export ar_result=$?
-    _ariadne -h -t -u -e 'print $ar_result'
+    mlog=$(readlink $HOME/.zsh_master_log)
+    # _ariadne -h -t -u -e 'print $ar_result' # normal logging on local machine
+    _ariadne -h -t -u -e 'print $ar_result' -m $mlog # also log to master log for multiple pcs (symlink to cloudfile). Can't evalute $HOME, ~ here etc. Why?
 }
 

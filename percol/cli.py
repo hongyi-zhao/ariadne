@@ -120,7 +120,7 @@ def setup_options(parser):
     parser.add_option("--peep", action = "store_true", dest = "peep", default = False,
                       help = "exit immediately with doing nothing to cache module files and speed up start-up time")
 
-    parser.add_option("--seperator", dest='seperator', default=' <> ')
+    parser.add_option("--seperator", dest='seperator')
 
 def set_proper_locale(options):
     locale.setlocale(locale.LC_ALL, '')
@@ -247,8 +247,21 @@ Maybe all descriptors are redirecred."""))
             exit_program(show_help = False)
 
         # read input
+
+        # TODO: make sure works without rc file specified
+        if options.seperator is not None:
+            FIELD_SEP = options.seperator
+        else:
+            with open(options.rcfile) as f:
+                for line in f:
+                    if re.search('^FIELD_SEP\s+=\s+',line):
+                        r = re.search('\'(?P<sep>.+?)\'',line)
+                        FIELD_SEP = r.group('sep')
+                        # debug.log(FIELD_SEP+'xxx')
+                        break
+
         try:
-            candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
+            candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=FIELD_SEP)
             # candidates,exit_codes = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
         except KeyboardInterrupt:
             exit_program("Canceled", show_help = False)
@@ -288,6 +301,9 @@ Maybe all descriptors are redirecred."""))
             if options.seperator is not None:
                 percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
                 percol.command.set_field_sep(options.seperator)
+            # else:
+                # options.seperator = '║'
+                # options.seperator = percol.view.FIELD_SEP
             # override prompts
             if options.prompt is not None:
                 percol.view.__class__.PROMPT = property(lambda self: options.prompt)

@@ -1,6 +1,6 @@
 function ariadne
-	browse_fish_history > $TMPDIR/fish.result 
-	and commandline (cat $TMPDIR/fish.result)
+	browse_fish_history > $XDG_RUNTIME_DIR/fish.result 
+	and commandline (cat $XDG_RUNTIME_DIR/fish.result)
 	commandline -f repaint
-    rm -f $TMPDIR/fish.result
+    rm -f $XDG_RUNTIME_DIR/fish.result
 end

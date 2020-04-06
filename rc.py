@@ -27,6 +27,9 @@ def pretty_key(key): # modify for cleaner display in the console prompts
 # works well enough on black background
 # see https://github.com/mooz/percol for more formatting options
 FIELD_SEP = '║' # originally used ' <> ', which works well visually but uses a lot of space
+percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP)
+percol.command.set_field_sep(FIELD_SEP)
+
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")

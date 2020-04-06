@@ -25,9 +25,10 @@ With this you can:
 This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world _(and who derive little joy from memorizing the relevant incantations and arcana)_
 
 ![Current look](https://github.com/gawells/demos/blob/master/ariadne_still.png)
+Current (more compact) look. Blue indicates exit status = 0, red ≠ 0.
  
 ![Animation of old look](https://github.com/gawells/demos/blob/master/ariadne1.gif)
-
+Animation of old look-and-feel.
 
 ## Installation
     $ git clone https://github.com/gawells/ariadne
@@ -62,16 +63,17 @@ Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 In ariadne:
 
 - F1,F2,F3        : Hide/show date, execution path and command, respectively
-- Enter,Ctrl+R    : Extract command(s)
-- Ctrl+D          : Extract path(s)
-- Ctrl+B          : Extract path and commad, seperated by ';'
-- Ctrl+L          : Filter by current directory
-- Alt+R           : Toggle filter for duplicate commands
-- Alt+T           : Toggle filter commands with exit staus 0
+- Enter,Ctrl+m    : Extract command(s)
+- Ctrl+d          : Extract path(s)
+- Ctrl+b          : Extract path and commad, seperated by ';'
+- Ctrl+l          : Filter by current directory
+- Alt+r           : Toggle filter for duplicate commands
+- Alt+t           : Toggle filter commands with exit staus 0
 - Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
-- Ctrl+S          : Push command to stack
-- Alt+S           : Pop command from stack
-- Ctrl+T          : Save stack (as 'rerun'sh') and exit
+- Ctrl+s          : Push command to stack
+- Alt+s           : Pop command from stack
+- Ctrl+t          : Save stack (as 'rerun'sh') and exit
+- Alt-m           : Switch between normal and regex search (currently breaks filter duplicates)
 
 ## Configuration
 
@@ -79,46 +81,63 @@ Configuration is specified in `rc.py`, currently under `$HOME/.config/<bash/zsh>
 
 Default config:
 ```python
-# -*- coding: utf-8 -*-
-push_stack = "C-s"
-pop_stack = "M-s"
-save_stack = "C-t"
-filter_dups = "M-r"
-filter_exit0 = "M-t"
-return_dir = "C-d"
-filter_bydir = "C-l"
-hide_field_1 = "<f1>"
-hide_field_2 = "<f2>"
-hide_field_3 = "<f3>"
+import os 
+from percol.finder import FinderMultiQueryRegex
+myhost = os.uname()[1] # get hostname for left prompt
 
-def pretty_key(key): # modify for cleaner display in the console
+# -*- coding: utf-8 -*-
+# variables for keybindings to use both in prompt strings and setting the keymap
+push_stack = "C-s"			# add command to bottom of stack 
+pop_stack = "M-s"			# remove bottom command from stack
+save_stack = "C-t"			# save commands in stack as rerun.sh
+filter_dups = "M-r"			# filter out duplicate commands
+filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
+return_dir = "C-d"			# return path and exit
+filter_bydir = "C-l"		# fliter by current path
+hide_field_1 = "<f1>"		# toggle show date column
+hide_field_2 = "<f2>"		# toggle show path column
+hide_field_3 = "<f3>"		# toggle show command column
+switch_finder = "M-m"		# toggle regex finder
+
+def pretty_key(key): # modify for cleaner display in the console prompts
     tmp = key.replace('C-','^')
-    # tmp = tmp.replace('M-', u'⎇ ')# need to find a better alternative for mono fonts
+    # tmp = key.replace('C-','⎈') # the official unicode symbol? doesn't work well for me
+    tmp = tmp.replace('M-', u'⎇ ')# this may not work on all terminals, comment out if needed
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
     return tmp
 
-FIELD_SEP = '║' 
+# works well enough on black background
+# see https://github.com/mooz/percol for more formatting options
+FIELD_SEP = '║' # originally used ' <> ', which works well visually but uses a lot of space
+percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP)
+percol.command.set_field_sep(FIELD_SEP)
+
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
-percol.view.CANDIDATES_LINE_SELECTED = ("underline", "on_blue", "white","bold")
-percol.view.CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
+percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
+percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.STACKLINE = 'v════v Command Stack ══ push:%s ══ pop:%s ══ save as "rerun.sh":%s v════v'\
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow"
-percol.view.RPROMPT = 'Path:%s Local:%s Unique:%s Exit0:%s Show/Hide:%s,%s,%s'\
-    %(  pretty_key(return_dir),
-        pretty_key(filter_bydir),
-        pretty_key(filter_dups),
-        pretty_key(filter_exit0),
-        pretty_key(hide_field_1),
-        pretty_key(hide_field_2),
-        pretty_key(hide_field_3))
+percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
+
+# Set left and right prompt, assumes a wide screen
+percol.view.PROMPT = f'<bold><cyan>{myhost}</cyan></bold>> %q'
+percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name()
+percol.view.RPROMPT = f"Finder({pretty_key(switch_finder)}):%F \
+Path:{pretty_key(return_dir)} \
+Local:{pretty_key(filter_bydir)} \
+Unique:{pretty_key(filter_dups)} \
+Exit0:{pretty_key(filter_exit0)} \
+Show/Hide{pretty_key(hide_field_1)},\
+{pretty_key(hide_field_2)},\
+{pretty_key(hide_field_3)}\
+"
 
 percol.import_keymap({
-    "C-i"         : lambda percol: percol.switch_model(),
+    # "C-i"         : lambda percol: percol.switch_model(), # not sure what this is, invert? Doesn't work here
     # text
     "C-h"         : lambda percol: percol.command.delete_backward_char(),
     "<backspace>" : lambda percol: percol.command.delete_backward_char(),
@@ -138,12 +157,15 @@ percol.import_keymap({
     "<home>"      : lambda percol: percol.command.select_top(),
     "<end>"       : lambda percol: percol.command.select_bottom(),
     # mark
-    "C-SPC"       : lambda percol: percol.command.toggle_mark_and_next(),
     # finish
-    "RET"         : lambda percol: percol.finish(), # Is RET never sent? #seems not, doesn't respond to finish_f either - gaw
-    "C-m"         : lambda percol: percol.finish(),
+    "RET"         : lambda percol: percol.finish(), # Is RET never sent? #seems not, doesn't respond to finish_f either -gw
+    "C-m"         : lambda percol: percol.finish(), # for some reason can't assign to anything else, breaks RET binding
     # "C-j"         : lambda percol: percol.finish(),
     # "C-c"         : lambda percol: percol.cancel(),
+    "C-n" : lambda percol: percol.command.select_next(),
+
+    # select multiple lines. Will return list of commands or paths, probably of limited usefulness?
+    "C-o"       : lambda percol: percol.command.toggle_mark_and_next(),
 
     hide_field_1 : lambda percol: percol.command.toggle_date(),
     hide_field_2 : lambda percol: percol.command.toggle_execdir(),
@@ -151,11 +173,13 @@ percol.import_keymap({
     filter_bydir : lambda percol: percol.command.cwd_filter(),
     return_dir : lambda percol: percol.finish(field=1),
     "C-r" : lambda percol: percol.finish(field=2),
+    "C-b" : lambda percol: percol.finish(field=-1),
     filter_dups : lambda percol: percol.command.toggle_recent(),
     filter_exit0 : lambda percol: percol.command.toggle_exit0(),
     push_stack : lambda percol: percol.command.fill_stack(),
     pop_stack : lambda percol: percol.command.pop_stack(),
     save_stack : lambda percol: percol.finish_and_save(),
-})    
+    switch_finder: lambda percol: percol.command.toggle_finder(FinderMultiQueryRegex) # switch between normal and regex finders
+})
 ```
 

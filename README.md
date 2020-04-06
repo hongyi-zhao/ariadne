@@ -24,7 +24,10 @@ With this you can:
 
 This makes it easy to copy and paste commands in a new project directory based on a similar older project. This is hopefully handy for those running scientific software in the unix world _(and who derive little joy from memorizing the relevant incantations and arcana)_
 
-![animation](https://github.com/gawells/demos/blob/master/ariadne1.gif)
+![Current look](https://github.com/gawells/demos/blob/master/ariadne_still.png)
+ 
+![Animation of old look](https://github.com/gawells/demos/blob/master/ariadne1.gif)
+
 
 ## Installation
     $ git clone https://github.com/gawells/ariadne

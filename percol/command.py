@@ -258,15 +258,22 @@ class SelectorCommand(object):
         self.model.finder.split_query = not self.model.finder.split_query
         self.model.force_search()
 
-    def specify_finder(self, preferred_finder_class):
+    def specify_finder(self, preferred_finder_class):        
         self.model.remake_finder(preferred_finder_class)
         self.model.force_search()
 
     def toggle_finder(self, preferred_finder_class):
+        exit0 = self.model.finder.exit0
+        recent_commands = self.model.finder.recent_commands
+        
         if self.model.finder.__class__ == preferred_finder_class:
             self.model.remake_finder(self.model.original_finder_class)
         else:
             self.model.remake_finder(preferred_finder_class)
+        
+        self.model.finder.exit0 = exit0
+        self.model.finder.recent_commands = recent_commands
+        
         self.model.force_search()
 
     # ------------------------------------------------------------ #

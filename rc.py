@@ -89,8 +89,6 @@ percol.import_keymap({
     hide_field_3 : lambda percol: percol.command.toggle_command(),
     filter_bydir : lambda percol: percol.command.cwd_filter(),
     return_dir : lambda percol: percol.finish(field=1),
-    "C-r" : lambda percol: percol.finish(field=2),
-    "C-b" : lambda percol: percol.finish(field=-1),
     filter_dups : lambda percol: percol.command.toggle_recent(),
     filter_exit0 : lambda percol: percol.command.toggle_exit0(),
     push_stack : lambda percol: percol.command.fill_stack(),

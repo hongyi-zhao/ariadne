@@ -162,27 +162,11 @@ _ariadne() { # was _loghistory :)
 
 } 
 
-# modified from https://github.com/mooz/percol#zsh-history-search
-
-function get_seperator() {
-    while read i
-    do
-        if [[ $i =~ "FIELD_SEP[^#]*#?" ]]; then
-            matching_line=$MATCH
-            [[ $matching_line =~ "'(.+)'" ]] && sep=$match[1] # not $MATCH?
-            print $sep
-            return 0
-        fi
-    done < $1
-}
-
 function percol_sel_log_history() {
-    export SEP="$(get_seperator ${HOME}/.config/zsh/ariadne/rc.py)"
     RCFILE="$HOME/.config/zsh/ariadne/rc.py"
     PERCOL="$HOME/.config/zsh/ariadne/bin/percol"    
-    FIELD_SEP=$(get_seperator "$HOME/.config/zsh/ariadne/rc.py")
     # not sure why I can't pass .zsh_log as arg to percol
-    BUFFER=$(cat ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE --seperator=$FIELD_SEP) 
+    BUFFER=$(cat ~/.zsh_log | $PERCOL --reverse --rcfile=$RCFILE) 
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh
 }

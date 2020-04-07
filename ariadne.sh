@@ -1,4 +1,5 @@
 # PROMPT_COMMAND="echo $?"
+masterlog_global=''
 
 _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
@@ -75,7 +76,7 @@ _ariadne() { # was _loghistory :)
                 fi;;
             e ) ExtraOpt=1;histentrycmdextra=$OPTARG;;        # include histentrycmdextra
             l ) logfile=$OPTARG;;
-            m ) masterlog=$OPTARG;;
+            m ) masterlog=$OPTARG;masterlog_global=$masterlog;;
             : ) echo "$script: missing filename: -$OPTARG."
                 echo $usage
                 return 1;;
@@ -184,16 +185,26 @@ function percol_sel_log_history() {
     unset SEP
     RCFILE="$HOME/.config/bash/ariadne/rc.py"
     PERCOL="$HOME/.config/bash/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.config/basch/ariadne/percol":$PYTHONPATH
+    PYTHONPATH="$HOME/.config/bash/ariadne/percol":$PYTHONPATH
     $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log
 }
 
+function percol_sel_log_master_history() {
+    unset SEP
+    RCFILE="$HOME/.config/bash/ariadne/rc.py"
+    PERCOL="$HOME/.config/bash/ariadne/bin/percol"
+    PYTHONPATH="$HOME/.config/bash/ariadne/percol":$PYTHONPATH
+    $PERCOL --reverse --rcfile=$RCFILE $masterlog_global
+}
+
+
 function pre_command() {
-    result_ar=$?
+   result_ar=$?
     _ariadne -h -u -e 'echo -n $ar_result'
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
 # export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
 export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
 

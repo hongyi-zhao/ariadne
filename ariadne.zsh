@@ -1,3 +1,5 @@
+masterlog_global=''
+
 _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
 
@@ -47,7 +49,7 @@ _ariadne() { # was _loghistory :)
     local usage="Usage: $script [-h] [-y] [-u] [-n|-t] [-e] [text] [-l logfile] [-m masterlog]"
 
     local ExtraOpt=
-    local NoneOpt=
+    local NoneOpt= 
     local ToOpt=
     local tty=
     local ip=
@@ -78,7 +80,7 @@ _ariadne() { # was _loghistory :)
                 fi;;
             e ) ExtraOpt=1;histentrycmdextra=$OPTARG;;        # include histentrycmdextra
             l ) logfile=$OPTARG;;
-            m ) masterlog=$OPTARG;;
+            m ) masterlog=$OPTARG;masterlog_global=$masterlog;;
             : ) echo "$script: missing filename: -$OPTARG."
                 echo $usage
                 return 1;;
@@ -163,7 +165,7 @@ _ariadne() { # was _loghistory :)
     echo "$histentrycmd" >> $logfile || (echo "$script: file error." ; return 1)
 
     # save in master log file
-    if [[ -n $masterlog ]] then
+    if [[ -n $masterlog ]] then        
         echo "$histentrycmd" >> $masterlog || (echo "$script: file error." ; return 1)
     fi
 } 
@@ -177,8 +179,20 @@ function percol_sel_log_history() {
     zle -R -c               # refresh
 }
 
+function percol_sel_log_master_history() {
+    print $masterlog_global
+    RCFILE="$HOME/.config/zsh/ariadne/rc.py"
+    PERCOL="$HOME/.config/zsh/ariadne/bin/percol"        
+    BUFFER=$(cat $masterlog_global | $PERCOL --reverse --rcfile=$RCFILE) 
+    CURSOR=$#BUFFER         # move cursor
+    zle -R -c               # refresh
+}
+
 zle -N percol_sel_log_history
+zle -N percol_sel_log_master_history
+
 bindkey '^R' percol_sel_log_history
+bindkey '^[^R' percol_sel_log_master_history
 
 precmd() {
     export ar_result=$?

@@ -75,7 +75,13 @@ class FinderMultiQuery(CachedFinder):
         CachedFinder.__init__(self)
 
         self.collection = collection
-        self.split_str  = split_str
+        self.split_str  = split_str        
+        self.exit0 = False
+        self.host = ''
+        # self.host = None # for some reason no commands show in the beginning when intializing to None?
+        self.recent_commands = False
+        self.sep = '<>'
+        self.dummy_res = [["", [(0, 0)]]]
 
     def clone_as(self, new_finder_class):
         new_finder = Finder.clone_as(self, new_finder_class)
@@ -85,11 +91,12 @@ class FinderMultiQuery(CachedFinder):
 
     split_query = True
     case_insensitive = True
-    recent_commands = False
-    exit0 = False
-    sep = None
+    # recent_commands = False
+    # exit0 = False
+    # sep = '<>'
+    # sep = '║'
 
-    dummy_res = [["", [(0, 0)]]]
+    # dummy_res = [["", [(0, 0)]]]
 
     def find(self, query, collection = None):
         query_is_empty = query == ""
@@ -126,15 +133,17 @@ class FinderMultiQuery(CachedFinder):
 
             if res:
                 command = line[0].split(self.sep)[-1].strip()
+                hostname = line[2]
+                debug.log(f'hostname (fltr): {self.host} {hostname} {self.sep}')
                 if not command in found_commands and self.recent_commands:
-                    if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
+                    if ((line[1] == 0 and self.exit0) or (not self.exit0)) and (self.host == hostname): # if exit code 0
                         found_commands.append(command)
                         yield line[0], res, idx, line[1] 
                     
                 elif not self.recent_commands:
-                    if (line[1] == 0 and self.exit0) or (not self.exit0): # if exit code 0
-                    # debug.log((line[0],res,idx))
+                    if ((line[1] == 0 and self.exit0) or (not self.exit0)) and (self.host == hostname): # if exit code 0
                         yield line[0], res, idx, line[1]
+                    # debug.log((line[0],res,idx))
         
 
     and_search = True
@@ -151,7 +160,6 @@ class FinderMultiQuery(CachedFinder):
                     res.append((subq, find_info))
                 elif and_search:
                     return None
-        
 
         return res
 

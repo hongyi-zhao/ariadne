@@ -1,6 +1,8 @@
 import os 
 from percol.finder import FinderMultiQueryRegex
 myhost = os.uname()[1] # get hostname for left prompt
+myhost = myhost.strip()
+# myhost = 'localhost'
 
 # -*- coding: utf-8 -*-
 # variables for keybindings to use both in prompt strings and setting the keymap
@@ -24,11 +26,18 @@ def pretty_key(key): # modify for cleaner display in the console prompts
     tmp = tmp.replace('>', '')
     return tmp
 
+# # set host to current host
+# percol.view.__class__.HOST = myhost
+percol.view.host = myhost
+percol.command.set_host(myhost)
+
 # works well enough on black background
 # see https://github.com/mooz/percol for more formatting options
 FIELD_SEP = '║' # originally used ' <> ', which works well visually but uses a lot of space
-percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP)
+# percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP) # why did I use a class var again?
+percol.view.FIELD_SEP = FIELD_SEP 
 percol.command.set_field_sep(FIELD_SEP)
+
 
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")

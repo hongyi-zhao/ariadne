@@ -14,7 +14,7 @@ from percol import debug
 from percol import ansi
 from percol import command
 
-FIELD_SEP = ' <> '
+FIELD_SEP = '║'
 INSTRUCTION_TEXT = ansi.markup("""<bold><blue>{logo}</blue></bold>
                                 <on_blue><underline> {version} </underline></on_blue>
 
@@ -163,10 +163,15 @@ def read_input(filename, encoding, reverse=False, seperator=''):
             meta_data_arr = arr[1].strip().split(',')
             if len(meta_data_arr) > 0:
                 date = meta_data_arr[0]
-                date=date.strip()
+                date = date.strip()
+
+                host = meta_data_arr[3]
+                host = host.strip()
+                
                 path = meta_data_arr[4]
-                path=path.strip()
+                path = path.strip()
                 path.replace(' ','\\\\ ')
+                
                 out_line = date+seperator+path+seperator+cmd
                 out_line = ansi.remove_escapes(out_line.rstrip("\r\n"))
                 
@@ -176,7 +181,7 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 except ValueError:
                     exit_status = -999
                 
-                tup = (out_line,exit_status)
+                tup = (out_line,exit_status,host)
                 
                 yield tup
                 debug.log(tup)
@@ -309,7 +314,6 @@ Maybe all descriptors are redirecred."""))
                 percol.view.__class__.PROMPT = property(lambda self: options.prompt)
             if options.right_prompt is not None:
                 percol.view.__class__.RPROMPT = property(lambda self: options.right_prompt)
-            
 
             # evalutate strings specified by the option argument
             if options.string_to_eval is not None:

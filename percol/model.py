@@ -6,14 +6,15 @@ from percol import display, debug
 class SelectorModel(object):
 	def __init__(self,
 				 percol, collection, finder,
-				 query = None, caret = None, index = None, recent = True):
+				 query = None, caret = None, index = None):
+				 # query = None, caret = None, index = None, recent = True):
 		self.original_finder_class = finder
 		self.percol = percol
 		self.finder = finder(collection)
 		self.setup_results(query)
 		self.setup_caret(caret)
 		self.setup_index(index)
-		self.recent = recent
+		# self.recent = recent
 		self.stack = []
 		self.query_mode = True
 
@@ -34,7 +35,8 @@ class SelectorModel(object):
 	# ============================================================ #
 
 	
-	def setup_results(self, query, recent=False):
+	def setup_results(self, query):
+	# def setup_results(self, query, recent=False):
 		self.query   = self.old_query = query or u""
 		self.results = self.finder.get_results(self.query)
 	
@@ -109,7 +111,7 @@ class SelectorModel(object):
 		return withquotes
 
 
-	def get_selected_results_with_index_f(self,field=None,sep=' <> '):
+	def get_selected_results_with_index_f(self,field=None,sep='║'):
 		results = self.get_marked_results_with_index()
 		# debug.log(results)
 		if not results:
@@ -142,7 +144,7 @@ class SelectorModel(object):
 		return results
 
 
-	def stack_selected_results_with_index_f(self,field=1,sep=' <> '):
+	def stack_selected_results_with_index_f(self,field=1,sep='║'):
 		results = self.get_marked_results_with_index()
 		if not results:
 			try:

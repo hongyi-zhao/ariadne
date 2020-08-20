@@ -12,6 +12,7 @@ save_stack = "C-t"			# save commands in stack as rerun.sh
 filter_dups = "M-r"			# filter out duplicate commands
 filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
 return_dir = "C-d"			# return path and exit
+return_both = "C-b"         # return path and command separated by ;
 filter_bydir = "C-l"		# fliter by current path
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
@@ -27,16 +28,19 @@ def pretty_key(key): # modify for cleaner display in the console prompts
     return tmp
 
 # # set host to current host
-# percol.view.__class__.HOST = myhost
-percol.view.host = myhost
-percol.command.set_host(myhost)
+percol.view.__class__.HOST = myhost
+percol.view.HOST = myhost
+percol.model.finder.host = myhost
+percol.command.set_host(myhost )
 
 # works well enough on black background
 # see https://github.com/mooz/percol for more formatting options
-FIELD_SEP = '║' # originally used ' <> ', which works well visually but uses a lot of space
+
+# originally used ' <> ', which works well visually but uses a lot of space
+FIELD_SEP = '║' # set for cli.py
+# percol.view.FIELD_SEP = FIELD_SEP # set for view.py. Moved to cli.py
+# percol.command.set_field_sep(FIELD_SEP) # set for finder.py. Moved to cli.py
 # percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP) # why did I use a class var again?
-percol.view.FIELD_SEP = FIELD_SEP 
-percol.command.set_field_sep(FIELD_SEP)
 
 
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
@@ -98,6 +102,7 @@ percol.import_keymap({
     hide_field_3 : lambda percol: percol.command.toggle_command(),
     filter_bydir : lambda percol: percol.command.cwd_filter(),
     return_dir : lambda percol: percol.finish(field=1),
+    return_both : lambda percol: percol.finish(field=-1),
     filter_dups : lambda percol: percol.command.toggle_recent(),
     filter_exit0 : lambda percol: percol.command.toggle_exit0(),
     push_stack : lambda percol: percol.command.fill_stack(),

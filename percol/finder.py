@@ -77,20 +77,21 @@ class FinderMultiQuery(CachedFinder):
         self.collection = collection
         self.split_str  = split_str        
         self.exit0 = False
-        self.host = ''
-        # self.host = None # for some reason no commands show in the beginning when intializing to None?
+        # self.host = ''
         self.recent_commands = False
-        self.sep = '<>'
-        self.dummy_res = [["", [(0, 0)]]]
+        self.sep = '║'
+        self.dummy_res = [["", [(-1, -1)]]]
 
     def clone_as(self, new_finder_class):
         new_finder = Finder.clone_as(self, new_finder_class)
         new_finder.case_insensitive = self.case_insensitive
         new_finder.and_search = self.and_search
+        # new_finder.host = self.host
         return new_finder
 
     split_query = True
     case_insensitive = True
+    host = 'localhost'
     # recent_commands = False
     # exit0 = False
     # sep = '<>'
@@ -115,9 +116,12 @@ class FinderMultiQuery(CachedFinder):
             collection = self.collection
 
         found_commands = []
+        counter  = 0
 
-        for idx, line in enumerate(collection):
-            # debug.log(line)
+        for idx, line in enumerate(collection):            
+
+            # debug.log(f'finder.py, line:{line}')
+            # line = (line from log file, exit status, hostname)
             if query_is_empty:
                 res = self.dummy_res
             else:
@@ -131,19 +135,33 @@ class FinderMultiQuery(CachedFinder):
                 if self.invert_match:
                     res = None if res else self.dummy_res
 
-            if res:
+            arr = line[0].split(self.sep)
+            # debug.log(f'finder.py, arr:{arr} {len(arr)}')
+
+            if res:#  and (len(arr) == 3):     
+                # yield the desc result via the @action decorator, whatever that is for?
+                # otherwise messes up processing of zsh_log results when adding conditions (eg hostname) based on contents of 'line'
+                if (line == 'output marked (selected) items to stdout') or \
+                (line == 'output marked (selected) items to stdout with double quotes'):
+                    yield line, res, idx           
+
+                # debug.log(f'finder.py, CHECKED')
                 command = line[0].split(self.sep)[-1].strip()
                 hostname = line[2]
-                debug.log(f'hostname (fltr): {self.host} {hostname} {self.sep}')
                 if not command in found_commands and self.recent_commands:
-                    if ((line[1] == 0 and self.exit0) or (not self.exit0)) and (self.host == hostname): # if exit code 0
+                    if ((line[1] == 0 and self.exit0) or (not self.exit0)) and (self.host == hostname): # if exit code 0                    
                         found_commands.append(command)
+                        # line, [[query1,[(begin1, end1),(begin2, end2),...], query2 ...], line #, exit status
+                        # debug.log(f'finder.py, line: {line[0]}, res: {res}, index: {idx}, exit: {line[1]}')
                         yield line[0], res, idx, line[1] 
                     
                 elif not self.recent_commands:
+                    # if self.host == hostname:
+                    # debug.log(f'finder.py, (fltr): {self.host} {hostname} {self.sep} :: {line}')
+                    
                     if ((line[1] == 0 and self.exit0) or (not self.exit0)) and (self.host == hostname): # if exit code 0
+                        # debug.log(f'finder.py, line: {line[0]}, res: {res}, index: {idx}, exit: {line[1]}')
                         yield line[0], res, idx, line[1]
-                    # debug.log((line[0],res,idx))
         
 
     and_search = True

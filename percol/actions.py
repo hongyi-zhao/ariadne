@@ -13,9 +13,9 @@ def get_raw_stream(stream):
     else:
         return stream.buffer
 
-@action()
+@action()  # the point of this is to convert a function to a class instance / object?
 def output_to_stdout(lines, percol):
-    "output marked (selected) items to stdout"
+    "output marked (selected) items to stdout" # this is ending up in the results output, what for?
     stdout = get_raw_stream(sys.stdout)
     for line in lines:
         stdout.write(percol.display.get_raw_string(line))

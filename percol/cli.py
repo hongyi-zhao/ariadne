@@ -65,7 +65,7 @@ def eval_string(percol, string_to_eval, encoding = 'utf-8'):
             string_to_eval = string_to_eval.decode(encoding)
         exec(string_to_eval, locals())
     except Exception as e:
-        debug.log("Exception in eval_string", e)
+        debug.log("cli.py, Exception in eval_string", e)
 
 def error_message(message):
     return ansi.markup("<bold><on_red><white>[Error]</white></on_red></bold> " + message)
@@ -94,7 +94,7 @@ def setup_options(parser):
     parser.add_option("--match-method", dest = "match_method", default = "",
                       help = "specify matching method for query. `string` (default) and `regex` are currently supported")
     parser.add_option("--caret-position", dest = "caret",
-                      help = "position of the caret (default length of the `query`)")
+                       help = "position of the caret (default length of the `query`)")
     parser.add_option("--initial-index", dest = "index",
                       help = "position of the initial index of the selection (numeric, \"first\" or \"last\")")
     parser.add_option("--case-sensitive", dest = "case_sensitive", default = False, action="store_true",
@@ -122,6 +122,8 @@ def setup_options(parser):
 
     parser.add_option("--seperator", dest='seperator')
 
+    parser.add_option('--host', dest='host')
+
 def set_proper_locale(options):
     locale.setlocale(locale.LC_ALL, '')
     output_encoding = locale.getpreferredencoding()
@@ -135,6 +137,7 @@ def join_tuple(tup):
         result = result+str(t)+','
     return result
 
+# def read_input(filename, encoding, reverse=False):
 def read_input(filename, encoding, reverse=False, seperator=''):
     import codecs
     if filename:
@@ -184,7 +187,7 @@ def read_input(filename, encoding, reverse=False, seperator=''):
                 tup = (out_line,exit_status,host)
                 
                 yield tup
-                debug.log(tup)
+                # debug.log(tup)
 
 
     stream.close()
@@ -223,7 +226,7 @@ def main():
     ttyname = options.tty or tty.get_ttyname()
     if not ttyname:
         exit_program(error_message("""No tty name is given and failed to guess it from descriptors.
-Maybe all descriptors are redirecred."""))
+Maybe all descriptors are redirected."""))
 
     # decide which encoding to use
     output_encoding = set_proper_locale(options)
@@ -254,7 +257,8 @@ Maybe all descriptors are redirecred."""))
         # read input
 
         # TODO: make sure works without rc file specified
-        if options.seperator is not None:
+        if options.seperator is not None:            
+            # debug.log("Percol here")
             FIELD_SEP = options.seperator
         else:
             with open(options.rcfile) as f:
@@ -262,10 +266,11 @@ Maybe all descriptors are redirecred."""))
                     if re.search('^FIELD_SEP\s+=\s+',line):
                         r = re.search('\'(?P<sep>.+?)\'',line)
                         FIELD_SEP = r.group('sep')
-                        # debug.log(FIELD_SEP+'xxx')
+                        # debug.log(f"Percol cli.py {FIELD_SEP}")
                         break
 
         try:
+            # candidates = read_input(filename, input_encoding, reverse=options.reverse)
             candidates = read_input(filename, input_encoding, reverse=options.reverse, seperator=FIELD_SEP)
             # candidates,exit_codes = read_input(filename, input_encoding, reverse=options.reverse, seperator=options.seperator)
         except KeyboardInterrupt:
@@ -274,9 +279,9 @@ Maybe all descriptors are redirecred."""))
         # setup actions
         import percol.actions as actions
         if (options.quote):
-            acts = (actions.output_to_stdout_double_quote, )
+            acts  = (actions.output_to_stdout_double_quote, )
         else:
-            acts = (actions.output_to_stdout, actions.output_to_stdout_double_quote)
+            acts  = (actions.output_to_stdout, actions.output_to_stdout_double_quote)
 
         # arrange finder class
         candidate_finder_class = action_finder_class = decide_match_method(options)
@@ -291,24 +296,31 @@ Maybe all descriptors are redirecred."""))
             if value is not None:
                 setattr(dest, name, value)
 
+        myhost = os.uname()[1] # get hostname for left prompt
+        myhost = myhost.strip()
+
         with Percol(descriptors = tty.reconnect_descriptors(tty_f),
                     candidates = candidates,
-                    actions = acts,
+                    actions = acts ,
                     finder = candidate_finder_class,
                     action_finder = action_finder_class,
                     query = options.query,
                     caret = options.caret,
                     index = options.index,
-                    encoding = output_encoding) as percol:
+                    encoding = output_encoding,
+                    host = myhost,
+                    field_sep = FIELD_SEP) as percol:
             # load run-command file
             load_rc(percol, options.rcfile)
-            # seperator can now be set via command-line
+            
+            # seperator can now be set via command-line. Does not work here for setting FIELD_SEP to convert the log_file to separated output, moved up
             if options.seperator is not None:
                 percol.view.__class__.FIELD_SEP = property(lambda self: options.seperator)
                 percol.command.set_field_sep(options.seperator)
-            # else:
-                # options.seperator = '║'
-                # options.seperator = percol.view.FIELD_SEP
+            else:                
+                percol.view.__class__.FIELD_SEP = FIELD_SEP                
+                percol.command.set_field_sep(FIELD_SEP)
+            
             # override prompts
             if options.prompt is not None:
                 percol.view.__class__.PROMPT = property(lambda self: options.prompt)
@@ -320,6 +332,8 @@ Maybe all descriptors are redirecred."""))
                 eval_string(percol, options.string_to_eval, locale.getpreferredencoding())
             # finder settings from option values
             set_finder_attribute_from_option(percol.model_candidate.finder)
+            debug.log(f'cli.py: {percol.model.finder.host}')
+            # percol.model.finder.host = 'greyarea'
             # view settings from option values
             set_if_not_none(options, percol.view, 'prompt_on_top')
             set_if_not_none(options, percol.view, 'results_top_down')

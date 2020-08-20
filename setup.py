@@ -80,7 +80,7 @@ def main():
   parser.add_argument("-f","--fish",action="store_true",default=False,help="Install for fish")
 
   args = parser.parse_args()
-
+  
   if args.zsh:
     install_zsh()
 

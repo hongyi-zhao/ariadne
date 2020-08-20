@@ -245,10 +245,10 @@ class SelectorCommand(object):
 
     def set_field_sep(self,seperator):
         self.model.finder.sep = seperator
-        # self.model.force_search()
+        self.model.force_search()
 
     def set_host(self,host):
-        self.model.finder.host = host        
+        self.model.finder.__class__.host = host        
         self.model.force_search()
 
     def specify_split_query(self, split_query):

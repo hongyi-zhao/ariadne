@@ -26,7 +26,7 @@ class SelectorView(object):
     FIELD_SEP                = '║'
     FOLDED                   = '..'
     STACKLINE                = '========= Command Stack ========='
-    # HOST                     = None
+    HOST                     = None
 
     @property
     def RESULTS_DISPLAY_MAX(self):
@@ -172,7 +172,7 @@ class SelectorView(object):
                                             style = keyword_style)
                     
                 except curses.error as e:
-                    debug.log("addnstr", str(e) + " ({0})".format(y))
+                    debug.log("view.py, addnstr", str(e) + " ({0})".format(y))
 
                 for n in new_spans: # colour separator blue or red depending on exit status
                     self.display.add_string(new_line[n[0]-len(self.FIELD_SEP):n[0]],
@@ -197,11 +197,11 @@ class SelectorView(object):
                                         is_current = cand_nth == self.model.index,
                                         is_marked = self.model.get_is_marked(cand_nth))
                 except curses.error as e:
-                    debug.log("display_results", str(e))
+                    debug.log("view.py, display_results", str(e))
                 result_vertical_pos += result_pos_direction
         except Exception as e:
             # debug.log("display_results", str(e))
-            debug.log("display_results",
+            debug.log("view.py, display_results",
                       six.text_type(" | ".join(
                           map(lambda key: six.text_type(key) +
                               ": "
@@ -328,7 +328,7 @@ class SelectorView(object):
         flag = False
         textbox.edit()
         text = textbox.gather()
-        debug.log("Filename: %s"%text)
+        debug.log("view.py Filename: %s"%text)
         
         # self.screen.refresh()
         # self.display.refresh()

@@ -81,7 +81,7 @@ class FinderMultiQuery(CachedFinder):
         self.recent_commands = False
         self.sep = '║'
         self.dummy_res = [["", [(-1, -1)]]]
-        self.host_condition = 1 # 1: hostname in cmd == local hostname, 2: all hosts
+        self.host_condition = 1 # 1: hostname in cmd == local hostname, 2: all hosts        
 
     def clone_as(self, new_finder_class):
         new_finder = Finder.clone_as(self, new_finder_class)
@@ -94,6 +94,7 @@ class FinderMultiQuery(CachedFinder):
     case_insensitive = True
     host = 'localhost'
     localhost = 'localhost'
+    known_hosts = {host}
     # recent_commands = False
     # exit0 = False
     # sep = '<>'
@@ -101,8 +102,22 @@ class FinderMultiQuery(CachedFinder):
 
     # dummy_res = [["", [(0, 0)]]]
 
+    def next_host(self):
+        if self.host == 'all hosts':
+            return self.localhost
+
+        as_list = list(self.known_hosts)
+        pos = as_list.index(self.host)
+        # debug.log(f'finder.py 108: {pos}')
+        pos += 1 
+        if pos == len(as_list):
+            pos = 0
+        # debug.log(f'finder.py 110: {as_list} {pos} {as_list[pos]}')        
+        
+        return as_list[pos]
+
     def check_host_condition(self, type, linehost):
-        debug.log(f'host_condition: {self.host} {linehost}')
+        # debug.log(f'host_condition: {self.host} {linehost}')
         if type == 1:
             return self.host == linehost
         elif type == 2:
@@ -157,10 +172,13 @@ class FinderMultiQuery(CachedFinder):
                 # debug.log(f'finder.py, CHECKED')
                 command = line[0].split(self.sep)[-1].strip()
                 hostname = line[2]
+                if self.host != 'all hosts':
+                    self.known_hosts.add(hostname)
 
                 # self.host_condition(1, hostname)
 
                 if not command in found_commands and self.recent_commands:
+                    # debug.log(f'finder.py, (fltr): {self.host} {hostname} {self.known_hosts} {self.sep} :: {line}')
                     if ((line[1] == 0 and self.exit0) or (not self.exit0)) and \
                     self.check_host_condition(self.host_condition, hostname): # if exit code 0
                         found_commands.append(command)
@@ -170,7 +188,7 @@ class FinderMultiQuery(CachedFinder):
                     
                 elif not self.recent_commands:
                     # if self.host == hostname:
-                    debug.log(f'finder.py, (fltr): {self.host} {hostname} {self.sep} :: {line}')
+                    # debug.log(f'finder.py, (fltr): {self.host} {hostname} {self.known_hosts} {self.sep} :: {line}')
                     if ((line[1] == 0 and self.exit0) or (not self.exit0)) and \
                     self.check_host_condition(self.host_condition, hostname): # if exit code 0
                         # debug.log(f'finder.py, line: {line[0]}, res: {res}, index: {idx}, exit: {line[1]}')

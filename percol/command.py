@@ -249,7 +249,7 @@ class SelectorCommand(object):
         self.model.force_search()
 
     def set_host(self,host):
-        self.model.finder.__class__.host = host        
+        self.model.finder.host = host        
         self.model.force_search()
 
     def specify_split_query(self, split_query):
@@ -269,6 +269,7 @@ class SelectorCommand(object):
         recent_commands = self.model.finder.recent_commands
         host = self.model.finder.host
         localhost = self.model.finder.localhost
+        host_condition = self.model.finder.host_condition
         
         if self.model.finder.__class__ == preferred_finder_class:
             self.model.remake_finder(self.model.original_finder_class)
@@ -279,6 +280,7 @@ class SelectorCommand(object):
         self.model.finder.recent_commands = recent_commands
         self.model.finder.host = host
         self.model.finder.localhost = localhost
+        self.model.finder.host_condition = host_condition
         
         self.model.force_search()
 
@@ -286,13 +288,23 @@ class SelectorCommand(object):
         if self.model.finder.host_condition == 1:
             self.model.finder.host_condition = 2
             self.model.finder.host = 'all hosts'
-            debug.log(f'command.py 288: {self.model.finder.host} {self.model.finder.localhost}')
+            # debug.log(f'command.py 288: {self.model.finder.host} {self.model.finder.localhost}')
         else:
             self.model.finder.host_condition = 1
             self.model.finder.host = self.model.finder.localhost
-            debug.log(f'command.py 292: {self.model.finder.host} {self.model.finder.localhost}')
+            # debug.log(f'command.py 292: {self.model.finder.host} {self.model.finder.localhost}')
         self.model.force_search()
 
+    def next_host(self):
+        new_host = self.model.finder.next_host()
+        # debug.log(f'command.py 300: {new_host}')
+        self.set_host(new_host)
+        if new_host == 'all hosts':
+            self.model.finder.host_condition = 2
+        else:
+            self.model.finder.host_condition = 1
+
+        self.model.force_search()
 
     # ------------------------------------------------------------ #
     # Stack

@@ -6,14 +6,15 @@ myhost = myhost.strip()
 
 # -*- coding: utf-8 -*-
 # variables for keybindings to use both in prompt strings and setting the keymap
-push_stack = "C-s"			# add command to bottom of stack 
-pop_stack = "M-s"			# remove bottom command from stack
-save_stack = "C-t"			# save commands in stack as rerun.sh
+push_stack = "C-p"			# add command to bottom of stack 
+pop_stack = "M-p"			# remove bottom command from stack
+save_stack = "C-s"			# save commands in stack as rerun.sh
 filter_dups = "M-r"			# filter out duplicate commands
 filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
 return_dir = "C-d"			# return path and exit
 return_both = "C-b"         # return path and command separated by ;
 toggle_host = "M-h"
+next_host = "M-n"
 filter_bydir = "C-l"		# fliter by current path
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
@@ -48,22 +49,22 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'v════v Command Stack ══ push:%s ══ pop:%s ══ save as "rerun.sh":%s v════v'\
+percol.view.STACKLINE = 'v════v Script ══ push:%s ══ pop:%s ══ save: "rerun.sh":%s v════v'\
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
 percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 # Set left and right prompt, assumes a wide screen
-percol.view.PROMPT = f'<bold><cyan>%H</cyan></bold>> %q'
+percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'
 percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name()
 percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host
-percol.view.RPROMPT = f"Finder({pretty_key(switch_finder)}):%F \
+percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
 Path:{pretty_key(return_dir)} \
 Local:{pretty_key(filter_bydir)} \
 Unique:{pretty_key(filter_dups)} \
 Exit0:{pretty_key(filter_exit0)} \
-Show/Hide{pretty_key(hide_field_1)},\
+Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}\
 "
@@ -106,6 +107,7 @@ percol.import_keymap({
     return_dir   : lambda percol: percol.finish(field=1),
     return_both  : lambda percol: percol.finish(field=-1),
     toggle_host  : lambda percol: percol.command.toggle_host(),
+    next_host    : lambda percol: percol.command.next_host(),
     filter_dups  : lambda percol: percol.command.toggle_recent(),
     filter_exit0 : lambda percol: percol.command.toggle_exit0(),
     push_stack   : lambda percol: percol.command.fill_stack(),

@@ -13,6 +13,7 @@ filter_dups = "M-r"			# filter out duplicate commands
 filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
 return_dir = "C-d"			# return path and exit
 return_both = "C-b"         # return path and command separated by ;
+toggle_host = "M-h"
 filter_bydir = "C-l"		# fliter by current path
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
@@ -28,10 +29,10 @@ def pretty_key(key): # modify for cleaner display in the console prompts
     return tmp
 
 # # set host to current host
-percol.view.__class__.HOST = myhost
-percol.view.HOST = myhost
-percol.model.finder.host = myhost
-percol.command.set_host(myhost )
+# percol.view.__class__.HOST = myhost
+# percol.view.HOST = myhost
+# percol.model.finder.host = myhost
+# percol.command.set_host(myhost )
 
 # works well enough on black background
 # see https://github.com/mooz/percol for more formatting options
@@ -54,8 +55,9 @@ percol.view.STACKLINE = 'v════v Command Stack ══ push:%s ══ pop:
 percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 # Set left and right prompt, assumes a wide screen
-percol.view.PROMPT = f'<bold><cyan>{myhost}</cyan></bold>> %q'
+percol.view.PROMPT = f'<bold><cyan>%H</cyan></bold>> %q'
 percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name()
+percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host
 percol.view.RPROMPT = f"Finder({pretty_key(switch_finder)}):%F \
 Path:{pretty_key(return_dir)} \
 Local:{pretty_key(filter_bydir)} \
@@ -101,12 +103,13 @@ percol.import_keymap({
     hide_field_2 : lambda percol: percol.command.toggle_execdir(),
     hide_field_3 : lambda percol: percol.command.toggle_command(),
     filter_bydir : lambda percol: percol.command.cwd_filter(),
-    return_dir : lambda percol: percol.finish(field=1),
-    return_both : lambda percol: percol.finish(field=-1),
-    filter_dups : lambda percol: percol.command.toggle_recent(),
+    return_dir   : lambda percol: percol.finish(field=1),
+    return_both  : lambda percol: percol.finish(field=-1),
+    toggle_host  : lambda percol: percol.command.toggle_host(),
+    filter_dups  : lambda percol: percol.command.toggle_recent(),
     filter_exit0 : lambda percol: percol.command.toggle_exit0(),
-    push_stack : lambda percol: percol.command.fill_stack(),
-    pop_stack : lambda percol: percol.command.pop_stack(),
-    save_stack : lambda percol: percol.finish_and_save(),
+    push_stack   : lambda percol: percol.command.fill_stack(),
+    pop_stack    : lambda percol: percol.command.pop_stack(),
+    save_stack   : lambda percol: percol.finish_and_save(),
     switch_finder: lambda percol: percol.command.toggle_finder(FinderMultiQueryRegex) # switch between normal and regex finders
 })    

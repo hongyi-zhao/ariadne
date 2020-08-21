@@ -332,8 +332,7 @@ Maybe all descriptors are redirected."""))
                 eval_string(percol, options.string_to_eval, locale.getpreferredencoding())
             # finder settings from option values
             set_finder_attribute_from_option(percol.model_candidate.finder)
-            debug.log(f'cli.py: {percol.model.finder.host}')
-            # percol.model.finder.host = 'greyarea'
+            # debug.log(f'cli.py: {percol.model.finder.host}')
             # view settings from option values
             set_if_not_none(options, percol.view, 'prompt_on_top')
             set_if_not_none(options, percol.view, 'results_top_down')

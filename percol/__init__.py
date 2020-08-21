@@ -52,6 +52,7 @@ class Percol(object):
             action_finder = FinderMultiQueryString
 
         finder.host = host
+        finder.localhost = host
         finder.sep = field_sep
 
         self.actions = actions

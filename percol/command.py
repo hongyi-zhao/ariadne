@@ -2,6 +2,7 @@
 
 import six
 import os
+from percol import debug
 
 class SelectorCommand(object):
     """
@@ -266,6 +267,8 @@ class SelectorCommand(object):
     def toggle_finder(self, preferred_finder_class):
         exit0 = self.model.finder.exit0
         recent_commands = self.model.finder.recent_commands
+        host = self.model.finder.host
+        localhost = self.model.finder.localhost
         
         if self.model.finder.__class__ == preferred_finder_class:
             self.model.remake_finder(self.model.original_finder_class)
@@ -274,8 +277,22 @@ class SelectorCommand(object):
         
         self.model.finder.exit0 = exit0
         self.model.finder.recent_commands = recent_commands
+        self.model.finder.host = host
+        self.model.finder.localhost = localhost
         
         self.model.force_search()
+
+    def toggle_host(self):
+        if self.model.finder.host_condition == 1:
+            self.model.finder.host_condition = 2
+            self.model.finder.host = 'all hosts'
+            debug.log(f'command.py 288: {self.model.finder.host} {self.model.finder.localhost}')
+        else:
+            self.model.finder.host_condition = 1
+            self.model.finder.host = self.model.finder.localhost
+            debug.log(f'command.py 292: {self.model.finder.host} {self.model.finder.localhost}')
+        self.model.force_search()
+
 
     # ------------------------------------------------------------ #
     # Stack

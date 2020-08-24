@@ -2,7 +2,6 @@ import os
 from percol.finder import FinderMultiQueryRegex
 myhost = os.uname()[1] # get hostname for left prompt
 myhost = myhost.strip()
-# myhost = 'localhost'
 
 # -*- coding: utf-8 -*-
 # variables for keybindings to use both in prompt strings and setting the keymap
@@ -27,47 +26,98 @@ def pretty_key(key): # modify for cleaner display in the console prompts
     tmp = tmp.replace('M-', u'⎇ ')# this may not work on all terminals, comment out if needed
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
-    return tmp
 
-# # set host to current host
-# percol.view.__class__.HOST = myhost
-# percol.view.HOST = myhost
-# percol.model.finder.host = myhost
-# percol.command.set_host(myhost )
+    tmp = tmp.replace('f1', 'F1')
+    tmp = tmp.replace('f2', 'F2')
+    tmp = tmp.replace('f3', 'F3')
+    return tmp
 
 # works well enough on black background
 # see https://github.com/mooz/percol for more formatting options
 
 # originally used ' <> ', which works well visually but uses a lot of space
 FIELD_SEP = '║' # set for cli.py
-# percol.view.FIELD_SEP = FIELD_SEP # set for view.py. Moved to cli.py
-# percol.command.set_field_sep(FIELD_SEP) # set for finder.py. Moved to cli.py
-# percol.view.__class__.FIELD_SEP = property(lambda self: FIELD_SEP) # why did I use a class var again?
-
 
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'v════v Script ══ push:%s ══ pop:%s ══ save: "rerun.sh":%s v════v'\
+percol.view.STACKLINE = 'v════v Script ══ Add:%s ══ Remove:%s ══ Save "rerun.sh":%s v════v'\
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
 percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
+def bold(is_set,text):
+    if is_set:
+        return f'<bold>{text}</bold>'
+    else:
+        return f'{text}'
+
+
 # Set left and right prompt, assumes a wide screen
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'
 percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name()
 percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host
-percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
+
+# percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
+# Path:{pretty_key(return_dir)} \
+# Local:{pretty_key(filter_bydir)} \
+# Unique:{pretty_key(filter_dups)} \
+# Exit0:{pretty_key(filter_exit0)} \
+# Fold:{pretty_key(hide_field_1)},\
+# {pretty_key(hide_field_2)},\
+# {pretty_key(hide_field_3)}\
+# "
+
+# Togle green and bold when filtering for exit == 0 and duplicate commands
+# ugh, nested if...else. Isn't there a better way?
+percol.view.__class__.RPROMPT = property(
+    lambda self: 
+    f"{pretty_key(switch_finder)}:%F \
+Path:{pretty_key(return_dir)} \
+Local:{pretty_key(filter_bydir)} \
+<green><bold>Unique:{pretty_key(filter_dups)}</green></bold> \
+<green><bold>Exit0:{pretty_key(filter_exit0)}</green></bold> \
+Fold:{pretty_key(hide_field_1)},\
+{pretty_key(hide_field_2)},\
+{pretty_key(hide_field_3)}" if percol.model.finder.recent_commands and percol.model.finder.exit0 \
+    else (
+f"{pretty_key(switch_finder)}:%F \
+Path:{pretty_key(return_dir)} \
+Local:{pretty_key(filter_bydir)} \
+<green><bold>Unique:{pretty_key(filter_dups)}</green></bold> \
+Exit0:{pretty_key(filter_exit0)} \
+Fold:{pretty_key(hide_field_1)},\
+{pretty_key(hide_field_2)},\
+{pretty_key(hide_field_3)}" if percol.model.finder.recent_commands \
+    else (
+f"{pretty_key(switch_finder)}:%F \
+Path:{pretty_key(return_dir)} \
+Local:{pretty_key(filter_bydir)} \
+Unique:{pretty_key(filter_dups)} \
+<green><bold>Exit0:{pretty_key(filter_exit0)}</bold></green> \
+Fold:{pretty_key(hide_field_1)},\
+{pretty_key(hide_field_2)},\
+{pretty_key(hide_field_3)}" if percol.model.finder.exit0
+        else 
+f"{pretty_key(switch_finder)}:%F \
 Path:{pretty_key(return_dir)} \
 Local:{pretty_key(filter_bydir)} \
 Unique:{pretty_key(filter_dups)} \
 Exit0:{pretty_key(filter_exit0)} \
 Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
-{pretty_key(hide_field_3)}\
-"
+{pretty_key(hide_field_3)}")))
+
+
+# percol.view.prompt_replacees["x"] = lambda self, **args: bold(self.model.finder.exit0,'EXIT')
+
+# percol.view.__class__.RPROMPT = property(
+#     lambda self: \
+#     u"<bold><blue>QUERY </blue>[a]:</bold> %q" if percol.model.finder.case_insensitive \
+#     else u"<bold><green>QUERY </green>[A]:</bold> %q"
+# )
 
 percol.import_keymap({
     # "C-i"         : lambda percol: percol.switch_model(), # not sure what this is, invert? Doesn't work here

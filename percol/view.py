@@ -17,15 +17,18 @@ class SelectorView(object):
         self.screen  = percol.screen
         self.display = percol.display
         self.fold_fields = []
+        self.exit0_color              = 'blue'
+        self.exitnot0_color           = 'red'
 
     CANDIDATES_LINE_BASIC    = ("on_default", "default")
     CANDIDATES_LINE_SELECTED = ("underline", "on_magenta", "white")
     CANDIDATES_LINE_MARKED   = ("bold", "on_cyan", "black")
     CANDIDATES_LINE_QUERY    = ("yellow", "bold")
     MESSAGE_ERROR            = ("on_red", "white")
-    FIELD_SEP                = ' <> '
+    FIELD_SEP                = '║'
     FOLDED                   = '..'
     STACKLINE                = '========= Command Stack ========='
+    HOST                     = None
 
     @property
     def RESULTS_DISPLAY_MAX(self):
@@ -134,9 +137,9 @@ class SelectorView(object):
     def display_result(self, y, result, is_current = False, is_marked = False):
         line, find_info, abs_idx, exit_status = result
         if exit_status == 0: # set separator colour depending on exit status
-            bar_colour = "blue"
+            bar_colour = self.exit0_color
         else:
-            bar_colour = "red"
+            bar_colour = self.exitnot0_color
 
         if is_current:
             line_style = self.CANDIDATES_LINE_SELECTED
@@ -171,7 +174,7 @@ class SelectorView(object):
                                             style = keyword_style)
                     
                 except curses.error as e:
-                    debug.log("addnstr", str(e) + " ({0})".format(y))
+                    debug.log("view.py, addnstr", str(e) + " ({0})".format(y))
 
                 for n in new_spans: # colour separator blue or red depending on exit status
                     self.display.add_string(new_line[n[0]-len(self.FIELD_SEP):n[0]],
@@ -196,11 +199,11 @@ class SelectorView(object):
                                         is_current = cand_nth == self.model.index,
                                         is_marked = self.model.get_is_marked(cand_nth))
                 except curses.error as e:
-                    debug.log("display_results", str(e))
+                    debug.log("view.py, display_results", str(e))
                 result_vertical_pos += result_pos_direction
         except Exception as e:
             # debug.log("display_results", str(e))
-            debug.log("display_results",
+            debug.log("view.py, display_results",
                       six.text_type(" | ".join(
                           map(lambda key: six.text_type(key) +
                               ": "
@@ -327,7 +330,7 @@ class SelectorView(object):
         flag = False
         textbox.edit()
         text = textbox.gather()
-        debug.log("Filename: %s"%text)
+        debug.log("view.py Filename: %s"%text)
         
         # self.screen.refresh()
         # self.display.refresh()

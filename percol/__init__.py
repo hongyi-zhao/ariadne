@@ -31,7 +31,8 @@ class Percol(object):
     def __init__(self, descriptors = None, encoding = "utf-8",
                  finder = None, action_finder = None,
                  candidates = None, actions = None,
-                 query = None, caret = None, index = None):
+                 query = None, caret = None, index = None,
+                 host = None, field_sep = None):
         # initialization
         self.global_lock = threading.Lock()
         self.encoding = encoding
@@ -49,6 +50,10 @@ class Percol(object):
             finder = FinderMultiQueryString
         if action_finder is None:
             action_finder = FinderMultiQueryString
+
+        finder.host = host
+        finder.localhost = host
+        finder.sep = field_sep
 
         self.actions = actions
 
@@ -111,17 +116,18 @@ class Percol(object):
     args_for_action = None
 
     def execute_action(self):
+        # selected_actions = self.model_action.get_selected_results_with_index_f(sep=self.model.finder.sep)
         selected_actions = self.model_action.get_selected_results_with_index()
         
         if selected_actions and self.args_for_action:
             for name, _, act_idx in selected_actions:
-                debug.log(self.args_for_action[0][0])
+                # debug.log(f'init.py 122, {self.args_for_action[0][0]}')
                 try:
                     action = self.actions[act_idx]
                     if action:
                         action.act([arg for arg, _, _ in self.args_for_action], self)
                 except Exception as e:
-                    debug.log("execute_action", e)
+                    debug.log("init.py, execute_action", e)
 
     # ============================================================ #
     # Statuses

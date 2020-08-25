@@ -6,14 +6,15 @@ from percol import display, debug
 class SelectorModel(object):
 	def __init__(self,
 				 percol, collection, finder,
-				 query = None, caret = None, index = None, recent = True):
+				 query = None, caret = None, index = None):
+				 # query = None, caret = None, index = None, recent = True):
 		self.original_finder_class = finder
 		self.percol = percol
 		self.finder = finder(collection)
 		self.setup_results(query)
 		self.setup_caret(caret)
 		self.setup_index(index)
-		self.recent = recent
+		# self.recent = recent
 		self.stack = []
 		self.query_mode = True
 
@@ -34,7 +35,8 @@ class SelectorModel(object):
 	# ============================================================ #
 
 	
-	def setup_results(self, query, recent=False):
+	def setup_results(self, query):
+	# def setup_results(self, query, recent=False):
 		self.query   = self.old_query = query or u""
 		self.results = self.finder.get_results(self.query)
 	
@@ -97,7 +99,7 @@ class SelectorModel(object):
 				result = self.results[index] # EAFP (results may be a zero-length list)
 				results.append((result[0], index, result[2]))
 			except Exception as e:
-				debug.log("get_selected_results_with_index", e)
+				debug.log(f"model.py 102, get_selected_results_with_index, {self.finder.host}", e)
 		# debug.log(results)
 		return results
 
@@ -108,41 +110,45 @@ class SelectorModel(object):
 			withquotes = "\""+path+"\""
 		return withquotes
 
-
-	def get_selected_results_with_index_f(self,field=None,sep=' <> '):
+	# Replacement for get_selected_results_with_index to select command or path, separated by sep
+	def get_selected_results_with_index_f(self,sep,field=None):
 		results = self.get_marked_results_with_index()
-		# debug.log(results)
+		# debug.log(f'model.py 116, sep:{sep}, r:{results}')
+		
 		if not results:
 			try:
 				index = self.index
 				result = self.results[index] # EAFP (results may be a zero-length list)
 				results.append((result[0], index, result[2]))
+				# debug.log(f'model.py 123, {results}')
 			except Exception as e:
-				debug.log("get_selected_results_with_index_f", e)
+				debug.log("model.py 124, get_selected_results_with_index_f", e)
 		
 		if field is not None:
+			# debug.log(f'model.py 127, {results}')			
 			if field == 1: # put quotes around directories
 				newresults = []
-				for r in results:
+				for r in results:					
 					path = self.quote_path(r[0].split(sep)[1])
-					newresults.append((path,[1],r[2]))
-					debug.log("Modified path %s"%path)
+					newresults.append((path,r[1],r[2]))
+					# debug.log("model.py, Modified path %s"%path)
 				results = newresults
 			elif field == -1: #chdir and run command
 				newresults = []
 				for r in results:
 					path = self.quote_path(r[0].split(sep)[1])
 					command = r[0].split(sep)[2]
-					newresults.append((path+'; '+command,[1],r[2]))
-					debug.log("Modified path %s"%path)
+					newresults.append((path+'; '+command,r[1],r[2]))
+					# debug.log("model.py, Modified path %s"%path)
 				results = newresults
 			else:
 				results = [(r[0].split(sep)[field],r[1],r[2]) for r in results]
-			
+				# debug.log(f'model.py 145, r:{results}')				
+		
 		return results
 
 
-	def stack_selected_results_with_index_f(self,field=1,sep=' <> '):
+	def stack_selected_results_with_index_f(self,field=1,sep='║'):
 		results = self.get_marked_results_with_index()
 		if not results:
 			try:
@@ -150,7 +156,7 @@ class SelectorModel(object):
 				result = self.results[index] # EAFP (results may be a zero-length list)
 				results.append((result[0], index, result[2]))
 			except Exception as e:
-				debug.log("stack_selected_results_with_index_f", e)
+				debug.log("model.py, stack_selected_results_with_index_f", e)
 		if field is not None:
 			results = [r[0].split(sep)[2] for r in results]
 		self.stack += results

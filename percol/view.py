@@ -17,6 +17,8 @@ class SelectorView(object):
         self.screen  = percol.screen
         self.display = percol.display
         self.fold_fields = []
+        self.exit0_color              = 'blue'
+        self.exitnot0_color           = 'red'
 
     CANDIDATES_LINE_BASIC    = ("on_default", "default")
     CANDIDATES_LINE_SELECTED = ("underline", "on_magenta", "white")
@@ -135,9 +137,9 @@ class SelectorView(object):
     def display_result(self, y, result, is_current = False, is_marked = False):
         line, find_info, abs_idx, exit_status = result
         if exit_status == 0: # set separator colour depending on exit status
-            bar_colour = "blue"
+            bar_colour = self.exit0_color
         else:
-            bar_colour = "red"
+            bar_colour = self.exitnot0_color
 
         if is_current:
             line_style = self.CANDIDATES_LINE_SELECTED

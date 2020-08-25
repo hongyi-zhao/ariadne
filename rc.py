@@ -20,10 +20,11 @@ hide_field_2 = "<f2>"		# toggle show path column
 hide_field_3 = "<f3>"		# toggle show command column
 switch_finder = "M-m"		# toggle regex finder
 
-def pretty_key(key): # modify for cleaner display in the console prompts
+## Reformat keybindings for prompt display
+def pretty_key(key): 
     tmp = key.replace('C-','^')
     # tmp = key.replace('C-','⎈') # the official unicode symbol? doesn't work well for me
-    tmp = tmp.replace('M-', u'⎇ ')# this may not work on all terminals, comment out if needed
+    tmp = tmp.replace('M-', u'⎇ ') # this may not work on all terminals, comment out if needed
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
 
@@ -32,12 +33,14 @@ def pretty_key(key): # modify for cleaner display in the console prompts
     tmp = tmp.replace('f3', 'F3')
     return tmp
 
-# works well enough on black background
+## Field seperator, originally used ' <> ', which works well visually but uses a lot of space
+FIELD_SEP = '║' 
+# field seperator colours for exit == 0 and =/= 0
+percol.view.exit0_color = 'blue'
+percol.view.exitnot0_color = 'red'
+
+## Left and right prompt format, works best on a wide screen and black bg
 # see https://github.com/mooz/percol for more formatting options
-
-# originally used ' <> ', which works well visually but uses a lot of space
-FIELD_SEP = '║' # set for cli.py
-
 percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
@@ -48,17 +51,9 @@ percol.view.STACKLINE = 'v════v Script ══ Add:%s ══ Remove:%s �
         pretty_key(save_stack))
 percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
-def bold(is_set,text):
-    if is_set:
-        return f'<bold>{text}</bold>'
-    else:
-        return f'{text}'
-
-
-# Set left and right prompt, assumes a wide screen
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'
-percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name()
-percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host
+percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name() # insert finder
+percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host # insert host name or 'all hosts'
 
 # percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
 # Path:{pretty_key(return_dir)} \
@@ -110,15 +105,7 @@ Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}")))
 
-
-# percol.view.prompt_replacees["x"] = lambda self, **args: bold(self.model.finder.exit0,'EXIT')
-
-# percol.view.__class__.RPROMPT = property(
-#     lambda self: \
-#     u"<bold><blue>QUERY </blue>[a]:</bold> %q" if percol.model.finder.case_insensitive \
-#     else u"<bold><green>QUERY </green>[A]:</bold> %q"
-# )
-
+## Set keybindings
 percol.import_keymap({
     # "C-i"         : lambda percol: percol.switch_model(), # not sure what this is, invert? Doesn't work here
     # text
@@ -150,18 +137,18 @@ percol.import_keymap({
     # select multiple lines. Will return list of commands or paths, probably of limited usefulness?
     "C-o"       : lambda percol: percol.command.toggle_mark_and_next(),
 
-    hide_field_1 : lambda percol: percol.command.toggle_date(),
-    hide_field_2 : lambda percol: percol.command.toggle_execdir(),
-    hide_field_3 : lambda percol: percol.command.toggle_command(),
-    filter_bydir : lambda percol: percol.command.cwd_filter(),
-    return_dir   : lambda percol: percol.finish(field=1),
-    return_both  : lambda percol: percol.finish(field=-1),
-    toggle_host  : lambda percol: percol.command.toggle_host(),
-    next_host    : lambda percol: percol.command.next_host(),
-    filter_dups  : lambda percol: percol.command.toggle_recent(),
-    filter_exit0 : lambda percol: percol.command.toggle_exit0(),
-    push_stack   : lambda percol: percol.command.fill_stack(),
-    pop_stack    : lambda percol: percol.command.pop_stack(),
-    save_stack   : lambda percol: percol.finish_and_save(),
+    hide_field_1 : lambda percol: percol.command.toggle_date(),                       # Fold date field
+    hide_field_2 : lambda percol: percol.command.toggle_execdir(),                    # Fold directory field
+    hide_field_3 : lambda percol: percol.command.toggle_command(),                    # Fold command field
+    filter_bydir : lambda percol: percol.command.cwd_filter(),                        # Add current path to queries
+    return_dir   : lambda percol: percol.finish(field=1),                             # Return directory
+    return_both  : lambda percol: percol.finish(field=-1),                            # Return 'dir; command'
+    toggle_host  : lambda percol: percol.command.toggle_host(),                       # Filter by local host or all hosts
+    next_host    : lambda percol: percol.command.next_host(),                         # Filter by next host in known hosts list
+    filter_dups  : lambda percol: percol.command.toggle_recent(),                     # Togggle filtering of duplicates
+    filter_exit0 : lambda percol: percol.command.toggle_exit0(),                      # Toggle filtering by exit status
+    push_stack   : lambda percol: percol.command.fill_stack(),                        # Add to stack
+    pop_stack    : lambda percol: percol.command.pop_stack(),                         # Remove from stack
+    save_stack   : lambda percol: percol.finish_and_save(),                           # save stack as 'rerun.sh'
     switch_finder: lambda percol: percol.command.toggle_finder(FinderMultiQueryRegex) # switch between normal and regex finders
 })    

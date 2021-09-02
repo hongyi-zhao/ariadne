@@ -216,8 +216,18 @@ function ariadne_precmd() {
   _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"
 }
 
-bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
-bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+
+# https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md#bash-binding-hstr-to-keyboard-shortcut
+# https://www.computerhope.com/unix/bash/bind.htm
+#I'm still not so clear on whether the syntax is case sensitive.
+bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+
+#bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+#bind -x '"\C-\M-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+#bind -x '"\e\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+bind -x '"\e\C-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+
+
 # export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
 #export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
 

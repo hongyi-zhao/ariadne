@@ -198,15 +198,35 @@ function percol_sel_log_master_history() {
 }
 
 
-function pre_command() {
-   result_ar=$?
-    _ariadne -h -u -e 'echo -n $ar_result'
+
+#https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions
+#precmd
+
+#    Executed before each prompt. Note that precommand functions are not re-executed simply because the command line is redrawn, as happens, for example, when a notification about an exiting job is displayed.
+#preexec
+
+#    Executed just after a command has been read and is about to be executed. If the history mechanism is active (regardless of whether the line was discarded from the history buffer), the string that the user typed is passed as the first argument, otherwise it is an empty string. The actual command that will be executed (including expanded aliases) is passed in two different forms: the second argument is a single-line, size-limited version of the command (with things like function bodies elided); the third argument contains the full text that is being executed.
+
+
+function ariadne_precmd() {
+  #https://bleepcoder.com/bash-git-prompt/259531236/iterm2-shell-integration-breaks-git-prompt-command-fail
+  #Replace `$?' with `$__bp_last_ret_value' with the help of bash preexec hooks:
+  # https://github.com/rcaloras/bash-preexec
+  ar_result=$__bp_last_ret_value
+  _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"
 }
 
 bind -x '"\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
 bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
-# export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
-export PROMPT_COMMAND='ar_result=$?; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
+# export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
+#export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
 
-# export PROMPT_COMMAND='RET=$?; echo; if [ $RET != 0 ] ; then echo "rc: $RET"; fi;'
-# export PROMPT_COMMAND=pre_command
+
+#https://github.com/cantino/mcfly/blob/fd269640f290ce3344cf5800e16d0e8729e0ff43/mcfly.bash#L59
+if [ -z "$PROMPT_COMMAND" ]
+then
+  PROMPT_COMMAND="ariadne_precmd"
+else
+  PROMPT_COMMAND="ariadne_precmd;${PROMPT_COMMAND#;}"
+fi
+

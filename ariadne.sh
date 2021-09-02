@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 script_realdirname=$(dirname "$(realpath -e "${BASH_SOURCE[0]}")")
 
-# PROMPT_COMMAND="echo $?"
-masterlog_global=''
 
 _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
@@ -81,7 +79,7 @@ _ariadne() { # was _loghistory :)
                 fi;;
             e ) ExtraOpt=1;histentrycmdextra=$OPTARG;;        # include histentrycmdextra
             l ) logfile=$OPTARG;;
-            m ) masterlog=$OPTARG;masterlog_global=$masterlog;;
+            m ) masterlog=$OPTARG;;
             : ) echo "$script: missing filename: -$OPTARG."
                 echo $usage
                 return 1;;
@@ -191,7 +189,7 @@ function percol_sel_log_history() {
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$script_realdirname/bin/percol"
     PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
-    $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log
+    $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_log
 }
 
 function percol_sel_log_master_history() {
@@ -199,7 +197,7 @@ function percol_sel_log_master_history() {
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$script_realdirname/bin/percol"
     PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
-    $PERCOL --reverse --rcfile=$RCFILE $masterlog_global
+    $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_master_log
 }
 
 
@@ -218,7 +216,7 @@ function ariadne_precmd() {
   #Replace `$?' with `$__bp_last_ret_value' with the help of bash preexec hooks:
   # https://github.com/rcaloras/bash-preexec
   ar_result=$__bp_last_ret_value
-  #_ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"
+  #_ariadne -h -u -e "echo -n $ar_result" -m "$ariadne_bash_master_log"
   _ariadne -h -u -e "echo -n $ar_result"
 }
 
@@ -237,7 +235,7 @@ if [[ ${SHELLOPTS} =~ (vi|emacs) ]]; then
 fi
 
 # export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
-#export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
+#export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result" -m "$ariadne_bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)
 
 
 #https://github.com/cantino/mcfly/blob/fd269640f290ce3344cf5800e16d0e8729e0ff43/mcfly.bash#L59

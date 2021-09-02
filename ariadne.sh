@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-script_name_sh=$HOME/.local/libexec/script_name.sh
-source $script_name_sh ${BASH_SOURCE[0]}
-
+script_realdirname=$(dirname "$(realpath -e "${BASH_SOURCE[0]}")")
 
 # PROMPT_COMMAND="echo $?"
 masterlog_global=''
@@ -36,8 +34,10 @@ _ariadne() { # was _loghistory :)
     local cwd=
     local extra=
     local text=
-    local logfile="$HOME/.bash_log"
-    local masterlog
+    #local logfile="$HOME/.bash_log"
+    #local masterlog
+    local logfile="$ariadne_bash_log"
+    #local masterlog="$ariadne_bash_master_log"
     local hostname=
     local histentry=
     local histleader=
@@ -218,20 +218,23 @@ function ariadne_precmd() {
   #Replace `$?' with `$__bp_last_ret_value' with the help of bash preexec hooks:
   # https://github.com/rcaloras/bash-preexec
   ar_result=$__bp_last_ret_value
-  _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"
+  #_ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"
+  _ariadne -h -u -e "echo -n $ar_result"
 }
 
 
-# https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md#bash-binding-hstr-to-keyboard-shortcut
-# https://www.computerhope.com/unix/bash/bind.htm
-#I'm still not so clear on whether the syntax is case sensitive.
-bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+#https://superuser.com/questions/892658/remote-ssh-commands-bash-bind-warning-line-editing-not-enabled/892682
+if [[ ${SHELLOPTS} =~ (vi|emacs) ]]; then
+  # https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md#bash-binding-hstr-to-keyboard-shortcut
+  # https://www.computerhope.com/unix/bash/bind.htm
+  #I'm still not so clear on whether the syntax is case sensitive.
+  bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
 
-#bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
-#bind -x '"\C-\M-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
-#bind -x '"\e\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
-bind -x '"\e\C-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
-
+  #bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+  #bind -x '"\C-\M-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+  #bind -x '"\e\C-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+  #bind -x '"\e\C-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
+fi
 
 # export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result"' # save only to local log file
 #export PROMPT_COMMAND='ar_result=$__bp_last_ret_value; _ariadne -h -u -e "echo -n $ar_result" -m "$HOME/.bash_master_log"' # save to master log file too for multiple pcs (e.g. symlink to a cloud drive)

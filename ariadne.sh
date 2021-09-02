@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+script_name_sh=$HOME/.local/libexec/script_name.sh
+source $script_name_sh ${BASH_SOURCE[0]}
+
+
 # PROMPT_COMMAND="echo $?"
 masterlog_global=''
 
@@ -22,7 +27,7 @@ _ariadne() { # was _loghistory :)
 #     ext or a variable
 #
 ## Add something like the following to ~/.bashrc:
-# source $HOME/.config/bash/ariadne/ariadne.sh
+# source $script_realdirname/ariadne.sh
 # export PROMPT_COMMAND='_ariadne -h -u '
 ##
 
@@ -183,17 +188,17 @@ _ariadne() { # was _loghistory :)
 
 function percol_sel_log_history() {
     unset SEP
-    RCFILE="$HOME/.config/bash/ariadne/rc.py"
-    PERCOL="$HOME/.config/bash/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.config/bash/ariadne/percol":$PYTHONPATH
+    RCFILE="$script_realdirname/rc.py"
+    PERCOL="$script_realdirname/bin/percol"
+    PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
     $PERCOL --reverse --rcfile=$RCFILE ~/.bash_log
 }
 
 function percol_sel_log_master_history() {
     unset SEP
-    RCFILE="$HOME/.config/bash/ariadne/rc.py"
-    PERCOL="$HOME/.config/bash/ariadne/bin/percol"
-    PYTHONPATH="$HOME/.config/bash/ariadne/percol":$PYTHONPATH
+    RCFILE="$script_realdirname/rc.py"
+    PERCOL="$script_realdirname/bin/percol"
+    PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
     $PERCOL --reverse --rcfile=$RCFILE $masterlog_global
 }
 

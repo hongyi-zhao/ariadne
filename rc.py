@@ -34,7 +34,10 @@ def pretty_key(key):
     return tmp
 
 ## Field seperator, originally used ' <> ', which works well visually but uses a lot of space
-FIELD_SEP = '|' 
+#https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols
+# ▌ 	 258C 	 left half block
+# ▐ 	 2590 	 right half block 
+FIELD_SEP = '▐▌' 
 # field seperator colours for exit code == 0 and != 0
 percol.view.exit0_color = 'blue'
 percol.view.exitnot0_color = 'red'

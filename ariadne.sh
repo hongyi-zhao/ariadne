@@ -226,7 +226,18 @@ if [[ ${SHELLOPTS} =~ (vi|emacs) ]]; then
   # https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md#bash-binding-hstr-to-keyboard-shortcut
   # https://www.computerhope.com/unix/bash/bind.htm
   #I'm still not so clear on whether the syntax is case sensitive.
-  bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+  #https://groups.google.com/g/comp.unix.shell/c/UfAkvZ1C10I/m/7Mb4m7DHBgAJ
+  #bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history) READLINE_POINT=; trap 2'
+  bind -x '"\er": trap '' 2; READLINE_LINE=$(percol_sel_log_history); READLINE_POINT=${#READLINE_LINE}; trap 2'
+  
+  #https://www.commandlinefu.com/commands/view/24403/make-m-r-run-the-contents-of-the-readline-line-buffer-and-replace-it-with-the-result-in-bash
+  # Make M-r run the contents of the Readline line buffer and replace it with the result in Bash
+  #bind -x '"\er":READLINE_LINE=$(eval "$READLINE_LINE");READLINE_POINT=${#READLINE_LINE}' 
+
+  #https://www.commandlinefu.com/commands/view/24401/make-m-j-insert-duplicate-the-last-word-of-the-readline-line-buffer-in-bash
+  # Make M-j insert (duplicate) the last word of the Readline line buffer in Bash
+  #bind '"\ej": "!#:$\e^"' 
+
 
   #bind -x '"\C-\M-R": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'
   #bind -x '"\C-\M-r": trap '' 2; READLINE_LINE=$(percol_sel_log_master_history) READLINE_POINT=; trap 2'

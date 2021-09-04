@@ -52,7 +52,7 @@ percol.view.STACKLINE = 'v════v Script ══ Add:%s ══ Remove:%s �
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
-percol.view.FOLDED = '…' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
+percol.view.FOLDED = '' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'
 percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_name() # insert finder

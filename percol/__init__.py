@@ -295,4 +295,4 @@ class Percol(object):
         for line in self.model.stack:
             rerun.writelines(line+'\n')
         rerun.close()
-        raise TerminateLoop(0)
+        raise TerminateLoop(0)        

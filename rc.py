@@ -10,11 +10,14 @@ pop_stack = "M-p"			# remove bottom command from stack
 save_stack = "C-s"			# save commands in stack as rerun.sh
 filter_dups = "M-r"			# filter out duplicate commands
 filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
+
+filter_bydir = "M-d"		# fliter by current path
 return_dir = "C-d"			# return path and exit
 return_both = "C-b"         # return path and command separated by ;
+
 toggle_host = "M-h"
 next_host = "M-n"
-filter_bydir = "C-l"		# fliter by current path
+
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
 hide_field_3 = "<f3>"		# toggle show command column
@@ -47,7 +50,7 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'add:%s, remove:%s, save "rerun.sh":%s' \
+percol.view.STACKLINE = 'push:%s pop:%s save "rerun.sh":%s' \
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
@@ -58,10 +61,10 @@ percol.view.prompt_replacees["F"] = lambda self, **args: self.model.finder.get_n
 percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host # insert host name or 'all hosts'
 
 # percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
-# Path:{pretty_key(return_dir)} \
-# Local:{pretty_key(filter_bydir)} \
-# Unique:{pretty_key(filter_dups)} \
-# Exit0:{pretty_key(filter_exit0)} \
+# Dir:{pretty_key(return_dir)} \
+# cwd:{pretty_key(filter_bydir)} \
+# Uniq:{pretty_key(filter_dups)} \
+# Ecode:{pretty_key(filter_exit0)} \
 # Fold:{pretty_key(hide_field_1)},\
 # {pretty_key(hide_field_2)},\
 # {pretty_key(hide_field_3)}\
@@ -73,37 +76,37 @@ percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host 
 percol.view.__class__.RPROMPT = property(
     lambda self:
     f"{pretty_key(switch_finder)}:%F \
-Path:{pretty_key(return_dir)} \
-Local:{pretty_key(filter_bydir)} \
-<green><bold>Unique:{pretty_key(filter_dups)}</green></bold> \
-<green><bold>Exit0:{pretty_key(filter_exit0)}</green></bold> \
+Dir:{pretty_key(return_dir)} \
+cwd:{pretty_key(filter_bydir)} \
+<green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
+<green><bold>Ecode:{pretty_key(filter_exit0)}</green></bold> \
 Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}" if percol.model.finder.recent_commands and percol.model.finder.exit0 \
     else (
 f"{pretty_key(switch_finder)}:%F \
-Path:{pretty_key(return_dir)} \
-Local:{pretty_key(filter_bydir)} \
-<green><bold>Unique:{pretty_key(filter_dups)}</green></bold> \
-Exit0:{pretty_key(filter_exit0)} \
+Dir:{pretty_key(return_dir)} \
+cwd:{pretty_key(filter_bydir)} \
+<green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
+Ecode:{pretty_key(filter_exit0)} \
 Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}" if percol.model.finder.recent_commands \
     else (
 f"{pretty_key(switch_finder)}:%F \
-Path:{pretty_key(return_dir)} \
-Local:{pretty_key(filter_bydir)} \
-Unique:{pretty_key(filter_dups)} \
-<green><bold>Exit0:{pretty_key(filter_exit0)}</bold></green> \
+Dir:{pretty_key(return_dir)} \
+cwd:{pretty_key(filter_bydir)} \
+Uniq:{pretty_key(filter_dups)} \
+<green><bold>Ecode:{pretty_key(filter_exit0)}</bold></green> \
 Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}" if percol.model.finder.exit0
         else 
 f"{pretty_key(switch_finder)}:%F \
-Path:{pretty_key(return_dir)} \
-Local:{pretty_key(filter_bydir)} \
-Unique:{pretty_key(filter_dups)} \
-Exit0:{pretty_key(filter_exit0)} \
+Dir:{pretty_key(return_dir)} \
+cwd:{pretty_key(filter_bydir)} \
+Uniq:{pretty_key(filter_dups)} \
+Ecode:{pretty_key(filter_exit0)} \
 Fold:{pretty_key(hide_field_1)},\
 {pretty_key(hide_field_2)},\
 {pretty_key(hide_field_3)}")))

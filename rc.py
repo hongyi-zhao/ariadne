@@ -22,9 +22,8 @@ switch_finder = "M-m"		# toggle regex finder
 
 ## Reformat keybindings for prompt display
 def pretty_key(key): 
-    tmp = key.replace('C-','^')
-    # tmp = key.replace('C-','⎈') # the official unicode symbol? doesn't work well for me
-    tmp = tmp.replace('M-', u'⎇ ') # this may not work on all terminals, comment out if needed
+    tmp = key.replace('C-','C-')
+    tmp = tmp.replace('M-', 'M-')
     tmp = tmp.replace('<', '')
     tmp = tmp.replace('>', '')
 
@@ -71,7 +70,7 @@ percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host 
 # Togle green and bold when filtering for exit == 0 and duplicate commands
 # ugh, nested if...else. Isn't there a better way?
 percol.view.__class__.RPROMPT = property(
-    lambda self: 
+    lambda self:
     f"{pretty_key(switch_finder)}:%F \
 Path:{pretty_key(return_dir)} \
 Local:{pretty_key(filter_bydir)} \

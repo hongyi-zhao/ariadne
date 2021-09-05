@@ -25,11 +25,8 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 
 `Ctrl+R` is captured to replace the default history search to pipe the log file (`~/.<zsh/fish/bash>_log`) through the modified percol fuzzy finder. The log file records time, date, directory, host, exit status and command of every command entered. This makes it easy to retrieve commands in a new project directory based on a similar older project, find a deeply nested project dir by the command etc. I find I need this often when running scientific software in the unix world. Similarly `Ctrl+Alt+R` is mapped to read a master log file, which can be used to record commands on multiple hosts if sym-linked to a file in a cloud sync directory. 
 
-![Current look](https://github.com/gawells/demos/blob/master/screen02.png)
+![Current look](https://user-images.githubusercontent.com/11155854/132119584-251c9c38-46be-4416-b32d-8ff214aeb7fa.png)
 Current (more compact) look. Blue indicates exit status = 0, red ≠ 0.
- 
-![Animation of old look](https://github.com/gawells/demos/blob/master/ariadne1.gif)
-Animation of old look-and-feel.
 
 ## Installation
     $ git clone https://github.com/gawells/ariadne
@@ -49,10 +46,10 @@ Add the following to `~/.zshrc`
 # https://github.com/rcaloras/bash-preexec
 #
 # Then add something like the following to ~/.bashrc:
-  export ariadne_bash_log=$HOME/.history/ariadne-bash-log
+export ariadne_bash_log=$HOME/.history/ariadne-bash-log
 # If you also want to save the history to master log:   
-#  #export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
- source $script_realdirname/ariadne.sh
+#export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
+source $script_realdirname/ariadne.sh
 ```    
 ### Fish
     

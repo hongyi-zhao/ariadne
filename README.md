@@ -44,6 +44,7 @@ Add the following to `~/.zshrc`
     source ~/.config/zsh/ariadne/ariadne.zsh
     
 ### Bash
+```shell
 # First, download and source the following package in ~/.bashrc:
 # https://github.com/rcaloras/bash-preexec
 #
@@ -52,7 +53,7 @@ Add the following to `~/.zshrc`
 # If you also want to save the history to master log:   
 #  #export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
  source $script_realdirname/ariadne.sh
-    
+```    
 ### Fish
     
     $ ./setup.py -f

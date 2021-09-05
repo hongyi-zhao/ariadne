@@ -44,12 +44,14 @@ Add the following to `~/.zshrc`
     source ~/.config/zsh/ariadne/ariadne.zsh
     
 ### Bash
-    
-    $ ./setup.py -b
-
-Add the following to `~/.bashrc`
-
-    source $HOME/.config/bash/ariadne/ariadne.sh
+# First, download and source the following package in ~/.bashrc:
+# https://github.com/rcaloras/bash-preexec
+#
+# Then add something like the following to ~/.bashrc:
+  export ariadne_bash_log=$HOME/.history/ariadne-bash-log
+# If you also want to save the history to master log:   
+#  #export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
+ source $script_realdirname/ariadne.sh
     
 ### Fish
     

@@ -47,7 +47,7 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'v════v Script ══ Add:%s ══ Remove:%s ══ Save "rerun.sh":%s v════v'\
+percol.view.STACKLINE = 'add:%s, remove:%s, save "rerun.sh":%s' \
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
@@ -69,6 +69,7 @@ percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host 
 
 # Togle green and bold when filtering for exit == 0 and duplicate commands
 # ugh, nested if...else. Isn't there a better way?
+
 percol.view.__class__.RPROMPT = property(
     lambda self:
     f"{pretty_key(switch_finder)}:%F \

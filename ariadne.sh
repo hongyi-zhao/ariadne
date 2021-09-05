@@ -222,7 +222,8 @@ function ariadne_precmd() {
 
 
 #https://superuser.com/questions/892658/remote-ssh-commands-bash-bind-warning-line-editing-not-enabled/892682
-if [[ ${SHELLOPTS} =~ (vi|emacs) ]]; then
+#https://groups.google.com/g/comp.unix.shell/c/UfAkvZ1C10I/m/gPxb5sJUBwAJ
+if set -o | egrep '\bon$' | egrep -q '^(vi|emacs)\b'; then
   # https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md#bash-binding-hstr-to-keyboard-shortcut
   # https://www.computerhope.com/unix/bash/bind.htm
   #I'm still not so clear on whether the syntax is case sensitive.

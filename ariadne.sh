@@ -22,9 +22,14 @@ _ariadne() { # was _loghistory :)
 #     l - path to the log file (default = $HOME/.bash_log)
 #     ext or a variable
 #
-## Add something like the following to ~/.bashrc:
+## First, download and source the following package in ~/.bashrc:
+# https://github.com/rcaloras/bash-preexec
+#
+## Then add something like the following to ~/.bashrc:
+#  export ariadne_bash_log=$HOME/.history/ariadne-bash-log
+## If you also want to save the history to master log:   
+#  #export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
 # source $script_realdirname/ariadne.sh
-# export PROMPT_COMMAND='_ariadne -h -u '
 ##
 
     local script=$FUNCNAME

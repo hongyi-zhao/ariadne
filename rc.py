@@ -8,8 +8,8 @@ myhost = myhost.strip()
 push_stack = "C-p"			# add command to bottom of stack 
 pop_stack = "M-p"			# remove bottom command from stack
 save_stack = "C-s"			# save commands in stack as rerun.sh
-filter_dups = "M-r"			# filter out duplicate commands
-filter_exit0 = "M-t"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
+filter_dups = "M-u"			# filter out duplicate commands
+filter_exit0 = "M-e"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
 
 filter_bydir = "M-d"		# fliter by current path
 return_dir = "C-d"			# return path and exit
@@ -21,7 +21,7 @@ next_host = "M-n"
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
 hide_field_3 = "<f3>"		# toggle show command column
-switch_finder = "M-m"		# toggle regex finder
+switch_finder = "M-f"		# toggle regex finder
 
 ## Reformat keybindings for prompt display
 def pretty_key(key): 

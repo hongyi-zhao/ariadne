@@ -68,14 +68,14 @@ In ariadne:
 - Enter,Ctrl+m    : Extract command(s)
 - Ctrl+d          : Extract path(s)
 - Ctrl+b          : Extract path and command, seperated by ';'
-- Ctrl+l          : Filter by current directory
-- Alt+r           : Toggle filter for duplicate commands
-- Alt+t           : Toggle filter commands with exit staus 0
+- Alt+d          : Filter by current directory
+- Alt+u           : Toggle filter for duplicate commands
+- Alt+e           : Toggle filter commands with exit staus 0
 - Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
-- Ctrl+s          : Push command to stack
-- Alt+s           : Pop command from stack
-- Ctrl+t          : Save stack (as 'rerun'sh') and exit
-- Alt-m           : Switch between normal and regex search 
+- Ctrl+p          : Push command to stack
+- Alt+p           : Pop command from stack
+- Ctrl+s          : Save stack (as 'rerun'sh') and exit
+- Alt-f           : Switch between normal and regex search 
 - Alt-h           : Switch between all hosts and current host (mostly for master file)
 - Alt-n           : Cycle through hosts (mostly for master file)
 

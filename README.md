@@ -81,6 +81,4 @@ In ariadne:
 
 ## Configuration
 
-Configuration is specified in `rc.py`
-```
-
+Configuration is specified in [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py).

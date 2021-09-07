@@ -52,7 +52,7 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'Fold:F1,F2,F3 Push:C-p Pop:M-p Script:M-s Path:M-d Pathcmd:M-b'
+percol.view.STACKLINE = 'Fold:F1,F2,F3 Push:C-p Pop:M-p Script:M-s Dir:M-d Dircmd:M-b'
 percol.view.FOLDED = '' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'

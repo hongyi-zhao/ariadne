@@ -2,8 +2,7 @@
   - [Zsh](#zsh)
   - [Bash](#bash)
   - [Fish](#fish)
-- [Key bindings](#keybindigs)
-- [Configuration](#configuration)
+- [Key bindings and Configuration](#Key bindings and Configuration)
 
 # ariadne
 

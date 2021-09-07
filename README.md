@@ -2,7 +2,7 @@
   - [Zsh](#zsh)
   - [Bash](#bash)
   - [Fish](#fish)
-- [Key bindings and Configuration](#Key bindings and Configuration)
+- [Configuration](#Configuration)
 
 # ariadne
 
@@ -55,6 +55,6 @@ source $script_realdirname/ariadne.sh
     
 Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 
-## Key bindings and Configuration
+## Configuration
 
 See [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py) for details.

@@ -28,7 +28,7 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 ![image](https://user-images.githubusercontent.com/11155854/132346682-356498c7-dea1-4e08-a3e0-b3d02061651d.png)
 
 ## Installation
-    $ git clone https://github.com/gawells/ariadne
+    $ git clone https://github.com/hongyi-zhao/ariadne
     $ cd ariadne
     
 ### Zsh

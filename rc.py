@@ -7,21 +7,23 @@ myhost = myhost.strip()
 # variables for keybindings to use both in prompt strings and setting the keymap
 push_stack = "C-p"			# add command to bottom of stack 
 pop_stack = "M-p"			# remove bottom command from stack
-save_stack = "C-s"			# save commands in stack as rerun.sh
-filter_dups = "M-u"			# filter out duplicate commands
-filter_exit0 = "M-e"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
+save_stack = "M-s"			# save commands in stack as rerun.sh
 
-filter_bydir = "M-d"		# fliter by current path
-return_dir = "C-d"			# return path and exit
-return_both = "C-b"         # return path and command separated by ;
+filter_dups = "C-q"			# filter out duplicate commands
+filter_exit0 = "C-e"		# toggle display of non-zero exit status (or old commands from before this feature, retroactively set to-999)
 
-toggle_host = "M-h"
-next_host = "M-n"
+filter_bydir = "C-d"		# fliter by current path
+return_dir = "M-d"			# return path and exit
+return_both = "M-b"         # return path and command separated by ;
+
+toggle_host = "C-h"
+next_host = "C-n"
+switch_finder = "C-f"		# toggle regex finder
 
 hide_field_1 = "<f1>"		# toggle show date column
 hide_field_2 = "<f2>"		# toggle show path column
 hide_field_3 = "<f3>"		# toggle show command column
-switch_finder = "M-f"		# toggle regex finder
+
 
 ## Reformat keybindings for prompt display
 def pretty_key(key): 
@@ -50,10 +52,7 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'Fold:F1,F2,F3 push:%s pop:%s save "rerun.sh":%s' \
-	%(pretty_key(push_stack),
-        pretty_key(pop_stack),
-        pretty_key(save_stack))
+percol.view.STACKLINE = 'Fold:F1,F2,F3 Push:C-p Pop:M-p Script:M-s Path:M-d Pathcmd:M-b'
 percol.view.FOLDED = '' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'
@@ -62,7 +61,7 @@ percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host 
 
 # percol.view.RPROMPT = f"{pretty_key(switch_finder)}:%F \
 # Dir:{pretty_key(return_dir)} \
-# cwd:{pretty_key(filter_bydir)} \
+# Cwd:{pretty_key(filter_bydir)} \
 # Uniq:{pretty_key(filter_dups)} \
 # Ecode:{pretty_key(filter_exit0)} \
 # Fold:{pretty_key(hide_field_1)},\
@@ -76,26 +75,22 @@ percol.view.prompt_replacees["H"] = lambda self, **args: self.model.finder.host 
 percol.view.__class__.RPROMPT = property(
     lambda self:
     f"{pretty_key(switch_finder)}:%F \
-Dir:{pretty_key(return_dir)} \
-cwd:{pretty_key(filter_bydir)} \
+Cwd:{pretty_key(filter_bydir)} \
 <green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
 <green><bold>Ecode:{pretty_key(filter_exit0)}</green></bold>" if percol.model.finder.recent_commands and percol.model.finder.exit0 \
     else (
 f"{pretty_key(switch_finder)}:%F \
-Dir:{pretty_key(return_dir)} \
-cwd:{pretty_key(filter_bydir)} \
+Cwd:{pretty_key(filter_bydir)} \
 <green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
 Ecode:{pretty_key(filter_exit0)}" if percol.model.finder.recent_commands \
     else (
 f"{pretty_key(switch_finder)}:%F \
-Dir:{pretty_key(return_dir)} \
-cwd:{pretty_key(filter_bydir)} \
+Cwd:{pretty_key(filter_bydir)} \
 Uniq:{pretty_key(filter_dups)} \
 <green><bold>Ecode:{pretty_key(filter_exit0)}</bold></green>" if percol.model.finder.exit0
         else 
 f"{pretty_key(switch_finder)}:%F \
-Dir:{pretty_key(return_dir)} \
-cwd:{pretty_key(filter_bydir)} \
+Cwd:{pretty_key(filter_bydir)} \
 Uniq:{pretty_key(filter_dups)} \
 Ecode:{pretty_key(filter_exit0)}")))
 

@@ -56,28 +56,6 @@ source $script_realdirname/ariadne.sh
     
 Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 
-## Key bindings
-
-- Ctrl+R          : Invoke command history search
-- Ctrl+Alt+R      : Invoke command history search on master file 
-
-In ariadne:
-
-- F1,F2,F3        : Hide/show date, execution path and command, respectively
-- Enter,Ctrl+m    : Extract command(s)
-- Ctrl+d          : Extract path(s)
-- Ctrl+b          : Extract path and command, seperated by ';'
-- Alt+d          : Filter by current directory
-- Alt+u           : Toggle filter for duplicate commands
-- Alt+e           : Toggle filter commands with exit staus 0
-- Ctrl+SPC        : Select entry (useful for extracting salient commands for future recipes?)
-- Ctrl+p          : Push command to stack
-- Alt+p           : Pop command from stack
-- Ctrl+s          : Save stack (as 'rerun'sh') and exit
-- Alt-f           : Switch between normal and regex search 
-- Alt-h           : Switch between all hosts and current host (mostly for master file)
-- Alt-n           : Cycle through hosts (mostly for master file)
-
-## Configuration
+## Key bindings and Configuration
 
 Configuration is specified in [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py).

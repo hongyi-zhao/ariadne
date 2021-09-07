@@ -50,7 +50,7 @@ percol.view.CANDIDATES_LINE_BASIC    = ("on_default", "default")
 percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
-percol.view.STACKLINE = 'push:%s pop:%s save "rerun.sh":%s' \
+percol.view.STACKLINE = 'Fold:F1,F2,F3 push:%s pop:%s save "rerun.sh":%s' \
 	%(pretty_key(push_stack),
         pretty_key(pop_stack),
         pretty_key(save_stack))
@@ -79,37 +79,25 @@ percol.view.__class__.RPROMPT = property(
 Dir:{pretty_key(return_dir)} \
 cwd:{pretty_key(filter_bydir)} \
 <green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
-<green><bold>Ecode:{pretty_key(filter_exit0)}</green></bold> \
-Fold:{pretty_key(hide_field_1)},\
-{pretty_key(hide_field_2)},\
-{pretty_key(hide_field_3)}" if percol.model.finder.recent_commands and percol.model.finder.exit0 \
+<green><bold>Ecode:{pretty_key(filter_exit0)}</green></bold>" if percol.model.finder.recent_commands and percol.model.finder.exit0 \
     else (
 f"{pretty_key(switch_finder)}:%F \
 Dir:{pretty_key(return_dir)} \
 cwd:{pretty_key(filter_bydir)} \
 <green><bold>Uniq:{pretty_key(filter_dups)}</green></bold> \
-Ecode:{pretty_key(filter_exit0)} \
-Fold:{pretty_key(hide_field_1)},\
-{pretty_key(hide_field_2)},\
-{pretty_key(hide_field_3)}" if percol.model.finder.recent_commands \
+Ecode:{pretty_key(filter_exit0)}" if percol.model.finder.recent_commands \
     else (
 f"{pretty_key(switch_finder)}:%F \
 Dir:{pretty_key(return_dir)} \
 cwd:{pretty_key(filter_bydir)} \
 Uniq:{pretty_key(filter_dups)} \
-<green><bold>Ecode:{pretty_key(filter_exit0)}</bold></green> \
-Fold:{pretty_key(hide_field_1)},\
-{pretty_key(hide_field_2)},\
-{pretty_key(hide_field_3)}" if percol.model.finder.exit0
+<green><bold>Ecode:{pretty_key(filter_exit0)}</bold></green>" if percol.model.finder.exit0
         else 
 f"{pretty_key(switch_finder)}:%F \
 Dir:{pretty_key(return_dir)} \
 cwd:{pretty_key(filter_bydir)} \
 Uniq:{pretty_key(filter_dups)} \
-Ecode:{pretty_key(filter_exit0)} \
-Fold:{pretty_key(hide_field_1)},\
-{pretty_key(hide_field_2)},\
-{pretty_key(hide_field_3)}")))
+Ecode:{pretty_key(filter_exit0)}")))
 
 ## Set keybindings
 percol.import_keymap({

@@ -58,4 +58,4 @@ Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 
 ## Key bindings and Configuration
 
-Configuration is specified in [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py).
+See [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py) for details.

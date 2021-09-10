@@ -3,6 +3,23 @@ from percol.finder import FinderMultiQueryRegex
 myhost = os.uname()[1] # get hostname for left prompt
 myhost = myhost.strip()
 
+
+#https://github.com/hongyi-zhao/recent2/blob/5b072ff5d6419c444bb013b88e5e2a4de19b0851/recent2.py#L24
+class Term:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    LIGHTCYAN = '\033[1;36m'
+    LIGHTGRAY = '\033[0;37m'
+    YELLOW = '\033[0;33m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
+
 # -*- coding: utf-8 -*-
 # variables for keybindings to use both in prompt strings and setting the keymap
 push_stack = "C-p"			# add command to bottom of stack 
@@ -53,6 +70,8 @@ percol.view.CANDIDATES_LINE_SELECTED = ("reverse", "on_black", "white")
 percol.view.CANDIDATES_LINE_MARKED   = ("dim", "on_black", "black")
 percol.view.CANDIDATES_LINE_QUERY    = ("green", "bold")
 percol.view.STACKLINE = 'Fold:F1,F2,F3 Push:C-p Pop:M-p Script:M-s Dir:M-d Dircmd:M-b'
+#https://groups.google.com/g/comp.lang.python/c/tmX_j19qk2I/m/EBxHycZYCAAJ
+#percol.view.STACKLINE = percol.view.STACKLINE.replace('D', Term.UNDERLINE + 'D' + Term.ENDC)
 percol.view.FOLDED = '' # need to find the right mono-font for mac? Seems to work with "input mono narrow", otherwise use '..'
 
 percol.view.PROMPT = f'<bold><cyan>%H ({pretty_key(toggle_host)}/{pretty_key(next_host)})</cyan></bold>> %q'

@@ -5,19 +5,17 @@ myhost = myhost.strip()
 
 
 #https://github.com/hongyi-zhao/recent2/blob/5b072ff5d6419c444bb013b88e5e2a4de19b0851/recent2.py#L24
-class Term:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    LIGHTCYAN = '\033[1;36m'
-    LIGHTGRAY = '\033[0;37m'
-    YELLOW = '\033[0;33m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
+HEADER = '\033[95m'
+OKBLUE = '\033[94m'
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+LIGHTCYAN = '\033[1;36m'
+LIGHTGRAY = '\033[0;37m'
+YELLOW = '\033[0;33m'
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
 
 
 # -*- coding: utf-8 -*-

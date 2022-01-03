@@ -188,12 +188,13 @@ _ariadne() { # was _loghistory :)
 } 
 
 # modified from https://github.com/mooz/percol#zsh-history-search
-
+# The required PYTHONPATH is exported in ariadne.git.bash. This way, when running `pyenv shell' in the terminal, 
+# ariadne can continue to use its environment settings and immune to the virtualenv managed by pyenv.
 function percol_sel_log_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$script_realdirname/bin/percol"
-    PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
+    #PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_log
 }
 
@@ -201,7 +202,7 @@ function percol_sel_log_master_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$script_realdirname/bin/percol"
-    PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
+    #PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_master_log
 }
 

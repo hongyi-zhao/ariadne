@@ -58,9 +58,16 @@ _ariadne() { # was _loghistory :)
     local tty=
     local ip=
     
-    #https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
+    
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
 #https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+
+#https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
+#https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1946217
+# The generated executable is dist/perpol/perpol
+#$ pip uninstall percol 
+#$ pyinstaller --clean --noconfirm --collect-submodules percol --paths . bin/percol
+
 #$ pip install --upgrade cx_Freeze --pre
 # The generated executable is dist/perpol
 #$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist

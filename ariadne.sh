@@ -57,6 +57,22 @@ _ariadne() { # was _loghistory :)
     local ToOpt=
     local tty=
     local ip=
+    
+    #https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
+#https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
+#https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+#$ pip install --upgrade cx_Freeze --pre
+# The generated executable is dist/perpol
+#$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
+    #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/dist/percol"
+
+# or using the following method:
+# The generated executable is perpol.bin
+#$ pip  install -U nuitka
+#$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
+#If using on the same machine, the following is enough:
+#$ nuitka3 --static-libpython=no bin/percol
+    percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
 
     # *** process options to set flags ***
 
@@ -188,35 +204,17 @@ _ariadne() { # was _loghistory :)
 } 
 
 # modified from https://github.com/mooz/percol#zsh-history-search
-# The required PYTHONPATH is exported in ariadne.git.bash. This way, when running `pyenv shell' in the terminal, 
-# ariadne can continue to use its environment settings and immune to the virtualenv managed by pyenv.
 function percol_sel_log_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
-
-#https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
-#https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
-#https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
-#$ pip install --upgrade cx_Freeze --pre
-# The generated executable is dist/perpol
-#$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
-    #PERCOL="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/dist/percol"
-
-# or using the following method:
-# The generated executable is perpol.bin
-#$ pip  install -U nuitka
-#$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
-#If using on the same machine, the following is enough:
-#$ nuitka3 --static-libpython=no bin/percol
-    PERCOL="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
+    PERCOL="$percol_bin"
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_log
 }
 
 function percol_sel_log_master_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
-    PERCOL="$script_realdirname/bin/percol"
-    #PYTHONPATH="$script_realdirname/percol":$PYTHONPATH
+    PERCOL="$percol_bin"
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_master_log
 }
 

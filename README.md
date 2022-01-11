@@ -13,12 +13,13 @@ See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussio
 ```
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
 #https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+$ pyenv shell datasci
 $ pip install --upgrade cx_Freeze --pre
 # The generated executable is dist/perpol
 $ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
 # or using the following method:
 # The generated executable is perpol.bin
-$ pip  install -U nuitka
+$ pip install -U nuitka
 $ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
 $ nuitka3 --static-libpython=no bin/percol

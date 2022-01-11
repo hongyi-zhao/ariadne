@@ -6,7 +6,7 @@
 - [Configuration](#Configuration)
 
 
-# packaging
+# Python packaging and distribution
 
 See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) for the relevant discussion.
 

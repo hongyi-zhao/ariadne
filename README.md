@@ -1,8 +1,14 @@
+- [Python packaging and distribution](#packaging)
 - [Installation](#installation)
   - [Zsh](#zsh)
   - [Bash](#bash)
   - [Fish](#fish)
 - [Configuration](#Configuration)
+
+
+# packaging
+
+
 
 # ariadne
 

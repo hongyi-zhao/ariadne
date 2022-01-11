@@ -8,9 +8,23 @@
 
 # packaging
 
+See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) for the relevant discussion.
 
+```
+#https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
+#https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+$ pip install --upgrade cx_Freeze --pre
+# The generated executable is dist/perpol
+$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
+# or using the following method:
+# The generated executable is perpol.bin
+$ pip  install -U nuitka
+$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
+#If using on the same machine, the following is enough:
+$ nuitka3 --static-libpython=no bin/percol
+```
 
-# ariadne
+# Introduction
 
 Ariadne enables comprehensive CLI shell history logging, combined with interactive searching, using a modified version of Masafumi Oyamada's interactive grep tool: percol (https://github.com/mooz/percol). The CLI logging in `bash/zsh` is modified from the following scripts:
 

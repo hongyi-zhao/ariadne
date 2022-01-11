@@ -37,6 +37,8 @@ See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussio
 ```
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
 #https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+
+#https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
 $ pyenv shell datasci
 # https://github.com/marcelotduarte/cx_Freeze
 $ pip install --upgrade cx_Freeze --pre
@@ -50,6 +52,11 @@ $ pip install -U nuitka
 $ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
 $ nuitka3 --static-libpython=no bin/percol
+
+#https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1946217
+# The generated executable is dist/perpol/perpol
+#$ pip uninstall percol 
+#$ pyinstaller --clean --noconfirm --collect-submodules percol --paths . bin/percol
 ```
 
 # Installation

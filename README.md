@@ -1,5 +1,5 @@
 - [Introduction](#introduction)
-- [Python packaging and distribution](#packaging)
+- [Python packaging and distribution](#Python-packaging-and-distribution)
 - [Installation](#installation)
   - [Zsh](#zsh)
   - [Bash](#bash)

@@ -1,10 +1,10 @@
-- [Introduction](introduction)
-- [Python packaging and distribution](#Python-packaging-and-distribution)
+- [Introduction](#introduction)
+- [Python packaging and distribution](#packaging)
 - [Installation](#installation)
   - [Zsh](#zsh)
   - [Bash](#bash)
   - [Fish](#fish)
-- [Configuration](#Configuration)
+- [Configuration](#configuration)
 
 
 # Introduction

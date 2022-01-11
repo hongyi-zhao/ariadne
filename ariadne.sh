@@ -58,7 +58,6 @@ _ariadne() { # was _loghistory :)
     local tty=
     local ip=
     
-    
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
 #https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
 

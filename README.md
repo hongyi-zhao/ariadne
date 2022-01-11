@@ -1,10 +1,13 @@
+- [Introduction](#introduction)
+- [Python packaging and distribution](#packaging)
 - [Installation](#installation)
   - [Zsh](#zsh)
   - [Bash](#bash)
   - [Fish](#fish)
-- [Configuration](#Configuration)
+- [Configuration](#configuration)
 
-# ariadne
+
+# Introduction
 
 Ariadne enables comprehensive CLI shell history logging, combined with interactive searching, using a modified version of Masafumi Oyamada's interactive grep tool: percol (https://github.com/mooz/percol). The CLI logging in `bash/zsh` is modified from the following scripts:
 
@@ -26,11 +29,34 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 
 ![image](https://user-images.githubusercontent.com/11155854/132346682-356498c7-dea1-4e08-a3e0-b3d02061651d.png)
 
-## Installation
+
+# Python packaging and distribution
+
+See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) for the relevant discussion.
+
+```
+#https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
+#https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
+$ pyenv shell datasci
+# https://github.com/marcelotduarte/cx_Freeze
+$ pip install --upgrade cx_Freeze --pre
+# The generated executable is dist/perpol
+$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
+
+# or using the following method:
+# https://github.com/Nuitka/Nuitka
+# The generated executable is perpol.bin
+$ pip install -U nuitka
+$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
+#If using on the same machine, the following is enough:
+$ nuitka3 --static-libpython=no bin/percol
+```
+
+# Installation
     $ git clone https://github.com/hongyi-zhao/ariadne
     $ cd ariadne
     
-### Zsh
+## Zsh
 
     $ ./setup.py -z
 
@@ -38,7 +64,7 @@ Add the following to `~/.zshrc`
 
     source ~/.config/zsh/ariadne/ariadne.zsh
     
-### Bash
+## Bash
 ```shell
 # First, download and source the following package in ~/.bashrc:
 # https://github.com/rcaloras/bash-preexec
@@ -49,12 +75,12 @@ export ariadne_bash_log=$HOME/.history/ariadne-bash-log
 #export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
 source $script_realdirname/ariadne.sh
 ```    
-### Fish
+## Fish
     
     $ ./setup.py -f
     
 Add the contents of `./config.fish` to `~/.config/fish/config.fish`
 
-## Configuration
+# Configuration
 
 See [`rc.py`](https://github.com/hongyi-zhao/ariadne/blob/master/rc.py) for details.

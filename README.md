@@ -32,7 +32,7 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 
 # Python packaging and distribution
 
-See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) for the relevant discussion.
+See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) and [here](https://github.com/Nuitka/Nuitka/issues/1375) for the relevant discussions.
 
 ```
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8

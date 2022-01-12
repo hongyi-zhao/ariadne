@@ -47,6 +47,7 @@ $ pip install --upgrade cx_Freeze --pre
 $ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
 
 # nuitka
+# https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010833442
 # https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010526356
 #$ pip  install -U nuitka
 #$ nuitka3 --standalone --python-flag=no_site --static-libpython=no bin/percol

@@ -32,7 +32,7 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 
 # Python packaging and distribution
 
-Use the packaged approach to avoid being affected by the system’s Python virtual environment, say, pyenv. See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) and [here](https://github.com/Nuitka/Nuitka/issues/1375) for the relevant discussions.
+Use the packaging approach to avoid being affected by the system’s Python virtual environment, say, pyenv. See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) and [here](https://github.com/Nuitka/Nuitka/issues/1375) for the relevant discussions.
 
 ```
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8

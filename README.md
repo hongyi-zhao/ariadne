@@ -32,12 +32,13 @@ If you derive little joy from memorizing the arbitrary incantations and arcana o
 
 # Python packaging and distribution
 
-See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) for the relevant discussion.
+Use the packaging approach to avoid being affected by the system’s Python virtual environment, say, pyenv. See [here](https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421) and [here](https://github.com/Nuitka/Nuitka/issues/1375) for the relevant discussions.
 
 ```
 #https://stackoverflow.com/questions/63107313/is-there-an-alternative-to-pyinstaller-for-python-3-8
 #https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_comparisons.html
 
+# vx_Freeze
 #https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1944421
 $ pyenv shell datasci
 # https://github.com/marcelotduarte/cx_Freeze
@@ -45,14 +46,15 @@ $ pip install --upgrade cx_Freeze --pre
 # The generated executable is dist/perpol
 $ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
 
-# or using the following method:
-# https://github.com/Nuitka/Nuitka
-# The generated executable is perpol.bin
-$ pip install -U nuitka
-$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
+# nuitka
+# https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010833442
+# https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010526356
+#$ pip  install -U nuitka
+#$ nuitka3 --standalone --python-flag=no_site --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
-$ nuitka3 --static-libpython=no bin/percol
+#$ nuitka3 --static-libpython=no bin/percol
 
+# pyinstaller
 #https://github.com/pyinstaller/pyinstaller/discussions/6493#discussioncomment-1946217
 # The generated executable is dist/perpol/perpol
 #$ pip uninstall percol 

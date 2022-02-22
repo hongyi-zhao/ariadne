@@ -71,11 +71,11 @@ _ariadne() { # was _loghistory :)
 # The generated executable is dist/perpol
 #$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
     #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/dist/percol"
-
+    
+# https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010526356
 # or using the following method:
-# The generated executable is perpol.bin
 #$ pip  install -U nuitka
-#$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
+#$ nuitka3 --standalone --python-flag=no_site --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
 #$ nuitka3 --static-libpython=no bin/percol
     #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"

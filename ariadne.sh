@@ -78,8 +78,11 @@ _ariadne() { # was _loghistory :)
 #$ nuitka3 --follow-stdlib --follow-imports --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
 #$ nuitka3 --static-libpython=no bin/percol
-    percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
-
+    #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
+    
+    
+    percol_bin="$script_realdirname/bin/percol"
+     
     # *** process options to set flags ***
 
     while getopts $options option
@@ -214,6 +217,11 @@ function percol_sel_log_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$percol_bin"
+    
+    # It seems the virtualenv directly created venv will perturb percol.
+    if [ $(type -t deactivate) = "function" ]; then
+      source deactivate
+    fi
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_log
 }
 
@@ -221,6 +229,11 @@ function percol_sel_log_master_history() {
     unset SEP
     RCFILE="$script_realdirname/rc.py"
     PERCOL="$percol_bin"
+    
+    # It seems the virtualenv directly created venv will perturb percol.
+    if [ $(type -t deactivate) = "function" ]; then
+      source deactivate
+    fi
     $PERCOL --reverse --rcfile=$RCFILE $ariadne_bash_master_log
 }
 

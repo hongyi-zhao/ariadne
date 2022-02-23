@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-script_realdirname=$(dirname "$(realpath -e "${BASH_SOURCE[0]}")")
-
 
 _ariadne() { # was _loghistory :)
 # Modified for zsh - Gordon Wells 2014/08
@@ -70,7 +68,7 @@ _ariadne() { # was _loghistory :)
 #$ pip install --upgrade cx_Freeze --pre
 # The generated executable is dist/perpol
 #$ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
-    #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/dist/percol"
+    #_percol="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/dist/percol"
     
 # https://github.com/Nuitka/Nuitka/issues/1375#issuecomment-1010526356
 # or using the following method:
@@ -78,10 +76,10 @@ _ariadne() { # was _loghistory :)
 #$ nuitka3 --standalone --python-flag=no_site --static-libpython=no bin/percol
 #If using on the same machine, the following is enough:
 #$ nuitka3 --static-libpython=no bin/percol
-    #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
+    #_percol="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
     
-    
-    export percol_bin="$script_realdirname/bin/percol"
+    _rcfile="$(dirname "$(realpath -e "${BASH_SOURCE[0]}")")/rc.py"
+    _percol="$(dirname "$(realpath -e "${BASH_SOURCE[0]}")")/bin/percol"
      
     # *** process options to set flags ***
 
@@ -215,8 +213,8 @@ _ariadne() { # was _loghistory :)
 # modified from https://github.com/mooz/percol#zsh-history-search
 function percol_sel_log_history() {
     unset SEP
-    RCFILE="$script_realdirname/rc.py"
-    PERCOL="$percol_bin"
+    RCFILE="$_rcfile"
+    PERCOL="$_percol"
     
     # It seems the virtualenv directly created venv will perturb percol.
     if [ $(type -t deactivate) = "function" ]; then
@@ -227,8 +225,8 @@ function percol_sel_log_history() {
 
 function percol_sel_log_master_history() {
     unset SEP
-    RCFILE="$script_realdirname/rc.py"
-    PERCOL="$percol_bin"
+    RCFILE="$_rcfile"
+    PERCOL="$_percol"
     
     # It seems the virtualenv directly created venv will perturb percol.
     if [ $(type -t deactivate) = "function" ]; then

@@ -81,7 +81,7 @@ _ariadne() { # was _loghistory :)
     #percol_bin="$HOME/Public/repo/github.com/hongyi-zhao/ariadne.git/percol.bin"
     
     
-    percol_bin="$script_realdirname/bin/percol"
+    export percol_bin="$script_realdirname/bin/percol"
      
     # *** process options to set flags ***
 

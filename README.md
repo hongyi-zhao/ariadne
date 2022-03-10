@@ -75,14 +75,9 @@ Add the following to `~/.zshrc`
     
 ## Bash
 ```shell
-# First, download and source the following package in ~/.bashrc:
-# https://github.com/rcaloras/bash-preexec
-#
-# Then add something like the following to ~/.bashrc:
-export ariadne_bash_log=$HOME/.history/ariadne-bash-log
-# If you also want to save the history to master log:   
-#export ariadne_bash_master_log=$HOME/.history/ariadne-bash-master-log
-source $script_realdirname/ariadne.sh
+# Sourcing the following scripts in ~/.bashrc in turn:
+https://github.com/rcaloras/bash-preexec
+https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash
 ```    
 ## Fish
     

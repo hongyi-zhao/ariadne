@@ -67,11 +67,7 @@ $ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
     
 ## Zsh
 
-    $ ./setup.py -z
-
-Add the following to `~/.zshrc` 
-
-    source ~/.config/zsh/ariadne/ariadne.zsh
+TODO 
     
 ## Bash
 ```shell
@@ -80,10 +76,7 @@ https://github.com/rcaloras/bash-preexec
 https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash
 ```    
 ## Fish
-    
-    $ ./setup.py -f
-    
-Add the contents of `./config.fish` to `~/.config/fish/config.fish`
+  TODO
 
 # Configuration
 

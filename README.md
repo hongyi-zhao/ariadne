@@ -72,8 +72,8 @@ TODO
 ## Bash
 Sourcing the following scripts in ~/.bashrc in turn:
 
-1. https://github.com/rcaloras/bash-preexec
-2. https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash
+1. [bash-preexec.sh](https://github.com/rcaloras/bash-preexec/blob/master/bash-preexec.sh)
+2. [ariadne.git.bash](https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash)
     
 ## Fish
   TODO

@@ -70,11 +70,11 @@ $ cxfreeze -c bin/percol --packages curses,cmd --target-dir dist
 TODO 
     
 ## Bash
-```shell
-# Sourcing the following scripts in ~/.bashrc in turn:
-https://github.com/rcaloras/bash-preexec
-https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash
-```    
+Sourcing the following scripts in ~/.bashrc in turn:
+
+1. https://github.com/rcaloras/bash-preexec
+2. https://github.com/hongyi-zhao/ariadne/blob/master/ariadne.git.bash
+    
 ## Fish
   TODO
 
